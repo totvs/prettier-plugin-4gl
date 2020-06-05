@@ -1,0 +1,3 @@
+MAIN 1
+  DISPLAY "HELLO "
+end MAIN

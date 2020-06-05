@@ -1,0 +1,46 @@
+{
+  "name": "prettier-plugin-4gl",
+  "displayName": "Prettier Plugin 4GL Formatter",
+  "description": "Extensão para o adicional Prettier, para formatação de código 4GL.",
+  "version": "0.0.1",
+  "publisher": "TOTVS",
+  "author": {
+    "name": "TOTVS",
+    "email": "tecnologia@totvs.com.br"
+  },
+  "license": "MIT",
+  "keywords": [
+    "4gl",
+    "tds",
+    "totvs",
+    "prettier",
+    "plugin"
+  ],
+  "categories": [
+    "Formatters"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/totvs/prettier-plugin-4gl"
+  },
+  "bugs": {
+    "url": "https://github.com/totvs/prettier-plugin-4gl/issues"
+  },
+  "scripts": {
+    "prepare": "npm-run-all genparser:*",
+    "test": "npm-run-all prepare && jest",
+    "snapshot": "npm-run-all prepare && jest -u",
+    "test2": "jest",
+    "genparser:4gl": "pegjs -o ./src/4gl-parser.js ./grammar/4gl.pegjs"
+  },
+  "dependencies": {
+    "prettier": "^2.0.5"
+  },
+  "devDependencies": {
+    "jest": "^26.0.1",
+    "jest-watch-typeahead": "^0.6.0",
+    "npm-run-all": "^4.1.5",
+    "pegjs": "^0.9.1"
+  },
+  "main": "src/index.js"
+}
