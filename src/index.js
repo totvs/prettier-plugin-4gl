@@ -24,6 +24,7 @@ const languages = [
     extensions: [".4gl"],
     name: "4GL",
     parsers: ["4gl-parser"],
+    vscodeLanguageIds: ["4gl"],
   },
 ];
 
