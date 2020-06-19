@@ -248,6 +248,8 @@ const TokenType = {
   identifier: 5,
   main: 6,
   global: 7,
+  function: 8,
+  block: 9,
   unknown: 0
 }
 
@@ -259,29 +261,81 @@ function addGlobal(value) {
   return node(TokenType.global, value);
 }
 
-function addId(value) {
-  return node(TokenType.identifier, value);
+function addId(id) {
+  return node(TokenType.identifier, joinAll(id));
 }
 
 function addSpace(value) {
-  return node(TokenType.whitespace, value);
+  if (value instanceof Array) {
+    return node(TokenType.whitespace, joinAll(value));
+  } else{ 
+    return node(TokenType.whitespace, value);
+  }
 }
 
-function addComment(value) {
-  return node(TokenType.comment, value);
+function joinAll(value) {
+  let result = "";
+
+  if (value instanceof Array) {
+    value.forEach(function (element) {
+      if (element instanceof Array) {
+          result = result + joinAll(element)
+      } else {
+          result = result + element;
+      }
+    });
+  } else {
+    result = value;
+  }  
+
+  return result;
+}
+
+function notNullValues(value) {
+  if (value instanceof Array) {
+    return value[1]
+  };
+
+  return value;
+}
+
+function addComment(start, content, finish) {
+  const value = [];
+  
+  value.push(start);
+  if (content instanceof Array) {
+    value.push(content.map(notNullValues).join(""));
+  } else {
+    value.push(content);
+  }
+  if (finish) {
+    value.push(finish);
+  }
+
+  return node(TokenType.comment, value.join(""));
 }
 
 function addMain(value) {
   return node(TokenType.main, value);
 }
 
+function addFunction(value) {
+  return node(TokenType.function, value);
+}
+
+function addBlock(value) {
+  return node(TokenType.block, value);
+}
+
 function node(_type, value, info, key) {
-  var obj = { type: _type, value: value, location: location() };
+  if (value) {
+    var obj = { type: _type, value: value, location: location() };
 
-  if (info) obj.info = info;
-  if (key) obj.key = key;
+    if (info) obj.info = info;
+    if (key) obj.key = key;
 
-  return obj;
+    return obj;
+  }
 }
 
 }
@@ -290,46 +344,74 @@ start
   = l:line*
 
 line
-  = SPACE? command SPACE? comment*
-  / SPACE+
+  = SPACE? command SPACE? comment?
+  / comment
+  / SPACE
 
 command
-  = comment
-  / modular 
+  = modular 
   / globals
   / function
 
 comment
-  = c:("#" (!(NL) .)*) { return addComment(c) }
-  / c:("--" (!(NL) .)*)  { return addComment(c) }
-  / c:("{" (!"}".*) "}")  { return addComment(c) }
+  = c1:"#" c2:((!(NL) .)*) NL { return addComment(c1, c2) }
+  / c1:"--" c2:((!(NL) .)*)  NL { return addComment(c1, c2) }
+  / c1:"{" c2:(!"}".*) c3:"}"  { return addComment(c1, c2, c3) }
+
 
 modular
   = define+
 
 globals
   = b:(
-      GLOBALS SPACE+
-        (define comment? 
-        / SPACE+)*
-      END SPACE+ GLOBALS SPACE+
+      GLOBALS SPACE
+        (define 
+        / SPACE
+        / comment)*
+      END SPACE GLOBALS SPACE
     ) { return addGlobal(b)}
 
 function 
   = b:(
-      MAIN SPACE+
-      END SPACE+ MAIN SPACE+
+      MAIN SPACE
+        (b:blockCommand { return addBlock(b) })?
+      END SPACE MAIN SPACE
     ) { return addMain(b) }
+    / b:(
+      FUNCTION SPACE ID parameterList
+        (b:blockCommand { return addBlock(b) })?
+      END SPACE FUNCTION SPACE
+    ) { return addFunction(b) }
+    
+blockCommand
+  = (define 
+    / SPACE
+    / comment)*
 
 define
-  = DEFINE SPACE+ identifier:ID SPACE+ type:types SPACE+
+  = DEFINE SPACE ID SPACE types SPACE comment?
+
+parameterList
+  = '(' SPACE? ')'                          { return [] }
+  / '(' p:param_id ')'                      { return [ p ] }
+  / '(' p:param_value_list+ ')'             { return p }
+  / '(' p:param_value_list+ v:param_id+ ')' { return p.concat(v) }
+
+param_id
+  = param_sep? v:ID param_sep?                  { return addId(v) }
+
+param_value_list
+  = param_sep? v:ID param_sep? ',' param_sep?   { return v }
+
+param_sep
+  = SPACE
 
 types
   = INT
   / STRING
 
 ID
-  = id:([a-zA-Z_][a-zA-Z0-9_]+) { return addId(id.join("")) }
+  = id:([a-zA-Z_]([a-zA-Z0-9_]*)) { return addId(id) }
 
 DEFINE
   = k:'define'i { return addKeyword(k)}
@@ -401,8 +483,8 @@ OPERATOR
 // }
 
 SPACE 
-  = s:[ \t\n\r] { return addSpace(s) }
-  / NL
+  = s:[ \t\n\r]+ { return addSpace(s) }
+  / s:NL+ { return addSpace(s) }
 
 //    {
 //   return node(TokenType.whitespace, s.join(""));

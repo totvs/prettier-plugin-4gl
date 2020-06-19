@@ -162,7 +162,12 @@ boolean
 
 array
   = '[' array_sep* ']'                                 { return node('Array', [], line, column) }
+  / '[' value:array
+  = '[' array_sep* ']'                                 { return node('Array', [], line, column) }
   / '[' value:array_value? ']'                         { return node('Array', value ? [value] : [], line, column) }
+  / '[' values:array_value_list+ ']'                   { return node('Array', values, line, column) }
+  / '[' values:array_value_list+ value:array_value ']' { return node('Array', values.concat(value), line, column) }
+? ']'                         { return node('Array', value ? [value] : [], line, column) }
   / '[' values:array_value_list+ ']'                   { return node('Array', values, line, column) }
   / '[' values:array_value_list+ value:array_value ']' { return node('Array', values.concat(value), line, column) }
 

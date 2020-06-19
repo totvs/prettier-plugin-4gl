@@ -1,8 +1,3 @@
-globals 
+function func01(p1,p2,p3)
 
-end globals
-
-main 
-
-end main
-
+end function
