@@ -1,3 +1,10 @@
-function func01(p1,p2,p3)
+function f1()
+    define fa1 integer
+
+# linha 1
+
+
+    define fa1 string
 
 end function
+

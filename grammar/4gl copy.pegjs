@@ -37,7 +37,6 @@ const keywordList = [
   "BORDER",
   "BOTTOM",
   "BY",
-  "CALL",
   "CASE",
   "CHAR",
   "CLEAR",
@@ -63,7 +62,6 @@ const keywordList = [
   "DECLARE",
   "DEFAULTS",
   "DEFER",
-  "DEFINE",
   "DELETE",
   "DELIMITERS",
   "DELIMITER",
@@ -75,7 +73,6 @@ const keywordList = [
   "DOWNSHIFT",
   "DROP",
   "ELSE",
-  "END",
   "ERROR",
   "EVERY",
   "EXCLUSIVE",
@@ -98,7 +95,6 @@ const keywordList = [
   "FRACTION",
   "FREE",
   "FROM",
-  "FUNCTION",
   "GROUP",
   "HAVING",
   "HEADER",
@@ -132,7 +128,6 @@ const keywordList = [
   "LOAD",
   "LOCK",
   "LOG",
-  "MAIN",
   "MARGIN",
   "MATCHES",
   "MAX",
@@ -241,16 +236,16 @@ const keywordList = [
 
 //Compatibilizar com Token4glType em index.ts
 const TokenType = {
-  program   : "program   ",
-  keyword   : "keyword   ",
-  whitespace: "whitespace",
-  comment   : "comment   ",
-  identifier: "identifier",
-  main      : "main      ",
-  global    : "global    ",
-  function  : "function  ",
-  block     : "block     ",
-  unknown   : "unknown   ",
+  program: 1,
+  keyword: 2,
+  whitespace: 3,
+  comment: 4,
+  identifier: 5,
+  main: 6,
+  global: 7,
+  function: 8,
+  block: 9,
+  unknown: 0
 }
 
 function addKeyword(value) {
@@ -266,10 +261,19 @@ function addId(id) {
 }
 
 function addSpace(value) {
-  return node(TokenType.whitespace, value);
+    return node(TokenType.whitespace, value);
+}
+
+function notNullValues(value) {
+  if (value instanceof Array) {
+    return value[1]
+  };
+
+  return value;
 }
 
 function addComment(value) {
+
   return node(TokenType.comment, value);
 }
 
@@ -292,21 +296,21 @@ function node(_type, value, info, key) {
     if (info) obj.info = info;
     if (key) obj.key = key;
 
-    return { type: _type, value: value };
+    return { type: _type, value: value }; //obj;
   }
 }
 
 }
 
 start
-  = l:line*
+  = l:line+
 
 line
-  = SPACE? command SPACE? comment?
+  = SPACE? session SPACE? comment?
   / comment
   / SPACE
 
-command
+session
   = modular 
   / globals
   / function
@@ -316,53 +320,53 @@ comment
   / c:$("--" ((!(NL) .)*)  NL) { return addComment(c) }
   / c:$("{" (!"}".*) "}")  { return addComment(c) }
 
-
 modular
-  = define+
+  = (d:defineBlock     { return addBlock(d) })?
 
 globals
   = b:(
       GLOBALS SPACE
-        (define 
-        / SPACE
-        / comment)*
+        (d:defineBlock     { return addBlock(d) })?
       END SPACE GLOBALS SPACE
     ) { return addGlobal(b)}
 
 function 
   = b:(
       MAIN SPACE
-        (b:blockCommand { return addBlock(b) })?
+        (d:defineBlock     { return addBlock(d) })?
+        (b:blockCommand    { return addBlock(b) })?
       END SPACE MAIN SPACE
     ) { return addMain(b) }
     / b:(
-      FUNCTION SPACE i:ID p:parameterList 
+      FUNCTION SPACE ID arguments
+        (d:define*)
         (b:blockCommand { return addBlock(b) })?
       END SPACE FUNCTION SPACE
     ) { return addFunction(b) }
     
 blockCommand
+  =  s:SPACE+                  { return s }
+    / c:comment 
+
+defineBlock
   = (define 
     / SPACE
     / comment)*
 
 define
   = DEFINE SPACE ID SPACE types SPACE comment?
-
-parameterList
+    
+arguments
   = '(' SPACE? ')'                          { return [] }
-  / '(' p:param_id ')'                      { return [ p ] }
-  / '(' p:param_value_list+ ')'             { return p }
-  / '(' p:param_value_list+ v:param_id+ ')' { return p.concat(v) }
+  / '(' a:argument_id ')'                   { return [ a ] }
+  / '(' l:argument_list+ ')'                { return l }
+  / '(' l:argument_list+ a:argument_id+ ')' { return l.concat(a) }
 
-param_id
-  = param_sep? v:ID param_sep?                  { return addId(v) }
+argument_id
+  = SPACE? i:ID SPACE?                      
 
-param_value_list
-  = param_sep? v:ID param_sep? ',' param_sep?   { return v }
-
-param_sep
-  = SPACE
+argument_list
+  = SPACE? i:ID SPACE? ',' SPACE?           
 
 types
   = INT
@@ -442,10 +446,10 @@ OPERATOR
 
 SPACE 
   = s:$([ \t\n\r]+) { return addSpace(s) }
-  / s:NL+
+  / s:$(NL+)  { return addSpace(s) }
 
 NL
-  = s:$("\n" / "\r\n") { return addSpace(s) }
+  = s:("\n" / "\r\n") { return addSpace(s) }
 
 NLS = NL / SPACE
 

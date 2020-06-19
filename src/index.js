@@ -40,10 +40,8 @@ function print4gl(path, options, print) {
 
   
   if (!node) {
-    return "< empty nodes >";
+    return "";
   }
-
-  console.log(JSON.stringify(node));
 
   if (typeof node === "string") {
     return node;
@@ -53,22 +51,24 @@ function print4gl(path, options, print) {
     return concat(path.map(print));
   }
 
+  // switch (node.type) {
+  //   case "ws":
+  //   case "nl":
+  //     return node.value;
+  //   case "keyword":
+  //     return node.value.toLowerCase();
+  //   case "word":
+  //     return node.value.toUpperCase();
+  //   case "operator":
+  //     return node.value;
+  //   case "string":
+  //     return node.value;
+  //   default:
+  //     //throw new Error("unknown 4GL type: " + JSON.stringify(node));
+  // }
+  console.log(JSON.stringify(node, null,2));
 
-  switch (node.type) {
-    case "ws":
-    case "nl":
-      return node.value;
-    case "keyword":
-      return node.value.toLowerCase();
-    case "word":
-      return node.value.toUpperCase();
-    case "operator":
-      return node.value;
-    case "string":
-      return node.value;
-    default:
-      throw new Error("unknown 4GL type: " + JSON.stringify(node));
-  }
+  return JSON.stringify(node, null, 2);
 }
 
 const printers = {

@@ -1,10 +1,119 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`commands.4gl 1`] = `
-globals
+function f1()
+    define fa1 integer
 
-end globals~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-globals
+# linha 1
 
-end globals< empty nodes >
+
+    define fa1 string
+
+end function
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+{
+  "type": "function  ",
+  "value": [
+    {
+      "type": "keyword   ",
+      "value": "function"
+    },
+    {
+      "type": "whitespace",
+      "value": " "
+    },
+    {
+      "type": "identifier",
+      "value": "f1"
+    },
+    [],
+    {
+      "type": "block     ",
+      "value": [
+        {
+          "type": "whitespace",
+          "value": "\\n    "
+        },
+        [
+          {
+            "type": "keyword   ",
+            "value": "define"
+          },
+          {
+            "type": "whitespace",
+            "value": " "
+          },
+          {
+            "type": "identifier",
+            "value": "fa1"
+          },
+          {
+            "type": "whitespace",
+            "value": " "
+          },
+          {
+            "type": "keyword   ",
+            "value": "integer"
+          },
+          {
+            "type": "whitespace",
+            "value": "\\n\\n"
+          },
+          {
+            "type": "comment   ",
+            "value": "# linha 1\\n"
+          }
+        ],
+        {
+          "type": "whitespace",
+          "value": "\\n\\n    "
+        },
+        [
+          {
+            "type": "keyword   ",
+            "value": "define"
+          },
+          {
+            "type": "whitespace",
+            "value": " "
+          },
+          {
+            "type": "identifier",
+            "value": "fa1"
+          },
+          {
+            "type": "whitespace",
+            "value": " "
+          },
+          {
+            "type": "keyword   ",
+            "value": "string"
+          },
+          {
+            "type": "whitespace",
+            "value": "\\n\\n"
+          },
+          null
+        ]
+      ]
+    },
+    {
+      "type": "keyword   ",
+      "value": "end"
+    },
+    {
+      "type": "whitespace",
+      "value": " "
+    },
+    {
+      "type": "keyword   ",
+      "value": "function"
+    },
+    {
+      "type": "whitespace",
+      "value": "\\n\\n"
+    }
+  ]
+}
 `;
