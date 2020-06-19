@@ -38,9 +38,12 @@ const parsers = {
 function print4gl(path, options, print) {
   const node = path.getValue();
 
+  
   if (!node) {
-    return "";
+    return "< empty nodes >";
   }
+
+  console.log(JSON.stringify(node));
 
   if (typeof node === "string") {
     return node;
@@ -50,7 +53,6 @@ function print4gl(path, options, print) {
     return concat(path.map(print));
   }
 
-  console.log(JSON.stringify(node));
 
   switch (node.type) {
     case "ws":

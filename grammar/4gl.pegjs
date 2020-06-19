@@ -99,7 +99,6 @@ const keywordList = [
   "FREE",
   "FROM",
   "FUNCTION",
-  "GLOBALS",
   "GROUP",
   "HAVING",
   "HEADER",
@@ -254,6 +253,10 @@ const TokenType = {
   unknown: 0
 }
 
+function nodeKeyword(value) {
+  return node(TokenType.keyword, value);
+}
+
 function node(_type, value, info, key) {
   var obj = { type: _type, value: value, location: location() };
 
@@ -266,82 +269,132 @@ function node(_type, value, info, key) {
 }
 
 start
-  = p:line* { return node(TokenType.program, p) }
+  = line*
 
 line
-  = c:(SPACE* command SPACE* comment*) (NL+ / EOF) { return node(TokenType.line, c) }
+  = SPACE* command:command SPACE* comment* (NL+ / EOF)
+  / EMPTY_LINE
 
 command
-  = (comment
-  / words
-  / string
-  / OPERATOR
-  / SPACE)+
+  = comment
+  / modular 
+  / globals
+  / function
 
 comment
-  = c:("#" (!(NL / EOF) .)*) {
-        return node(TokenType.lineComment,c);
+  = "#" (!(NL / EOF) .)*
+  / "--" (!(NL / EOF) .)*
+  / "{" (!"}".*) "}"
+
+modular
+  = define+
+
+globals
+  = GLOBALS 
+      (define / EMPTY_LINE)*
+    END SPACE+ GLOBALS
+
+function 
+  = MAIN? SPACE+ FUNCTION SPACE+ ID SPACE* '(' ')' EMPTY_LINE
+
+define
+  = DEFINE identifier:ID type:types EMPTY_LINE
+
+types
+  = INT
+  / STRING
+
+// words
+//   = (word (SPACE / NL))+
+
+// word
+//   = w:([a-zA-Z0-9_]+)  {
+//     const word = w.join("");
+//     const _type = keywordList.indexOf(word.toUpperCase()) === -1?TokenType.word:TokenType.keyword;
+
+//   return node(_type, word);
+// }
+
+// string
+//   = double_quoted_multiline_string
+//   / double_quoted_single_line_string
+//   / single_quoted_multiline_string
+//   / single_quoted_single_line_string
+
+// double_quoted_multiline_string
+//   = s:('"""' NL? chars:multiline_string_char* '"""')  { return node(TokenType.string_double,s) }
+// double_quoted_single_line_string
+//   = '"' chars:string_char* '"'                    { return node(TokenType.string_double,chars.join(''), {subType: '"' }) }
+// single_quoted_multiline_string
+//   = "'''" NL? chars:multiline_literal_char* "'''" { return node(TokenType.string_single,chars.join(''), {subType: "'" }) }
+// single_quoted_single_line_string
+//   = "'" chars:literal_char* "'"                   { return node(TokenType.string_single,chars.join(''), {subType: "'" }) }
+
+// string_char
+//   = (!'"' char:. { return char })
+
+// literal_char
+//   = (!"'" char:. { return char })
+
+
+// multiline_string_char
+//   = multiline_string_delim / (!'"""' char:. { return char})
+
+// multiline_string_delim
+//   = '\\' NL NLS*                        { return '' }
+
+// multiline_literal_char
+//   = (!"'''" char:. { return char })
+
+ID
+  = id:([a-zA-Z_][a-zA-Z0-9_]+)  {
+
+    return id.join("");
   }
-  / c:("--" (!(NL / EOF) .)*) {
-        return node(TokenType.lineComment,c);
-  }
-  / c:("{" (!"}".*) "}") {
-        return node(TokenType.blockComment,c);
-  }
 
-words
-  = (word (SPACE / NL))+
+EMPTY_LINE
+  = SPACE+ (NL+ / EOF)
+  / NL
 
-word
-  = w:([a-zA-Z0-9_]+)  {
-    const word = w.join("");
-    const _type = keywordList.indexOf(word.toUpperCase()) === -1?TokenType.word:TokenType.keyword;
+DEFINE
+  = k:'define'i { return nodeKeyword(k)}
 
-  return node(_type, word);
-}
+END
+  = k:'end'i { return nodeKeyword(k)}
 
-string
-  = double_quoted_multiline_string
-  / double_quoted_single_line_string
-  / single_quoted_multiline_string
-  / single_quoted_single_line_string
+FUNCTION 
+  = k:'function'i { return nodeKeyword(k)}
 
-double_quoted_multiline_string
-  = s:('"""' NL? chars:multiline_string_char* '"""')  { return node(TokenType.string_double,s) }
-double_quoted_single_line_string
-  = '"' chars:string_char* '"'                    { return node(TokenType.string_double,chars.join(''), {subType: '"' }) }
-single_quoted_multiline_string
-  = "'''" NL? chars:multiline_literal_char* "'''" { return node(TokenType.string_single,chars.join(''), {subType: "'" }) }
-single_quoted_single_line_string
-  = "'" chars:literal_char* "'"                   { return node(TokenType.string_single,chars.join(''), {subType: "'" }) }
+GLOBALS
+  = k:'globals'i { return nodeKeyword(k)}
 
-string_char
-  = (!'"' char:. { return char })
+INT
+  = k:'integer'i { return nodeKeyword(k)}
 
-literal_char
-  = (!"'" char:. { return char })
+MAIN
+  = k:'main'i { return nodeKeyword(k)}
+
+STRING
+  = k:'string'i { return nodeKeyword(k)}
 
 
-multiline_string_char
-  = multiline_string_delim / (!'"""' char:. { return char})
 
-multiline_string_delim
-  = '\\' NL NLS*                        { return '' }
-
-multiline_literal_char
-  = (!"'''" char:. { return char })
 
 OPERATOR
-  = o:[~!@%^&*()-+=|/{}[\]:;<>,.?#_] {
-    return node(TokenType.operator, o);
-}
+  = o:[~!@%^&*()-+=|/{}[\]:;<>,.?#_] 
+//   {
+//     return node(TokenType.operator, o);
+// }
 
-SPACE = s:[ \t\n\r]+ {
-  return node(TokenType.whitespace, s.join(""));
-}
+SPACE 
+  = s:[ \t\n\r]+
+//    {
+//   return node(TokenType.whitespace, s.join(""));
+// }
 
 NL
-  = s:("\n" / "\r\n") { return node(TokenType.newLine, s); }
+  = s:("\n" / "\r\n")
+  // { return node(TokenType.newLine, s); }
 
 NLS = NL / SPACE
 
