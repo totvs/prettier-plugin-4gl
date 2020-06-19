@@ -1,10 +1,4 @@
-function f1()
-    define fa1 integer
-
-# linha 1
-
-
-    define fa1 string
-
+function f1(p1)
+   
 end function
 

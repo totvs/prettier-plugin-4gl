@@ -40,8 +40,9 @@ function run_spec(dirname, options) {
         rangeEnd,
         cursorOffset
       });
-      const output = prettyprint(input, mergedOptions);
+
       test(filename, () => {
+        const output = prettyprint(input, mergedOptions);
         expect(
           raw(source + '~'.repeat(mergedOptions.printWidth) + '\n' + output)
         ).toMatchSnapshot();

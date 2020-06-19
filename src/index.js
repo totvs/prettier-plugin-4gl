@@ -35,9 +35,15 @@ const parsers = {
   },
 };
 
-function print4gl(path, options, print) {
+function printjson(path, options, print) {
   const node = path.getValue();
 
+  return JSON.stringify(node);
+}
+
+
+function print4gl(path, options, print) {
+  const node = path.getValue();
   
   if (!node) {
     return "";
@@ -66,14 +72,13 @@ function print4gl(path, options, print) {
   //   default:
   //     //throw new Error("unknown 4GL type: " + JSON.stringify(node));
   // }
-  console.log(JSON.stringify(node, null,2));
-
+  
   return JSON.stringify(node, null, 2);
 }
 
 const printers = {
   "4gl-ast": {
-    print: print4gl,
+    print: printjson //print4gl,
   },
 };
 

@@ -37,6 +37,7 @@ const keywordList = [
   "BORDER",
   "BOTTOM",
   "BY",
+  "CALL",
   "CASE",
   "CHAR",
   "CLEAR",
@@ -62,6 +63,7 @@ const keywordList = [
   "DECLARE",
   "DEFAULTS",
   "DEFER",
+  "DEFINE",
   "DELETE",
   "DELIMITERS",
   "DELIMITER",
@@ -73,6 +75,7 @@ const keywordList = [
   "DOWNSHIFT",
   "DROP",
   "ELSE",
+  "END",
   "ERROR",
   "EVERY",
   "EXCLUSIVE",
@@ -95,6 +98,7 @@ const keywordList = [
   "FRACTION",
   "FREE",
   "FROM",
+  "FUNCTION",
   "GROUP",
   "HAVING",
   "HEADER",
@@ -128,6 +132,7 @@ const keywordList = [
   "LOAD",
   "LOCK",
   "LOG",
+  "MAIN",
   "MARGIN",
   "MATCHES",
   "MAX",
@@ -236,16 +241,16 @@ const keywordList = [
 
 //Compatibilizar com Token4glType em index.ts
 const TokenType = {
-  program: 1,
-  keyword: 2,
-  whitespace: 3,
-  comment: 4,
-  identifier: 5,
-  main: 6,
-  global: 7,
-  function: 8,
-  block: 9,
-  unknown: 0
+  program   : "program   ",
+  keyword   : "keyword   ",
+  whitespace: "whitespace",
+  comment   : "comment   ",
+  identifier: "identifier",
+  main      : "main      ",
+  global    : "global    ",
+  function  : "function  ",
+  block     : "block     ",
+  unknown   : "unknown   ",
 }
 
 function addKeyword(value) {
@@ -261,19 +266,10 @@ function addId(id) {
 }
 
 function addSpace(value) {
-    return node(TokenType.whitespace, value);
-}
-
-function notNullValues(value) {
-  if (value instanceof Array) {
-    return value[1]
-  };
-
-  return value;
+  return node(TokenType.whitespace, value);
 }
 
 function addComment(value) {
-
   return node(TokenType.comment, value);
 }
 
@@ -296,105 +292,105 @@ function node(_type, value, info, key) {
     if (info) obj.info = info;
     if (key) obj.key = key;
 
-    return { type: _type, value: value }; //obj;
+    return { type: _type, value: value };
   }
 }
 
 }
 
 start
-  = l:line+
+  = l:line*
 
 line
-  = SPACE? session SPACE? comment?
+  = SPACE? command SPACE? comment?
   / comment
   / SPACE
 
-session
+command
   = modular 
   / globals
   / function
 
 comment
-  = c:$("#" ((!(NL) .)*) NL) { return addComment(c) }
-  / c:$("--" ((!(NL) .)*)  NL) { return addComment(c) }
-  / c:$("{" (!"}".*) "}")  { return addComment(c) }
+  = c:$("#" ((!(NL) .)*) NL) //{ return addComment(c) }
+  / c:$("--" ((!(NL) .)*)  NL) //{ return addComment(c) }
+  / c:$("{" (!"}".*) "}")  //{ return addComment(c) }
+
 
 modular
-  = (d:defineBlock     { return addBlock(d) })?
+  = define+
 
 globals
   = b:(
       GLOBALS SPACE
-        (d:defineBlock     { return addBlock(d) })?
+        (define 
+        / SPACE
+        / comment)*
       END SPACE GLOBALS SPACE
-    ) { return addGlobal(b)}
+    ) //{ return addGlobal(b)}
 
 function 
   = b:(
       MAIN SPACE
-        (d:defineBlock     { return addBlock(d) })?
-        (b:blockCommand    { return addBlock(b) })?
+        (b:blockCommand) //{ return addBlock(b) })?
       END SPACE MAIN SPACE
-    ) { return addMain(b) }
+    ) //{ return addMain(b) }
     / b:(
-      FUNCTION SPACE ID arguments
-        (d:define*)
-        (b:blockCommand { return addBlock(b) })?
+      FUNCTION SPACE i:ID p:parameterList 
+        (b:blockCommand) //{ return addBlock(b) })?
       END SPACE FUNCTION SPACE
-    ) { return addFunction(b) }
+    ) //{ return addFunction(b) }
     
 blockCommand
-  =  s:SPACE+                  { return s }
-    / c:comment 
-
-defineBlock
   = (define 
     / SPACE
     / comment)*
 
 define
   = DEFINE SPACE ID SPACE types SPACE comment?
-    
-arguments
-  = '(' SPACE? ')'                          { return [] }
-  / '(' a:argument_id ')'                   { return [ a ] }
-  / '(' l:argument_list+ ')'                { return l }
-  / '(' l:argument_list+ a:argument_id+ ')' { return l.concat(a) }
 
-argument_id
-  = SPACE? i:ID SPACE?                      
+parameterList
+  = '(' SPACE? ')'                          //{ return [] }
+  / '(' p:param_id ')'                      //{ return [ p ] }
+  / '(' p:param_value_list+ ')'             //{ return p }
+  / '(' p:param_value_list+ v:param_id+ ')' //{ return p.concat(v) }
 
-argument_list
-  = SPACE? i:ID SPACE? ',' SPACE?           
+param_id
+  = param_sep? v:ID param_sep?                  //{ return addId(v) }
+
+param_value_list
+  = param_sep? v:ID param_sep? ',' param_sep?   //{ return v }
+
+param_sep
+  = SPACE
 
 types
   = INT
   / STRING
 
 ID
-  = id:$([a-zA-Z_]([a-zA-Z0-9_]*)) { return addId(id) }
+  = id:$([a-zA-Z_]([a-zA-Z0-9_]*)) //{ return addId(id) }
 
 DEFINE
-  = k:'define'i { return addKeyword(k)}
+  = k:'define'i //{ return addKeyword(k)}
 
 END
-  = k:'end'i { return addKeyword(k)}
+  = k:'end'i //{ return addKeyword(k)}
 
 FUNCTION 
-  = k:'function'i { return addKeyword(k)}
+  = k:'function'i //{ return addKeyword(k)}
 
 GLOBALS
-  = k:'globals'i { return addKeyword(k)}
+  = k:'globals'i //{ return addKeyword(k)}
 
 INT
-  = k:'integer'i { return addKeyword(k)}
+  = k:'integer'i //{ return addKeyword(k)}
 
 MAIN
-  = k:'main'i { return addKeyword(k)}
+  = k:'main'i //{ return addKeyword(k)}
 
 STRING
-  = k:'string'i { return addKeyword(k)}
+  = k:'string'i //{ return addKeyword(k)}
 
 // words
 //   = (word (SPACE / NL))+
@@ -414,29 +410,29 @@ STRING
 //   / single_quoted_single_line_string
 
 // double_quoted_multiline_string
-//   = s:('"""' NL? chars:multiline_string_char* '"""')  { return node(TokenType.string_double,s) }
+//   = s:('"""' NL? chars:multiline_string_char* '"""')  //{ return node(TokenType.string_double,s) }
 // double_quoted_single_line_string
-//   = '"' chars:string_char* '"'                    { return node(TokenType.string_double,chars.join(''), {subType: '"' }) }
+//   = '"' chars:string_char* '"'                    //{ return node(TokenType.string_double,chars.join(''), {subType: '"' }) }
 // single_quoted_multiline_string
-//   = "'''" NL? chars:multiline_literal_char* "'''" { return node(TokenType.string_single,chars.join(''), {subType: "'" }) }
+//   = "'''" NL? chars:multiline_literal_char* "'''" //{ return node(TokenType.string_single,chars.join(''), {subType: "'" }) }
 // single_quoted_single_line_string
-//   = "'" chars:literal_char* "'"                   { return node(TokenType.string_single,chars.join(''), {subType: "'" }) }
+//   = "'" chars:literal_char* "'"                   //{ return node(TokenType.string_single,chars.join(''), {subType: "'" }) }
 
 // string_char
-//   = (!'"' char:. { return char })
+//   = (!'"' char:. //{ return char })
 
 // literal_char
-//   = (!"'" char:. { return char })
+//   = (!"'" char:. //{ return char })
 
 
 // multiline_string_char
-//   = multiline_string_delim / (!'"""' char:. { return char})
+//   = multiline_string_delim / (!'"""' char:. //{ return char})
 
 // multiline_string_delim
-//   = '\\' NL NLS*                        { return '' }
+//   = '\\' NL NLS*                        //{ return '' }
 
 // multiline_literal_char
-//   = (!"'''" char:. { return char })
+//   = (!"'''" char:. //{ return char })
 
 OPERATOR
   = o:[~!@%^&*()-+=|/{}[\]:;<>,.?#_] 
@@ -445,11 +441,11 @@ OPERATOR
 // }
 
 SPACE 
-  = s:$([ \t\n\r]+) { return addSpace(s) }
-  / s:$(NL+)  { return addSpace(s) }
+  = s:$([ \t\n\r]+) //{ return addSpace(s) }
+  / s:NL+
 
 NL
-  = s:("\n" / "\r\n") { return addSpace(s) }
+  = s:$("\n" / "\r\n") //{ return addSpace(s) }
 
 NLS = NL / SPACE
 

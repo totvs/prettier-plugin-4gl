@@ -1,5 +1,6 @@
 module.exports = {
-  collectCoverage: true,
+  verbose: true,
+  collectCoverage: false,
   collectCoverageFrom: [
     'src/**/*.js',
     '!<rootDir>/node_modules/',
@@ -12,7 +13,6 @@ module.exports = {
   testRegex: 'jsfmt\\.spec\\.js$|__tests__/.*\\.js$',
   transform: {},
   watchPlugins: [
-    'jest-watch-typeahead/filename',
-    'jest-watch-typeahead/testname'
+    'jest-watch-typeahead/filename'
   ]
 };
