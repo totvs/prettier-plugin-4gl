@@ -242,19 +242,37 @@ const keywordList = [
 //Compatibilizar com Token4glType em index.ts
 const TokenType = {
   program: 1,
-  block: 2,
-  keyword: 3,
-  string: 4,
-  operator: 5,
-  whitespace: 6,
-  lineComment: 7,
-  blockComment: 8,
-  newLine: 11,
+  keyword: 2,
+  whitespace: 3,
+  comment: 4,
+  identifier: 5,
+  main: 6,
+  global: 7,
   unknown: 0
 }
 
-function nodeKeyword(value) {
+function addKeyword(value) {
   return node(TokenType.keyword, value);
+}
+
+function addGlobal(value) {
+  return node(TokenType.global, value);
+}
+
+function addId(value) {
+  return node(TokenType.identifier, value);
+}
+
+function addSpace(value) {
+  return node(TokenType.whitespace, value);
+}
+
+function addComment(value) {
+  return node(TokenType.comment, value);
+}
+
+function addMain(value) {
+  return node(TokenType.main, value);
 }
 
 function node(_type, value, info, key) {
@@ -269,11 +287,11 @@ function node(_type, value, info, key) {
 }
 
 start
-  = line*
+  = l:line*
 
 line
-  = SPACE* command:command SPACE* comment* (NL+ / EOF)
-  / EMPTY_LINE
+  = SPACE? command SPACE? comment*
+  / SPACE+
 
 command
   = comment
@@ -282,27 +300,57 @@ command
   / function
 
 comment
-  = "#" (!(NL / EOF) .)*
-  / "--" (!(NL / EOF) .)*
-  / "{" (!"}".*) "}"
+  = c:("#" (!(NL) .)*) { return addComment(c) }
+  / c:("--" (!(NL) .)*)  { return addComment(c) }
+  / c:("{" (!"}".*) "}")  { return addComment(c) }
 
 modular
   = define+
 
 globals
-  = GLOBALS 
-      (define / EMPTY_LINE)*
-    END SPACE+ GLOBALS
+  = b:(
+      GLOBALS SPACE+
+        (define comment? 
+        / SPACE+)*
+      END SPACE+ GLOBALS SPACE+
+    ) { return addGlobal(b)}
 
 function 
-  = MAIN? SPACE+ FUNCTION SPACE+ ID SPACE* '(' ')' EMPTY_LINE
+  = b:(
+      MAIN SPACE+
+      END SPACE+ MAIN SPACE+
+    ) { return addMain(b) }
 
 define
-  = DEFINE identifier:ID type:types EMPTY_LINE
+  = DEFINE SPACE+ identifier:ID SPACE+ type:types SPACE+
 
 types
   = INT
   / STRING
+
+ID
+  = id:([a-zA-Z_][a-zA-Z0-9_]+) { return addId(id.join("")) }
+
+DEFINE
+  = k:'define'i { return addKeyword(k)}
+
+END
+  = k:'end'i { return addKeyword(k)}
+
+FUNCTION 
+  = k:'function'i { return addKeyword(k)}
+
+GLOBALS
+  = k:'globals'i { return addKeyword(k)}
+
+INT
+  = k:'integer'i { return addKeyword(k)}
+
+MAIN
+  = k:'main'i { return addKeyword(k)}
+
+STRING
+  = k:'string'i { return addKeyword(k)}
 
 // words
 //   = (word (SPACE / NL))+
@@ -346,40 +394,6 @@ types
 // multiline_literal_char
 //   = (!"'''" char:. { return char })
 
-ID
-  = id:([a-zA-Z_][a-zA-Z0-9_]+)  {
-
-    return id.join("");
-  }
-
-EMPTY_LINE
-  = SPACE+ (NL+ / EOF)
-  / NL
-
-DEFINE
-  = k:'define'i { return nodeKeyword(k)}
-
-END
-  = k:'end'i { return nodeKeyword(k)}
-
-FUNCTION 
-  = k:'function'i { return nodeKeyword(k)}
-
-GLOBALS
-  = k:'globals'i { return nodeKeyword(k)}
-
-INT
-  = k:'integer'i { return nodeKeyword(k)}
-
-MAIN
-  = k:'main'i { return nodeKeyword(k)}
-
-STRING
-  = k:'string'i { return nodeKeyword(k)}
-
-
-
-
 OPERATOR
   = o:[~!@%^&*()-+=|/{}[\]:;<>,.?#_] 
 //   {
@@ -387,14 +401,15 @@ OPERATOR
 // }
 
 SPACE 
-  = s:[ \t\n\r]+
+  = s:[ \t\n\r] { return addSpace(s) }
+  / NL
+
 //    {
 //   return node(TokenType.whitespace, s.join(""));
 // }
 
 NL
-  = s:("\n" / "\r\n")
-  // { return node(TokenType.newLine, s); }
+  = s:("\n" / "\r\n") { return addSpace(s) }
 
 NLS = NL / SPACE
 

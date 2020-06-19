@@ -1,8 +1,8 @@
-globals
+globals 
 
 end globals
 
-main function
+main 
 
 end main
 
