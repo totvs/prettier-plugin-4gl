@@ -72,7 +72,6 @@ const keywordList = [
 "DOWNSHIFT",
 "DROP",
 "ELSE",
-"END",
 "ERROR",
 "EVERY",
 "EXCLUSIVE",
@@ -342,7 +341,7 @@ globals
         / SPACE
         / comment)*
       END SPACE GLOBALS SPACE
-    ) //{ return addGlobal(b)}
+    ) { return addGlobal(b)}
 
 function 
   = MAIN SPACE
@@ -355,13 +354,11 @@ function
       { return addFunction(i,p,b) }
     
 blockCommand
-  = SPACE                             { return [] }
-  / c:command                         { return [ c ] }
-  / b:commands+                       { return b }
-  / b:commands+ c:command+            { return b.concat(c) }
-
+  = c:commands+
+  / SPACE
+  
 commands
-  = c:command { return c }    
+  = SPACE? c:command SPACE? comment? NL? { return c }
 
 command
   = c:(define 
@@ -370,13 +367,13 @@ command
     )  { return addCommand(c) }
 
 define
-  = SPACE? DEFINE SPACE ID SPACE types SPACE comment? 
+  = DEFINE SPACE ID SPACE types  
 
 display
-  = SPACE? DISPLAY SPACE expressions SPACE comment? 
+  = DISPLAY SPACE expressions 
 
 call
-  = SPACE? CALL SPACE ID SPACE? argumentList SPACE comment? 
+  = CALL SPACE ID SPACE? argumentList 
 
 expressions
   = expression
@@ -504,11 +501,11 @@ DIGIT
   = [0-9]
 
 SPACE 
-  = s:$([ \t\n\r]+) //{ return addSpace(s) }
+  = s:$([ \t\n\r]+) { return addSpace(s) }
   / s:NL+
 
 NL
-  = s:$("\n" /"\r\n") //{ return addSpace(s) }
+  = s:$("\n" /"\r\n") { return addSpace(s) }
 
 NLS = NL / SPACE
 

@@ -4,14 +4,11 @@ exports[`call.4gl 1`] = `
 MAIN 
 
   CALL fgl_winmessage()
+  CALL fgl_winmessage()
   
 end main
-
-function f1()
-
-end function
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-[[null,{"type":"main","value":"main","offset":{"start":0,"end":44},"info":{"id":"main","arguments":[],"block":[{"type":"command","value":[null,{"type":"keyword","value":"CALL","offset":{"start":9,"end":13}}," ",{"type":"identifier","value":"fgl_winmessage","offset":{"start":14,"end":28}},null,[],"\\n  \\n",null],"offset":{"start":9,"end":34}}]}},null,null],[null,{"type":"function","value":"f1","offset":{"start":44,"end":72},"info":{"id":{"type":"identifier","value":"f1","offset":{"start":53,"end":55}},"arguments":[],"block":[]}},null,null]]
+[[null,{"type":"main","value":"main","offset":{"start":0,"end":67},"info":{"id":"main","arguments":[],"block":[{"type":"command","value":[{"type":"keyword","value":"CALL","offset":{"start":9,"end":13}},{"type":"whitespace","value":" ","offset":{"start":13,"end":14}},{"type":"identifier","value":"fgl_winmessage","offset":{"start":14,"end":28}},null,[]],"offset":{"start":9,"end":30}},{"type":"command","value":[{"type":"keyword","value":"CALL","offset":{"start":33,"end":37}},{"type":"whitespace","value":" ","offset":{"start":37,"end":38}},{"type":"identifier","value":"fgl_winmessage","offset":{"start":38,"end":52}},null,[]],"offset":{"start":33,"end":54}}]}},null,null]]
 `;
 
 exports[`define.4gl 1`] = `
@@ -21,7 +18,7 @@ MAIN
 
 end MAIN
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-[[null,{"type":"main","value":"main","offset":{"start":0,"end":40},"info":{"id":"main","arguments":[],"block":[{"type":"command","value":[null,{"type":"keyword","value":"DEFINE","offset":{"start":9,"end":15}}," ",{"type":"identifier","value":"NOME","offset":{"start":16,"end":20}}," ","CHAR(50)","\\n\\n",null],"offset":{"start":9,"end":31}}]}},null,null]]
+[[null,{"type":"main","value":"main","offset":{"start":0,"end":40},"info":{"id":"main","arguments":[],"block":[{"type":"command","value":[{"type":"keyword","value":"DEFINE","offset":{"start":9,"end":15}},{"type":"whitespace","value":" ","offset":{"start":15,"end":16}},{"type":"identifier","value":"NOME","offset":{"start":16,"end":20}},{"type":"whitespace","value":" ","offset":{"start":20,"end":21}},"CHAR(50)"],"offset":{"start":9,"end":29}}]}},null,null]]
 `;
 
 exports[`function.4gl 1`] = `
@@ -41,5 +38,5 @@ function f2(p1, p2)
    
 end function
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-[[null,{"type":"main","value":"main","offset":{"start":0,"end":19},"info":{"id":"main","arguments":[],"block":null}},null,null],[null,{"type":"function","value":"f0","offset":{"start":19,"end":51},"info":{"id":{"type":"identifier","value":"f0","offset":{"start":28,"end":30}},"arguments":[],"block":[]}},null,null],[null,{"type":"function","value":"f1","offset":{"start":51,"end":85},"info":{"id":{"type":"identifier","value":"f1","offset":{"start":60,"end":62}},"arguments":[{"type":"identifier","value":"p1","offset":{"start":63,"end":65}}],"block":[]}},null,null],[null,{"type":"function","value":"f2","offset":{"start":85,"end":122},"info":{"id":{"type":"identifier","value":"f2","offset":{"start":94,"end":96}},"arguments":[null,{"type":"identifier","value":"p2","offset":{"start":101,"end":103}}],"block":[]}},null,null]]
+[[null,{"type":"main","value":"main","offset":{"start":0,"end":19},"info":{"id":"main","arguments":[],"block":null}},null,null],[null,{"type":"function","value":"f0","offset":{"start":19,"end":51},"info":{"id":{"type":"identifier","value":"f0","offset":{"start":28,"end":30}},"arguments":[],"block":{"type":"whitespace","value":"\\n   \\n","offset":{"start":32,"end":37}}}},null,null],[null,{"type":"function","value":"f1","offset":{"start":51,"end":85},"info":{"id":{"type":"identifier","value":"f1","offset":{"start":60,"end":62}},"arguments":[{"type":"identifier","value":"p1","offset":{"start":63,"end":65}}],"block":{"type":"whitespace","value":"\\n   \\n","offset":{"start":66,"end":71}}}},null,null],[null,{"type":"function","value":"f2","offset":{"start":85,"end":122},"info":{"id":{"type":"identifier","value":"f2","offset":{"start":94,"end":96}},"arguments":[null,{"type":"identifier","value":"p2","offset":{"start":101,"end":103}}],"block":{"type":"whitespace","value":"\\n   \\n","offset":{"start":104,"end":109}}}},null,null]]
 `;
