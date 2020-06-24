@@ -441,6 +441,7 @@ var_list
 
 variable
   = v:$(ID POINT ID)                { return addVar(v) }    
+  / v:$(ID POINT ASTERISK)                { return addVar(v) }    
   / v:ID O_BRACKET i:expressions C_BRACKET    { return addVar(v, i) }
   / v:ID                          { return addVar(v) }    
 
@@ -506,6 +507,9 @@ POINT
 COMMA
   = o:','  { addOperator(o) };
 
+ASTERISK
+  = o:'*'  { addOperator(o) };
+
 // words
 //   = (word (SPACE / NL))+
 
@@ -525,34 +529,14 @@ integer_text
   / '-'  d:$(DIGIT+) !'.'
 
 string_exp
-  = s:(double_quoted_multiline_string
-  / double_quoted_single_line_string
-  / single_quoted_multiline_string
-  / single_quoted_single_line_string)    { return node(TokenType.string, s) }
+  = s:(double_quoted_string
+  / single_quoted_string)    { return node(TokenType.string, s) }
 
-double_quoted_multiline_string
-  = $('"""' NL? chars:multiline_string_char* '"""')
-double_quoted_single_line_string
-  = $('"' chars:string_char* '"')
-single_quoted_multiline_string
-  = $("'''" NL? chars:multiline_literal_char*"'''")
-single_quoted_single_line_string
-  = $("'" chars:literal_char*"'")
+double_quoted_string
+  = $('"' (!'"' .)* '"')
 
-string_char
-  = $(!'"' char:.)
-
-literal_char
-   = (!"'" char:.)
-
-multiline_string_char
-  = multiline_string_delim / (!'"""' char:.)
-
-multiline_string_delim
-  = '\\' NL NLS*                        
-
-multiline_literal_char
-  = (!"'''" char:.)
+single_quoted_string
+  = $("'" (!"'" .)* "'")
 
 DIGIT
   = [0-9]
