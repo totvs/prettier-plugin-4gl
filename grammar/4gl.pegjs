@@ -344,10 +344,9 @@ session
   / function
 
 comment
-  = c:$("#" ((!(NL) .)*) NL) //{ return addComment(c) }
-  / c:$("--" ((!(NL) .)*)  NL) //{ return addComment(c) }
-  / c:$("{" (!"}".*)"}")  //{ return addComment(c) }
-
+  = c:$("#"  ((!(NL)  .)*) NL)  { return addComment(c) }
+  / c:$("--" ((!(NL)  .)*) NL)  { return addComment(c) }
+  / c:$("{"  ((!("}") .)*) "}") { return addComment(c) }
 
 modular
   = define+
