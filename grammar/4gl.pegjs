@@ -173,7 +173,6 @@ const keywordList = [
 "RECORD",
 "REPORT",
 "RETURN",
-"RETURNING",
 "REVERSE",
 "RIGTH",
 "ROLLBACK",
@@ -248,6 +247,9 @@ const TokenType = {
   command   : "command",
   string    : "string",  
   number    : "number",
+  variable  : "variable",
+  expression: "expression",
+  operator  : "operator",
   unknown   : "unknown",
 }
 
@@ -281,10 +283,26 @@ function addMain(code) {
   return node(TokenType.main, info.id, info);
 }
 
+function addVar(variable, index) {
+  const info = { index: index}
+              
+  return node(TokenType.variable, variable, info);
+}
+
 function addFunction(id, _arguments, code) {
   const info = { id: id, arguments: _arguments, block: code}
 
   return node(TokenType.function, id.value, info);
+}
+
+function addExpression(operator, expression) {
+  const info = { operator: operator, expression: expression}
+
+  return node(TokenType.expression, "", info);
+}
+
+function addOperator(operator) {
+  return node(TokenType.operator, operator);
 }
 
 function addCommand(command) {
@@ -355,10 +373,11 @@ function
     
 blockCommand
   = c:commands+
-  / SPACE
   
 commands
   = SPACE? c:command SPACE? comment? NL? { return c }
+    / SPACE
+    / comment
 
 command
   = c:(define 
@@ -373,43 +392,62 @@ display
   = DISPLAY SPACE expressions 
 
 call
-  = CALL SPACE ID SPACE? argumentList 
+  = CALL SPACE ID SPACE? argumentList (SPACE RETURNING SPACE receivingVariables)?
 
 expressions
-  = expression
+  = l:exp_list+ e:expression { return l.concat(e)}
+  / l:exp_list+              { return l }
+  / e:expression             { return [ e ]}
+
+exp_list
+  = SPACE? e:expression SPACE? o:OPERATOR SPACE?  { return addExpression(o, e)}
 
 expression
   = string_exp
   / integer_exp
-
+  / variable
+  
 argumentList
-  = '(' SPACE? ')'                              { return [] }
-  / '(' a:arg_expression ')'                    { return [ a ] }
-  / '(' a:arg_value_list+ ')'                   { return a }
-  / '(' l:arg_value_list+ a:arg_expression+ ')' { return l.concat(a) }
+  = O_PARENTHESIS SPACE? C_PARENTHESIS                              { return [] }
+  / O_PARENTHESIS a:arg_value C_PARENTHESIS                    { return [ a ] }
+  / O_PARENTHESIS a:arg_value_list+ C_PARENTHESIS                   { return a }
+  / O_PARENTHESIS l:arg_value_list+ a:arg_value+ C_PARENTHESIS { return l.concat(a) }
 
-arg_expression
+arg_value
   = SPACE? e:expressions SPACE? { return e }    
 
 arg_value_list
-  = SPACE? e:expressions SPACE? ',' SPACE? { return e }
+  = SPACE? e:expressions SPACE? COMMA SPACE? { return e }
 
 parameterList
-  = '(' SPACE? ')'                          { return [] }
-  / '(' p:param_id ')'                      { return [ p ] }
-  / '(' p:param_value_list+ ')'             { return p }
-  / '(' l:param_value_list+ p:param_id+ ')' { return l.concat(p) }
+  = O_PARENTHESIS SPACE? C_PARENTHESIS                          { return [] }
+  / O_PARENTHESIS p:param_id C_PARENTHESIS                      { return [ p ] }
+  / O_PARENTHESIS p:param_value_list+ C_PARENTHESIS             { return p }
+  / O_PARENTHESIS l:param_value_list+ p:param_id+ C_PARENTHESIS { return l.concat(p) }
+
+param_value_list
+  = SPACE? v:ID SPACE? COMMA SPACE?       { return } 
 
 param_id
   = SPACE? v:ID SPACE?                  { return v }
 
-param_value_list
-  = SPACE? v:ID SPACE? ',' SPACE?       { return } 
+receivingVariables
+  = l:var_list+ v:variable+              { return l.concat(v) }
+  / l:var_list+                          { return l }
+  / v:variable                           { return [ v ] }
+
+var_list
+  = SPACE? v:variable SPACE? COMMA SPACE?  { return }
+
+variable
+  = v:$(ID POINT ID)                { return addVar(v) }    
+  / v:ID O_BRACKET i:expressions C_BRACKET    { return addVar(v, i) }
+  / v:ID                          { return addVar(v) }    
 
 types
   = INT
   / STRING
-  / $(CHAR '(' integer_exp ')') 
+  / $(CHAR O_PARENTHESIS integer_exp C_PARENTHESIS) 
 
 ID
   = id:$([a-zA-Z_]([a-zA-Z0-9_]*)) { return addId(id) }
@@ -443,6 +481,30 @@ MAIN
 
 STRING
   = k:'string'i { return addKeyword(k)}
+
+RETURNING
+  = k:'returning'i { return addKeyword(k)}
+
+OPERATOR
+  = o:[~!@%^&*-+=|/{}\:;<>?#_] { addOperator(o) } 
+
+O_PARENTHESIS
+  = o:'('  { addOperator(o) };
+
+C_PARENTHESIS
+  = o:')'  { addOperator(o) };
+
+O_BRACKET
+  = o:'['  { addOperator(o) };
+
+C_BRACKET
+  = o:']'  { addOperator(o) };
+
+POINT
+  = o:'.'  { addOperator(o) };
+
+COMMA
+  = o:','  { addOperator(o) };
 
 // words
 //   = (word (SPACE / NL))+
@@ -491,12 +553,6 @@ multiline_string_delim
 
 multiline_literal_char
   = (!"'''" char:.)
-
-OPERATOR
-  = o:[~!@%^&*()-+=|/{}[\]:;<>,.?#_] 
-//   {
-//     return node(TokenType.operator, o);
-// }
 
 DIGIT
   = [0-9]
