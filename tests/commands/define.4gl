@@ -1,0 +1,5 @@
+MAIN 
+
+  DEFINE NOME CHAR(50)
+
+end MAIN

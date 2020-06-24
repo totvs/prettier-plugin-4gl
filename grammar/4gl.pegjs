@@ -37,7 +37,6 @@ const keywordList = [
 "BORDER",
 "BOTTOM",
 "BY",
-"CALL",
 "CASE",
 "CHAR",
 "CLEAR",
@@ -63,14 +62,12 @@ const keywordList = [
 "DECLARE",
 "DEFAULTS",
 "DEFER",
-"DEFINE",
 "DELETE",
 "DELIMITERS",
 "DELIMITER",
 "DESC",
 "DESCENDING",
 "DIRTY",
-"DISPLAY",
 "DISTINCT",
 "DOWNSHIFT",
 "DROP",
@@ -241,16 +238,22 @@ const keywordList = [
 
 //Compatibilizar com Token4glType em index.ts
 const TokenType = {
-  program   :"program",
-  keyword   :"keyword",
-  whitespace:"whitespace",
-  comment   :"comment",
-  identifier:"identifier",
-  main      :"main",
-  global    :"global",
-  function  :"function",
-  block     :"block",
-  unknown   :"unknown",
+  program   : "program",
+  keyword   : "keyword",
+  whitespace: "whitespace",
+  comment   : "comment",
+  identifier: "identifier",
+  main      : "main",
+  global    : "global",
+  function  : "function",
+  command   : "command",
+  string    : "string",  
+  number    : "number",
+  unknown   : "unknown",
+}
+
+const DataType = {
+  integer: "integer"
 }
 
 function addKeyword(value) {
@@ -273,10 +276,10 @@ function addComment(value) {
   return node(TokenType.comment, value);
 }
 
-function addMain(block) {
+function addMain(code) {
   const info = { id: "main", arguments: [], block: code}
   
-  return node(TokenType.main, id, info);
+  return node(TokenType.main, info.id, info);
 }
 
 function addFunction(id, _arguments, code) {
@@ -285,8 +288,15 @@ function addFunction(id, _arguments, code) {
   return node(TokenType.function, id.value, info);
 }
 
-function addBlock(value) {
-  return node(TokenType.block, value);
+function addCommand(command) {
+  return node(TokenType.command, command);
+}
+
+function addNumber(dataType, value) {
+  const info = { type: dataType }
+
+  return node(TokenType.number, value, info);
+
 }
 
 function node(_type, value, info) {
@@ -307,11 +317,11 @@ start
   = l:line*
 
 line
-  = SPACE? command SPACE? comment?
+  = SPACE? session SPACE? comment?
   / comment
   / SPACE
 
-command
+session
   = modular 
   / globals
   / function
@@ -345,37 +355,78 @@ function
       { return addFunction(i,p,b) }
     
 blockCommand
-  = (define 
-    / SPACE
-    / comment)*
+  = SPACE                             { return [] }
+  / c:command                         { return [ c ] }
+  / b:commands+                       { return b }
+  / b:commands+ c:command+            { return b.concat(c) }
+
+commands
+  = c:command { return c }    
+
+command
+  = c:(define 
+    / display
+    / call
+    )  { return addCommand(c) }
 
 define
-  = DEFINE SPACE ID SPACE types SPACE comment?
+  = SPACE? DEFINE SPACE ID SPACE types SPACE comment? 
+
+display
+  = SPACE? DISPLAY SPACE expressions SPACE comment? 
+
+call
+  = SPACE? CALL SPACE ID SPACE? argumentList SPACE comment? 
+
+expressions
+  = expression
+
+expression
+  = string_exp
+
+argumentList
+  = '(' SPACE? ')'                              { return [] }
+  / '(' a:arg_expression ')'                    { return [ a ] }
+  / '(' a:arg_value_list+ ')'                   { return a }
+  / '(' l:arg_value_list+ a:arg_expression+ ')' { return l.concat(a) }
+
+arg_expression
+  = SPACE? e:expressions SPACE? { return e }    
+
+arg_value_list
+  = SPACE? e:expressions SPACE? ',' SPACE? { return e }
 
 parameterList
   = '(' SPACE? ')'                          { return [] }
   / '(' p:param_id ')'                      { return [ p ] }
   / '(' p:param_value_list+ ')'             { return p }
-  / '(' p:param_value_list+ v:param_id+ ')' { return p.concat(v) }
+  / '(' l:param_value_list+ p:param_id+ ')' { return l.concat(p) }
 
 param_id
-  = param_sep? v:ID param_sep?                  { return addId(v) }
+  = SPACE? v:ID SPACE?                  { return v }
 
 param_value_list
-  = param_sep? v:ID param_sep? ',' param_sep?   { return v }
-
-param_sep
-  = SPACE
+  = SPACE? v:ID SPACE? ',' SPACE?       { return } 
 
 types
   = INT
   / STRING
+  / $(CHAR '(' integer_exp ')') 
 
 ID
   = id:$([a-zA-Z_]([a-zA-Z0-9_]*)) { return addId(id) }
 
 DEFINE
   = k:'define'i { return addKeyword(k)}
+
+CHAR
+  = k:'char'i { return addKeyword(k)}
+
+CALL
+  = k:'call'i { return addKeyword(k)}
+
+DISPLAY
+  = k:'display'i { return addKeyword(k)}
 
 END
   = k:'end'i { return addKeyword(k)}
@@ -406,42 +457,51 @@ STRING
 //   return node(_type, word);
 // }
 
-// string
-//   = double_quoted_multiline_string
-//   / double_quoted_single_line_string
-//   / single_quoted_multiline_string
-//   / single_quoted_single_line_string
+integer_exp
+  = t:integer_text                   { return addNumber(DataType.integer, parseInt(text, 10)) }
 
-// double_quoted_multiline_string
-//   = s:('"""' NL? chars:multiline_string_char* '"""')  //{ return node(TokenType.string_double,s) }
-// double_quoted_single_line_string
-//   = '"' chars:string_char* '"'                    //{ return node(TokenType.string_double,chars.join(''), {subType: '"' }) }
-// single_quoted_multiline_string
-//   ="'''" NL? chars:multiline_literal_char*"'''" //{ return node(TokenType.string_single,chars.join(''), {subType:"'" }) }
-// single_quoted_single_line_string
-//   ="'" chars:literal_char*"'"                   //{ return node(TokenType.string_single,chars.join(''), {subType:"'" }) }
+integer_text
+  = '+'? d:$(DIGIT+) !'.'
+  / '-'  d:$(DIGIT+) !'.'
 
-// string_char
-//   = (!'"' char:. //{ return char })
+string_exp
+  = s:(double_quoted_multiline_string
+  / double_quoted_single_line_string
+  / single_quoted_multiline_string
+  / single_quoted_single_line_string)    { return node(TokenType.string, s) }
 
-// literal_char
-//   = (!"'" char:. //{ return char })
+double_quoted_multiline_string
+  = $('"""' NL? chars:multiline_string_char* '"""')
+double_quoted_single_line_string
+  = $('"' chars:string_char* '"')
+single_quoted_multiline_string
+  = $("'''" NL? chars:multiline_literal_char*"'''")
+single_quoted_single_line_string
+  = $("'" chars:literal_char*"'")
 
+string_char
+  = $(!'"' char:.)
 
-// multiline_string_char
-//   = multiline_string_delim / (!'"""' char:. //{ return char})
+literal_char
+   = (!"'" char:.)
 
-// multiline_string_delim
-//   = '\\' NL NLS*                        //{ return '' }
+multiline_string_char
+  = multiline_string_delim / (!'"""' char:.)
 
-// multiline_literal_char
-//   = (!"'''" char:. //{ return char })
+multiline_string_delim
+  = '\\' NL NLS*                        
+
+multiline_literal_char
+  = (!"'''" char:.)
 
 OPERATOR
   = o:[~!@%^&*()-+=|/{}[\]:;<>,.?#_] 
 //   {
 //     return node(TokenType.operator, o);
 // }
+
+DIGIT
+  = [0-9]
 
 SPACE 
   = s:$([ \t\n\r]+) //{ return addSpace(s) }

@@ -30,7 +30,16 @@ const languages = [
 
 const parsers = {
   "4gl-parser": {
-    parse: (text) => parser_4gl.parse(text),
+    parse: (text) => {
+      try {
+        return parser_4gl.parse(text);
+      } catch (error) {
+        console.error(`Sintax error: [${error.location.start.line}:${error.location.start.column}] ${error.message}`);
+        throw error;
+      }
+
+      return [];
+    },
     astFormat: "4gl-ast",
   },
 };
