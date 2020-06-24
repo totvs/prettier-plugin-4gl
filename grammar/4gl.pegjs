@@ -383,6 +383,7 @@ command
   = c:(define 
     / display
     / call
+    / let
     )  { return addCommand(c) }
 
 define
@@ -393,6 +394,9 @@ display
 
 call
   = CALL SPACE ID SPACE? argumentList (SPACE RETURNING SPACE receivingVariables)?
+
+let
+  = LET receivingVariables SPACE? EQUAL SPACE? expressions
 
 expressions
   = l:exp_list+ e:expression { return l.concat(e)}
@@ -477,6 +481,9 @@ GLOBALS
 INT
   = k:'integer'i { return addKeyword(k)}
 
+LET
+  = k:'let'i { return addKeyword(k)}
+
 MAIN
   = k:'main'i { return addKeyword(k)}
 
@@ -487,7 +494,10 @@ RETURNING
   = k:'returning'i { return addKeyword(k)}
 
 OPERATOR
-  = o:[~!@%^&*-+=|/{}\:;<>?#_] { addOperator(o) } 
+  = o:[~!@%^&*-+|/{}\:;<>?#_] { addOperator(o) } 
+
+EQUAL
+  = o:'='  { addOperator(o) };
 
 O_PARENTHESIS
   = o:'('  { addOperator(o) };
@@ -533,10 +543,26 @@ string_exp
   / single_quoted_string)    { return node(TokenType.string, s) }
 
 double_quoted_string
-  = $('"' (!'"' .)* '"')
+  = $('"' double_quoted_char* '"')
 
 single_quoted_string
-  = $("'" (!"'" .)* "'")
+  = $("'" single_quoted_char* "'")
+
+double_quoted_char
+  = ESCAPED / (!'"' c:. { return c })
+
+single_quoted_char
+  = ESCAPED / (!"'" c:. { return c })
+
+ESCAPED
+  = '\\"'                { return '"'  }
+  / "\\'"                { return "'"  }
+  / '\\\\'               { return '\\' }
+  / '\\b'                { return '\b' }
+  / '\\t'                { return '\t' }
+  / '\\n'                { return '\n' }
+  / '\\f'                { return '\f' }
+  / '\\r'                { return '\r' }
 
 DIGIT
   = [0-9]

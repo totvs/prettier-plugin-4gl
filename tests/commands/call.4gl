@@ -18,6 +18,8 @@ function f1()
 
   CALL fgl_winmessage() returning var1 , var2
 
+CALL fgl_winmessage() returning var1,var2,var3
+
 end function
 
 function f2() 

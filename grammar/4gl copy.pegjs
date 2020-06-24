@@ -375,14 +375,15 @@ blockCommand
   = c:commands+
   
 commands
-  = SPACE
-  / comment
-  / SPACE? c:command SPACE? comment? NL? { return c }
+  = SPACE? c:command SPACE? comment? NL? { return c }
+    / SPACE
+    / comment
 
 command
   = c:(define 
     / display
     / call
+    / let
     )  { return addCommand(c) }
 
 define
@@ -393,6 +394,9 @@ display
 
 call
   = CALL SPACE ID SPACE? argumentList (SPACE RETURNING SPACE receivingVariables)?
+
+let
+  = LET receivingVariables SPACE? EQUAL SPACE? expressions
 
 expressions
   = l:exp_list+ e:expression { return l.concat(e)}
@@ -409,7 +413,7 @@ expression
   
 argumentList
   = O_PARENTHESIS SPACE? C_PARENTHESIS                              { return [] }
-  / O_PARENTHESIS a:arg_value C_PARENTHESIS                         { return [ a ] }
+  / O_PARENTHESIS a:arg_value C_PARENTHESIS                    { return [ a ] }
   / O_PARENTHESIS a:arg_value_list+ C_PARENTHESIS                   { return a }
   / O_PARENTHESIS l:arg_value_list+ a:arg_value+ C_PARENTHESIS { return l.concat(a) }
 
@@ -440,9 +444,10 @@ var_list
   = SPACE? v:variable SPACE? COMMA SPACE?  { return }
 
 variable
-  = v:$(ID POINT (ID / ASTERISK))             { return addVar(v) }    
+  = v:$(ID POINT ID)                { return addVar(v) }    
+  / v:$(ID POINT ASTERISK)                { return addVar(v) }    
   / v:ID O_BRACKET i:expressions C_BRACKET    { return addVar(v, i) }
-  / v:ID                                      { return addVar(v) }    
+  / v:ID                          { return addVar(v) }    
 
 types
   = INT
@@ -476,6 +481,9 @@ GLOBALS
 INT
   = k:'integer'i { return addKeyword(k)}
 
+LET
+  = k:'let'i { return addKeyword(k)}
+
 MAIN
   = k:'main'i { return addKeyword(k)}
 
@@ -486,7 +494,10 @@ RETURNING
   = k:'returning'i { return addKeyword(k)}
 
 OPERATOR
-  = o:[~!@%^&-+=|/{}\:;<>?#_] { addOperator(o) } 
+  = o:[~!@%^&*-+|/{}\:;<>?#_] { addOperator(o) } 
+
+EQUAL
+  = o:'='  { addOperator(o) };
 
 O_PARENTHESIS
   = o:'('  { addOperator(o) };
@@ -500,14 +511,14 @@ O_BRACKET
 C_BRACKET
   = o:']'  { addOperator(o) };
 
-ASTERISK
-  = o:'*'  { addOperator(o) };
-
 POINT
   = o:'.'  { addOperator(o) };
 
 COMMA
   = o:','  { addOperator(o) };
+
+ASTERISK
+  = o:'*'  { addOperator(o) };
 
 // words
 //   = (word (SPACE / NL))+
@@ -528,43 +539,24 @@ integer_text
   / '-'  d:$(DIGIT+) !'.'
 
 string_exp
-  = s:(double_quoted_multiline_string
-  / double_quoted_single_line_string
-  / single_quoted_multiline_string
-  / single_quoted_single_line_string)    { return node(TokenType.string, s) }
+  = s:(double_quoted_string
+  / single_quoted_string)    { return node(TokenType.string, s) }
 
-double_quoted_multiline_string
-  = $('"""' NL? chars:multiline_string_char* '"""')
-double_quoted_single_line_string
-  = $('"' chars:string_char* '"')
-single_quoted_multiline_string
-  = $("'''" NL? chars:multiline_literal_char*"'''")
-single_quoted_single_line_string
-  = $("'" chars:literal_char*"'")
+double_quoted_string
+  = $('"' (!'"' .)* '"')
 
-string_char
-  = $(!'"' char:.)
-
-literal_char
-   = (!"'" char:.)
-
-multiline_string_char
-  = multiline_string_delim / (!'"""' char:.)
-
-multiline_string_delim
-  = '\\' NL NLS*                        
-
-multiline_literal_char
-  = (!"'''" char:.)
+single_quoted_string
+  = $("'" (!"'" .)* "'")
 
 DIGIT
   = [0-9]
 
 SPACE 
   = s:$([ \t\n\r]+) { return addSpace(s) }
+  / s:NL+
 
 NL
-  = s:$("\n" /"\r\n")+ { return addSpace(s) }
+  = s:$("\n" /"\r\n") { return addSpace(s) }
 
 NLS = NL / SPACE
 
