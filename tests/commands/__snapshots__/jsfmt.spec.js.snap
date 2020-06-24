@@ -4,11 +4,17 @@ exports[`call.4gl 1`] = `
 MAIN 
 
   CALL fgl_winmessage()
-  CALL fgl_winmessage()
-  
+
+  CALL fgl_winmessage("p1")
+
+  CALL fgl_winmessage("p1","p2")
+
+  CALL fgl_winmessage("p1","p2", "p3")
+  CALL fgl_winmessage(1,2,    3)
+
 end main
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-[[null,{"type":"main","value":"main","offset":{"start":0,"end":67},"info":{"id":"main","arguments":[],"block":[{"type":"command","value":[{"type":"keyword","value":"CALL","offset":{"start":9,"end":13}},{"type":"whitespace","value":" ","offset":{"start":13,"end":14}},{"type":"identifier","value":"fgl_winmessage","offset":{"start":14,"end":28}},null,[]],"offset":{"start":9,"end":30}},{"type":"command","value":[{"type":"keyword","value":"CALL","offset":{"start":33,"end":37}},{"type":"whitespace","value":" ","offset":{"start":37,"end":38}},{"type":"identifier","value":"fgl_winmessage","offset":{"start":38,"end":52}},null,[]],"offset":{"start":33,"end":54}}]}},null,null]]
+[[null,{"type":"main","value":"main","offset":{"start":0,"end":177},"info":{"id":"main","arguments":[],"block":[{"type":"command","value":[{"type":"keyword","value":"CALL","offset":{"start":9,"end":13}},{"type":"whitespace","value":" ","offset":{"start":13,"end":14}},{"type":"identifier","value":"fgl_winmessage","offset":{"start":14,"end":28}},null,[]],"offset":{"start":9,"end":30}},{"type":"command","value":[{"type":"keyword","value":"CALL","offset":{"start":34,"end":38}},{"type":"whitespace","value":" ","offset":{"start":38,"end":39}},{"type":"identifier","value":"fgl_winmessage","offset":{"start":39,"end":53}},null,[{"type":"string","value":"\\"p1\\"","offset":{"start":54,"end":58}}]],"offset":{"start":34,"end":59}},{"type":"command","value":[{"type":"keyword","value":"CALL","offset":{"start":63,"end":67}},{"type":"whitespace","value":" ","offset":{"start":67,"end":68}},{"type":"identifier","value":"fgl_winmessage","offset":{"start":68,"end":82}},null,[{"type":"string","value":"\\"p1\\"","offset":{"start":83,"end":87}},{"type":"string","value":"\\"p2\\"","offset":{"start":88,"end":92}}]],"offset":{"start":63,"end":93}},{"type":"command","value":[{"type":"keyword","value":"CALL","offset":{"start":97,"end":101}},{"type":"whitespace","value":" ","offset":{"start":101,"end":102}},{"type":"identifier","value":"fgl_winmessage","offset":{"start":102,"end":116}},null,[{"type":"string","value":"\\"p1\\"","offset":{"start":117,"end":121}},{"type":"string","value":"\\"p2\\"","offset":{"start":122,"end":126}},{"type":"string","value":"\\"p3\\"","offset":{"start":128,"end":132}}]],"offset":{"start":97,"end":133}},{"type":"command","value":[{"type":"keyword","value":"CALL","offset":{"start":136,"end":140}},{"type":"whitespace","value":" ","offset":{"start":140,"end":141}},{"type":"identifier","value":"fgl_winmessage","offset":{"start":141,"end":155}},null,[null,null,null]],"offset":{"start":136,"end":166}}]}},null,null]]
 `;
 
 exports[`define.4gl 1`] = `

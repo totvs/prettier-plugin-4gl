@@ -1079,7 +1079,7 @@ function peg$parse(input, options) {
     if (s1 !== peg$FAILED) {
       s2 = peg$parseSPACE();
       if (s2 !== peg$FAILED) {
-        s3 = peg$parsestring_exp();
+        s3 = peg$parseexpression();
         if (s3 !== peg$FAILED) {
           s1 = [s1, s2, s3];
           s0 = s1;
@@ -1137,6 +1137,17 @@ function peg$parse(input, options) {
     } else {
       peg$currPos = s0;
       s0 = peg$FAILED;
+    }
+
+    return s0;
+  }
+
+  function peg$parseexpression() {
+    var s0;
+
+    s0 = peg$parsestring_exp();
+    if (s0 === peg$FAILED) {
+      s0 = peg$parseinteger_exp();
     }
 
     return s0;
@@ -1336,7 +1347,7 @@ function peg$parse(input, options) {
       s1 = null;
     }
     if (s1 !== peg$FAILED) {
-      s2 = peg$parsestring_exp();
+      s2 = peg$parseexpression();
       if (s2 !== peg$FAILED) {
         s3 = peg$parseSPACE();
         if (s3 === peg$FAILED) {
@@ -1371,7 +1382,7 @@ function peg$parse(input, options) {
       s1 = null;
     }
     if (s1 !== peg$FAILED) {
-      s2 = peg$parsestring_exp();
+      s2 = peg$parseexpression();
       if (s2 !== peg$FAILED) {
         s3 = peg$parseSPACE();
         if (s3 === peg$FAILED) {

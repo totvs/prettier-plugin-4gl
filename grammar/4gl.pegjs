@@ -380,6 +380,7 @@ expressions
 
 expression
   = string_exp
+  / integer_exp
 
 argumentList
   = '(' SPACE? ')'                              { return [] }
