@@ -30,8 +30,9 @@
     "prepare": "npm-run-all genparser:*",
     "test": "npm-run-all prepare && jest",
     "snapshot": "npm-run-all prepare && jest -u",
-    "test2": "jest --runInBand --detectOpenHandles",
-    "genparser:4gl": "pegjs -o ./src/4gl-parser.js ./grammar/4gl.pegjs"
+    "debug": "npm-run-all gentrace:4gl && jest -t 'define2.4gl'",
+    "genparser:4gl": "pegjs --optimize speed -o ./src/4gl-parser.js ./grammar/4gl.pegjs",
+    "gentrace:4gl": "pegjs --optimize speed --trace -o ./src/4gl-parser.js ./grammar/4gl.pegjs"
   },
   "dependencies": {
     "prettier": "^2.0.5"

@@ -216,8 +216,9 @@ const TokenType = {
   unknown   : "unknown",
 }
 
-const DataType = {
-  integer: "integer"
+const ConstType = {
+  integer: "integer",
+  string : "string"
 }
 
 function addKeyword(value) {
@@ -280,6 +281,13 @@ function addNumber(dataType, value) {
   const info = { type: dataType }
 
   return node(TokenType.number, value, info);
+
+}
+
+function addString(value) {
+  const info = { type: ConstType.string }
+
+  return node(TokenType.string, value, info);
 
 }
 
@@ -475,7 +483,8 @@ sizeArray
   = integer_exp ((COMMA integer_exp)+)?
 
 recordDataType
-  = RECORD 
+  = (RECORD SPACE LIKE tableQualifier columnQualifier)
+  / RECORD 
       member
     END SPACE RECORD
 
@@ -495,7 +504,7 @@ scale
  = integer_exp (COMMA integer_exp)?
 
 member
-  = LIKE tableQualifier ID DOT (ID / ASTERISK)
+  = LIKE tableQualifier columnQualifier
   / identifierList
 
 identifierList
@@ -509,9 +518,12 @@ identifier_list
 identifier
   = SPACE? i:ID SPACE simpleDataType SPACE?    { return i }
 
-tableQualifier 
-  = (ID (AT ID)? COLON)? (ID DOT / D_QUOTE ID DOT D_QUOTE / S_QUOTE ID DOT S_QUOTE)
+tableQualifier
+  = s:((ID (AT ID)? COLON)? o:(ID DOT / D_QUOTE ID DOT D_QUOTE / S_QUOTE ID DOT S_QUOTE))?
 
+columnQualifier
+  = ID DOT (ID / ASTERISK)
+ 
 ID
   = id:$([a-zA-Z_]([a-zA-Z0-9_]*)) { return addId(id) }
 
@@ -695,7 +707,7 @@ FRACTION
 // }
 
 integer_exp
-  = t:integer_text                   { return addNumber(DataType.integer, parseInt(text, 10)) }
+  = t:integer_text                   { return addNumber(ConstType.integer, parseInt(text, 10)) }
 
 integer_text
   = '+'? d:$(DIGIT+) !'.'
@@ -703,7 +715,7 @@ integer_text
 
 string_exp
   = s:(double_quoted_string
-  / single_quoted_string)    { return node(TokenType.string, s) }
+  / single_quoted_string)    { return addString(s) }
 
 double_quoted_string
   = $(D_QUOTE double_quoted_char* D_QUOTE)

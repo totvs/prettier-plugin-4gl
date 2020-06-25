@@ -31,7 +31,7 @@ function f1()
 
 end function
 
-function f1() 
+function f2() 
 	DEFINE REC1 RECORD
     VAR1 BIGINT
   END RECORD
@@ -55,3 +55,4 @@ function f1()
   END RECORD  
 
 end function
+
