@@ -1,5 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`builtInVars.4gl 1`] = `
+main
+
+    let x, y = arg_val
+    let x, y = arr_count
+    let x, y = arr_cur
+    let x, y = sqlca
+    
+end main
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[[null,{"type":"main","value":"main","offset":{"start":0,"end":112},"info":{"id":"main","arguments":[],"block":[{"type":"command","value":[{"type":"keyword","value":"let","offset":{"start":10,"end":13}},[null,{"type":"variable","value":{"type":"identifier","value":"y","offset":{"start":17,"end":18}},"offset":{"start":17,"end":18},"info":{}}],{"type":"whitespace","value":" ","offset":{"start":18,"end":19}},null,{"type":"whitespace","value":" ","offset":{"start":20,"end":21}},[{"type":"variable","value":{"type":"identifier","value":"arg_val","offset":{"start":21,"end":28}},"offset":{"start":21,"end":28},"info":{}}]],"offset":{"start":10,"end":28}},{"type":"command","value":[{"type":"keyword","value":"let","offset":{"start":33,"end":36}},[null,{"type":"variable","value":{"type":"identifier","value":"y","offset":{"start":40,"end":41}},"offset":{"start":40,"end":41},"info":{}}],{"type":"whitespace","value":" ","offset":{"start":41,"end":42}},null,{"type":"whitespace","value":" ","offset":{"start":43,"end":44}},[{"type":"variable","value":{"type":"identifier","value":"arr_count","offset":{"start":44,"end":53}},"offset":{"start":44,"end":53},"info":{}}]],"offset":{"start":33,"end":53}},{"type":"command","value":[{"type":"keyword","value":"let","offset":{"start":58,"end":61}},[null,{"type":"variable","value":{"type":"identifier","value":"y","offset":{"start":65,"end":66}},"offset":{"start":65,"end":66},"info":{}}],{"type":"whitespace","value":" ","offset":{"start":66,"end":67}},null,{"type":"whitespace","value":" ","offset":{"start":68,"end":69}},[{"type":"variable","value":{"type":"identifier","value":"arr_cur","offset":{"start":69,"end":76}},"offset":{"start":69,"end":76},"info":{}}]],"offset":{"start":58,"end":76}},{"type":"command","value":[{"type":"keyword","value":"let","offset":{"start":81,"end":84}},[null,{"type":"variable","value":{"type":"identifier","value":"y","offset":{"start":88,"end":89}},"offset":{"start":88,"end":89},"info":{}}],{"type":"whitespace","value":" ","offset":{"start":89,"end":90}},null,{"type":"whitespace","value":" ","offset":{"start":91,"end":92}},[{"type":"variable","value":{"type":"identifier","value":"sqlca","offset":{"start":92,"end":97}},"offset":{"start":92,"end":97},"info":{}}]],"offset":{"start":81,"end":97}}]}},null,null]]
+`;
+
 exports[`strings.4gl 1`] = `
 main
 

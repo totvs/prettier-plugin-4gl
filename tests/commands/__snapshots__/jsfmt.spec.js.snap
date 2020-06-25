@@ -46,11 +46,63 @@ end function
 exports[`define.4gl 1`] = `
 MAIN 
 
-  DEFINE NOME CHAR(50)
+	DEFINE VAR1 BIGINT   
+	DEFINE VAR1 BYTE   
+	DEFINE VAR1 CHAR(100)
+	DEFINE VAR1 CHARACTER  
+	DEFINE VAR1 DATE   
+	DEFINE VAR1 DATETIME  day to day
+	DEFINE VAR1 DEC   
+	DEFINE VAR1 DECIMAL(10,2)
+	DEFINE VAR1 DECIMAL(10)
+	DEFINE VAR1 DOUBLE PRECISION  
+	DEFINE VAR1 DYNAMIC ARRAY  
+	DEFINE VAR1 FLOAT  
+	DEFINE VAR1 INT  
+	DEFINE VAR1 INTEGER  
+	DEFINE VAR1 MONEY  
+	DEFINE VAR1 NCHAR(100)  
+	DEFINE VAR1 NUMERIC  
+	DEFINE VAR1 NVARCHAR(100)  
 
 end MAIN
+
+function f1() 
+	--DEFINE VAR1 INTERVAL  
+end function
+
+function f1() 
+	DEFINE VAR1 ARRAY[1] OF INTEGER  
+	DEFINE VAR1 ARRAY[1,2] OF CHAR(30)  
+
+end function
+
+function f1() 
+	DEFINE REC1 RECORD
+    VAR1 BIGINT
+  END RECORD
+
+	DEFINE REC2 RECORD
+    VAR1 CHAR(100),
+    VAR1 CHARACTER,
+    VAR1 DATE,
+    VAR1 DATETIME  day to day,
+    VAR1 DEC,
+    VAR1 DECIMAL(10,2),
+    VAR1 DECIMAL(10),
+    VAR1 DOUBLE PRECISION,
+    VAR1 FLOAT,
+    VAR1 INT,
+    VAR1 INTEGER,
+    VAR1 MONEY,
+    VAR1 NCHAR(100),
+    VAR1 NUMERIC,
+    VAR1 NVARCHAR(100)
+  END RECORD  
+
+end function
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-[[null,{"type":"main","value":"main","offset":{"start":0,"end":40},"info":{"id":"main","arguments":[],"block":[{"type":"command","value":[{"type":"keyword","value":"DEFINE","offset":{"start":9,"end":15}},{"type":"whitespace","value":" ","offset":{"start":15,"end":16}},{"type":"identifier","value":"NOME","offset":{"start":16,"end":20}},{"type":"whitespace","value":" ","offset":{"start":20,"end":21}},"CHAR(50)"],"offset":{"start":9,"end":29}}]}},null,null]]
+[[null,{"type":"main","value":"main","offset":{"start":0,"end":460},"info":{"id":"main","arguments":[],"block":[{"type":"command","value":[{"type":"keyword","value":"DEFINE","offset":{"start":8,"end":14}},{"type":"whitespace","value":" ","offset":{"start":14,"end":15}},{"type":"identifier","value":"VAR1","offset":{"start":15,"end":19}},{"type":"whitespace","value":" ","offset":{"start":19,"end":20}},"BIGINT"],"offset":{"start":8,"end":26}},{"type":"command","value":[{"type":"keyword","value":"DEFINE","offset":{"start":31,"end":37}},{"type":"whitespace","value":" ","offset":{"start":37,"end":38}},{"type":"identifier","value":"VAR1","offset":{"start":38,"end":42}},{"type":"whitespace","value":" ","offset":{"start":42,"end":43}},"BYTE"],"offset":{"start":31,"end":47}},{"type":"command","value":[{"type":"keyword","value":"DEFINE","offset":{"start":52,"end":58}},{"type":"whitespace","value":" ","offset":{"start":58,"end":59}},{"type":"identifier","value":"VAR1","offset":{"start":59,"end":63}},{"type":"whitespace","value":" ","offset":{"start":63,"end":64}},"CHAR(100)"],"offset":{"start":52,"end":73}},{"type":"command","value":[{"type":"keyword","value":"DEFINE","offset":{"start":75,"end":81}},{"type":"whitespace","value":" ","offset":{"start":81,"end":82}},{"type":"identifier","value":"VAR1","offset":{"start":82,"end":86}},{"type":"whitespace","value":" ","offset":{"start":86,"end":87}},"CHARACTER"],"offset":{"start":75,"end":96}},{"type":"command","value":[{"type":"keyword","value":"DEFINE","offset":{"start":100,"end":106}},{"type":"whitespace","value":" ","offset":{"start":106,"end":107}},{"type":"identifier","value":"VAR1","offset":{"start":107,"end":111}},{"type":"whitespace","value":" ","offset":{"start":111,"end":112}},"DATE"],"offset":{"start":100,"end":116}},{"type":"command","value":[{"type":"keyword","value":"DEFINE","offset":{"start":121,"end":127}},{"type":"whitespace","value":" ","offset":{"start":127,"end":128}},{"type":"identifier","value":"VAR1","offset":{"start":128,"end":132}},{"type":"whitespace","value":" ","offset":{"start":132,"end":133}},"DATETIME  day to day"],"offset":{"start":121,"end":153}},{"type":"command","value":[{"type":"keyword","value":"DEFINE","offset":{"start":155,"end":161}},{"type":"whitespace","value":" ","offset":{"start":161,"end":162}},{"type":"identifier","value":"VAR1","offset":{"start":162,"end":166}},{"type":"whitespace","value":" ","offset":{"start":166,"end":167}},"DEC"],"offset":{"start":155,"end":170}},{"type":"command","value":[{"type":"keyword","value":"DEFINE","offset":{"start":175,"end":181}},{"type":"whitespace","value":" ","offset":{"start":181,"end":182}},{"type":"identifier","value":"VAR1","offset":{"start":182,"end":186}},{"type":"whitespace","value":" ","offset":{"start":186,"end":187}},"DECIMAL(10,2)"],"offset":{"start":175,"end":200}},{"type":"command","value":[{"type":"keyword","value":"DEFINE","offset":{"start":202,"end":208}},{"type":"whitespace","value":" ","offset":{"start":208,"end":209}},{"type":"identifier","value":"VAR1","offset":{"start":209,"end":213}},{"type":"whitespace","value":" ","offset":{"start":213,"end":214}},"DECIMAL(10)"],"offset":{"start":202,"end":225}},{"type":"command","value":[{"type":"keyword","value":"DEFINE","offset":{"start":227,"end":233}},{"type":"whitespace","value":" ","offset":{"start":233,"end":234}},{"type":"identifier","value":"VAR1","offset":{"start":234,"end":238}},{"type":"whitespace","value":" ","offset":{"start":238,"end":239}},"DOUBLE PRECISION"],"offset":{"start":227,"end":255}},{"type":"command","value":[{"type":"keyword","value":"DEFINE","offset":{"start":259,"end":265}},{"type":"whitespace","value":" ","offset":{"start":265,"end":266}},{"type":"identifier","value":"VAR1","offset":{"start":266,"end":270}},{"type":"whitespace","value":" ","offset":{"start":270,"end":271}},"DYNAMIC ARRAY"],"offset":{"start":259,"end":284}},{"type":"command","value":[{"type":"keyword","value":"DEFINE","offset":{"start":288,"end":294}},{"type":"whitespace","value":" ","offset":{"start":294,"end":295}},{"type":"identifier","value":"VAR1","offset":{"start":295,"end":299}},{"type":"whitespace","value":" ","offset":{"start":299,"end":300}},"FLOAT"],"offset":{"start":288,"end":305}},{"type":"command","value":[{"type":"keyword","value":"DEFINE","offset":{"start":309,"end":315}},{"type":"whitespace","value":" ","offset":{"start":315,"end":316}},{"type":"identifier","value":"VAR1","offset":{"start":316,"end":320}},{"type":"whitespace","value":" ","offset":{"start":320,"end":321}},"INT"],"offset":{"start":309,"end":324}},{"type":"command","value":[{"type":"keyword","value":"DEFINE","offset":{"start":328,"end":334}},{"type":"whitespace","value":" ","offset":{"start":334,"end":335}},{"type":"identifier","value":"VAR1","offset":{"start":335,"end":339}},{"type":"whitespace","value":" ","offset":{"start":339,"end":340}},"INTEGER"],"offset":{"start":328,"end":347}},{"type":"command","value":[{"type":"keyword","value":"DEFINE","offset":{"start":351,"end":357}},{"type":"whitespace","value":" ","offset":{"start":357,"end":358}},{"type":"identifier","value":"VAR1","offset":{"start":358,"end":362}},{"type":"whitespace","value":" ","offset":{"start":362,"end":363}},"MONEY"],"offset":{"start":351,"end":368}},{"type":"command","value":[{"type":"keyword","value":"DEFINE","offset":{"start":372,"end":378}},{"type":"whitespace","value":" ","offset":{"start":378,"end":379}},{"type":"identifier","value":"VAR1","offset":{"start":379,"end":383}},{"type":"whitespace","value":" ","offset":{"start":383,"end":384}},"NCHAR(100)"],"offset":{"start":372,"end":394}},{"type":"command","value":[{"type":"keyword","value":"DEFINE","offset":{"start":398,"end":404}},{"type":"whitespace","value":" ","offset":{"start":404,"end":405}},{"type":"identifier","value":"VAR1","offset":{"start":405,"end":409}},{"type":"whitespace","value":" ","offset":{"start":409,"end":410}},"NUMERIC"],"offset":{"start":398,"end":417}},{"type":"command","value":[{"type":"keyword","value":"DEFINE","offset":{"start":421,"end":427}},{"type":"whitespace","value":" ","offset":{"start":427,"end":428}},{"type":"identifier","value":"VAR1","offset":{"start":428,"end":432}},{"type":"whitespace","value":" ","offset":{"start":432,"end":433}},"NVARCHAR(100)"],"offset":{"start":421,"end":446}}]}},null,null],[null,{"type":"function","value":"f1","offset":{"start":460,"end":515},"info":{"id":{"type":"identifier","value":"f1","offset":{"start":469,"end":471}},"arguments":[],"block":[{"type":"whitespace","value":" \\n\\t","offset":{"start":473,"end":476}},{"type":"comment","value":"--DEFINE VAR1 INTERVAL  \\n","offset":{"start":476,"end":501}}]}},null,null],[null,{"type":"function","value":"f1","offset":{"start":515,"end":618},"info":{"id":{"type":"identifier","value":"f1","offset":{"start":524,"end":526}},"arguments":[],"block":[{"type":"command","value":[{"type":"keyword","value":"DEFINE","offset":{"start":531,"end":537}},{"type":"whitespace","value":" ","offset":{"start":537,"end":538}},{"type":"identifier","value":"VAR1","offset":{"start":538,"end":542}},{"type":"whitespace","value":" ","offset":{"start":542,"end":543}},"ARRAY[1] OF INTEGER"],"offset":{"start":531,"end":562}},{"type":"command","value":[{"type":"keyword","value":"DEFINE","offset":{"start":566,"end":572}},{"type":"whitespace","value":" ","offset":{"start":572,"end":573}},{"type":"identifier","value":"VAR1","offset":{"start":573,"end":577}},{"type":"whitespace","value":" ","offset":{"start":577,"end":578}},"ARRAY[1,2] OF CHAR(30)"],"offset":{"start":566,"end":600}}]}},null,null],[null,{"type":"function","value":"f1","offset":{"start":618,"end":1031},"info":{"id":{"type":"identifier","value":"f1","offset":{"start":627,"end":629}},"arguments":[],"block":[{"type":"command","value":[{"type":"keyword","value":"DEFINE","offset":{"start":634,"end":640}},{"type":"whitespace","value":" ","offset":{"start":640,"end":641}},{"type":"identifier","value":"REC1","offset":{"start":641,"end":645}},{"type":"whitespace","value":" ","offset":{"start":645,"end":646}},[{"type":"keyword","value":"RECORD","offset":{"start":646,"end":652}},[{"type":"identifier","value":"VAR1","offset":{"start":657,"end":661}}],{"type":"keyword","value":"END","offset":{"start":671,"end":674}},{"type":"whitespace","value":" ","offset":{"start":674,"end":675}},{"type":"keyword","value":"RECORD","offset":{"start":675,"end":681}}]],"offset":{"start":634,"end":681}},{"type":"command","value":[{"type":"keyword","value":"DEFINE","offset":{"start":684,"end":690}},{"type":"whitespace","value":" ","offset":{"start":690,"end":691}},{"type":"identifier","value":"REC2","offset":{"start":691,"end":695}},{"type":"whitespace","value":" ","offset":{"start":695,"end":696}},[{"type":"keyword","value":"RECORD","offset":{"start":696,"end":702}},[{"type":"identifier","value":"VAR1","offset":{"start":707,"end":711}},{"type":"identifier","value":"VAR1","offset":{"start":727,"end":731}},{"type":"identifier","value":"VAR1","offset":{"start":747,"end":751}},{"type":"identifier","value":"VAR1","offset":{"start":762,"end":766}},{"type":"identifier","value":"VAR1","offset":{"start":793,"end":797}},{"type":"identifier","value":"VAR1","offset":{"start":807,"end":811}},{"type":"identifier","value":"VAR1","offset":{"start":831,"end":835}},{"type":"identifier","value":"VAR1","offset":{"start":853,"end":857}},{"type":"identifier","value":"VAR1","offset":{"start":880,"end":884}},{"type":"identifier","value":"VAR1","offset":{"start":896,"end":900}},{"type":"identifier","value":"VAR1","offset":{"start":910,"end":914}},{"type":"identifier","value":"VAR1","offset":{"start":928,"end":932}},{"type":"identifier","value":"VAR1","offset":{"start":944,"end":948}},{"type":"identifier","value":"VAR1","offset":{"start":965,"end":969}},{"type":"identifier","value":"VAR1","offset":{"start":983,"end":987}}],{"type":"keyword","value":"END","offset":{"start":1004,"end":1007}},{"type":"whitespace","value":" ","offset":{"start":1007,"end":1008}},{"type":"keyword","value":"RECORD","offset":{"start":1008,"end":1014}}]],"offset":{"start":684,"end":1014}}]}},null,null]]
 `;
 
 exports[`function.4gl 1`] = `

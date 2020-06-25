@@ -1,28 +1,10 @@
 {
 
 const keywordList = [
-  //"arg_val",
-  //"arr_count",
-  //"arr_curr",
-  //"errorlog",
-  //"fgl_keyval",
-  //"fgl_lastkey",
-  //"infield",
-  //"int_flag",
-  //"quit_flag",
-  //"num_args",
-  //"scr_line",
-  //"set_count",
-  //"showhelp",
-  //"sqlca",
-  //"sqlcode",
-  //"sqlerrd",
-  //"startlog",
 "AFTER",
 "ALL",
 "AND",
 "ANY",
-"ARRAY",
 "ASC",
 "ASCII",
 "ASCENDING",
@@ -38,7 +20,6 @@ const keywordList = [
 "BOTTOM",
 "BY",
 "CASE",
-"CHAR",
 "CLEAR",
 "CLIPPED",
 "CLOSE",
@@ -55,10 +36,6 @@ const keywordList = [
 "CURRENT",
 "CURSOR",
 "DATABASE",
-"DATE",
-"DATETIME",
-"DAY",
-"DECIMAL",
 "DECLARE",
 "DEFAULTS",
 "DEFER",
@@ -91,17 +68,14 @@ const keywordList = [
 "FOREACH",
 "FORM",
 "FORMAT",
-"FRACTION",
 "FREE",
 "FROM",
-"FUNCTION",
 "GROUP",
 "HAVING",
 "HEADER",
 "HELP",
 "HIDE",
 "HOLD",
-"HOUR",
 "IF",
 "IN",
 "INCLUDE",
@@ -110,7 +84,6 @@ const keywordList = [
 "INPUT",
 "INSERT",
 "INSTRUCTIONS",
-"INTEGER",
 "INTERRUPT",
 "INTERVAL",
 "INTO",
@@ -121,8 +94,6 @@ const keywordList = [
 "LAST",
 "LEFT",
 "LENGTH",
-"LET",
-"LIKE",
 "LINE",
 "LINES",
 "LOAD",
@@ -136,10 +107,8 @@ const keywordList = [
 "MENU",
 "MESSAGE",
 "MIN",
-"MINUTE",
 "MOD",
 "MODE",
-"MONTH",
 "NAME",
 "NEED",
 "NEXT",
@@ -148,7 +117,6 @@ const keywordList = [
 "NOT",
 "NOTFOUND",
 "NULL",
-"OF",
 "ON",
 "OPEN",
 "OPTION",
@@ -170,7 +138,6 @@ const keywordList = [
 "PUT",
 "QUIT",
 "READ",
-"RECORD",
 "REPORT",
 "RETURN",
 "REVERSE",
@@ -181,14 +148,12 @@ const keywordList = [
 "RUN",
 "SCREEN",
 "SCROLL",
-"SECOND",
 "SELECT",
 "SET",
 "SHARE",
 "SHOW",
 "SKIP",
 "SLEEP",
-"SMALLINT",
 "SPACE",
 "SPACES",
 "SQL",
@@ -201,7 +166,6 @@ const keywordList = [
 "TEMP",
 "THEN",
 "TIME",
-"TO",
 "TODAY",
 "TOP",
 "TRAILER",
@@ -218,7 +182,6 @@ const keywordList = [
 "UPSHIFT",
 "USING",
 "VALUES",
-"VARCHAR",
 "WAIT",
 "WAITING",
 "WEEKDAY",
@@ -230,8 +193,7 @@ const keywordList = [
 "WITH",
 "WITHOUT",
 "WORDWRAP",
-"WORK",
-"YEAR"
+"WORK"
 ]
 
 //Compatibilizar com Token4glType em index.ts
@@ -250,6 +212,7 @@ const TokenType = {
   variable  : "variable",
   expression: "expression",
   operator  : "operator",
+  builtInVar: "builtInVar",
   unknown   : "unknown",
 }
 
@@ -284,9 +247,13 @@ function addMain(code) {
 }
 
 function addVar(variable, index) {
-  const info = { index: index}
+  const info = { index: index }
               
   return node(TokenType.variable, variable, info);
+}
+
+function addBuiltInVar(variable) {
+  return node(TokenType.builtInVar, variable);
 }
 
 function addFunction(id, _arguments, code) {
@@ -320,7 +287,7 @@ function node(_type, value, info) {
   if (value) {
     const _location = location();
     const offset = { start: _location.start.offset, end: _location.end.offset }
-    const obj = { type: _type, value: value, offset: offset };
+    const obj = { type: _type, value: value, offset: offset }
 
     if (info) obj.info = info;
 
@@ -358,7 +325,7 @@ globals
         / SPACE
         / comment)*
       END SPACE GLOBALS SPACE
-    ) { return addGlobal(b)}
+    ) { return addGlobal(b) }
 
 function 
   = MAIN SPACE
@@ -386,7 +353,7 @@ command
     )  { return addCommand(c) }
 
 define
-  = DEFINE SPACE ID SPACE types  
+  = DEFINE SPACE ID SPACE dataType 
 
 display
   = DISPLAY SPACE expressions 
@@ -398,12 +365,12 @@ let
   = LET receivingVariables SPACE? EQUAL SPACE? expressions
 
 expressions
-  = l:exp_list+ e:expression { return l.concat(e)}
+  = l:exp_list+ e:expression { return l.concat(e) }
   / l:exp_list+              { return l }
   / e:expression             { return [ e ]}
 
 exp_list
-  = SPACE? e:expression SPACE? o:OPERATOR SPACE?  { return addExpression(o, e)}
+  = SPACE? e:expression SPACE? o:OPERATOR SPACE?  { return addExpression(o, e) }
 
 expression
   = string_exp
@@ -443,81 +410,278 @@ var_list
   = SPACE? v:variable SPACE? COMMA SPACE?  { return }
 
 variable
-  = v:$(ID POINT ID)                { return addVar(v) }    
-  / v:$(ID POINT ASTERISK)                { return addVar(v) }    
+  = v:$(ID DOT ID)                          { return addVar(v) }    
+  / v:$(ID DOT ASTERISK)                    { return addVar(v) }    
   / v:ID O_BRACKET i:expressions C_BRACKET    { return addVar(v, i) }
-  / v:ID                          { return addVar(v) }    
+  / v:ID                                      { return addVar(v) }    
+  / v:builtInVariables                        { return v }
 
-types
-  = INT
-  / STRING
-  / $(CHAR O_PARENTHESIS integer_exp C_PARENTHESIS) 
+builtInVariables
+  = v:'arg_val'i      { return addBuiltInVar(v) }
+  / v:'arr_count'i    { return addBuiltInVar(v) }
+  / v:'arr_curr'i     { return addBuiltInVar(v) }
+  / v:'errorlog'i     { return addBuiltInVar(v) }
+  / v:'fgl_keyval'i   { return addBuiltInVar(v) }
+  / v:'fgl_lastkey'i  { return addBuiltInVar(v) }
+  / v:'infield'i      { return addBuiltInVar(v) }
+  / v:'int_flag'i     { return addBuiltInVar(v) }
+  / v:'quit_flag'i    { return addBuiltInVar(v) }
+  / v:'num_args'i     { return addBuiltInVar(v) }
+  / v:'scr_line'i     { return addBuiltInVar(v) }
+  / v:'set_count'i    { return addBuiltInVar(v) }
+  / v:'showhelp'i     { return addBuiltInVar(v) }
+  / v:'sqlca'i        { return addBuiltInVar(v) }
+  / v:'sqlcode'i      { return addBuiltInVar(v) }
+  / v:'sqlerrd'i      { return addBuiltInVar(v) }
+  / v:'startlog'i     { return addBuiltInVar(v) }
+
+dataType
+  = simpleDataType
+  / structuredDataType
+  / largeDataType
+
+simpleDataType
+  = numberType
+  / timeType
+  / characterType
+
+numberType
+  = $(BIGINT / INTEGER / INT)
+  / $(SMALLINT)
+  / $((DECIMAL / DEC / NUMERIC / MONEY) (O_PARENTHESIS scale C_PARENTHESIS)?)
+  / $((DOUBLE_PRECISION / FLOAT) (O_PARENTHESIS integer_exp C_PARENTHESIS)?)
+  / $((REAL / SMALLFLOAT))
+
+timeType
+  = $(DATETIME SPACE datetimeQualifier) 
+  / $(DATE)
+  / $(INTERVAL)
+
+characterType
+  = $((CHARACTER / CHAR) (O_PARENTHESIS integer_exp C_PARENTHESIS)?)
+  / $(NCHAR (O_PARENTHESIS integer_exp C_PARENTHESIS)?)
+  / $((VARCHAR / NVARCHAR) (O_PARENTHESIS integer_exp C_PARENTHESIS?))
+
+largeDataType
+  = $(BYTE)
+  / $(TEXT)
+
+structuredDataType
+  = $(ARRAY O_BRACKET sizeArray C_BRACKET SPACE OF SPACE (simpleDataType / recordDataType / largeDataType)) 
+  / $(DYNAMIC_ARRAY )
+  / recordDataType 
+  
+sizeArray
+  = integer_exp ((COMMA integer_exp)+)?
+
+recordDataType
+  = RECORD 
+      member
+    END SPACE RECORD
+
+datetimeQualifier
+  = datetimeQualifierWord SPACE TO SPACE datetimeQualifierWord 
+  
+datetimeQualifierWord
+  = YEAR 
+  / MONTH
+  / DAY
+  / HOUR
+  / MINUTE
+  / SECOND
+  / FRACTION (O_PARENTHESIS scale C_PARENTHESIS)?
+  
+scale
+ = integer_exp (COMMA integer_exp)?
+
+member
+  = LIKE tableQualifier ID DOT (ID / ASTERISK)
+  / identifierList
+
+identifierList
+  = l:identifier_list+ i:identifier+  { return l.concat(i) }
+  / l:identifier_list+                { return l }
+  / i:identifier                      { return [ i ] }
+
+identifier_list
+  = SPACE? i:identifier SPACE? COMMA SPACE?    { return i } 
+
+identifier
+  = SPACE? i:ID SPACE simpleDataType SPACE?    { return i }
+
+tableQualifier 
+  = (ID (AT ID)? COLON)? (ID DOT / D_QUOTE ID DOT D_QUOTE / S_QUOTE ID DOT S_QUOTE)
 
 ID
   = id:$([a-zA-Z_]([a-zA-Z0-9_]*)) { return addId(id) }
 
 DEFINE
-  = k:'define'i { return addKeyword(k)}
-
-CHAR
-  = k:'char'i { return addKeyword(k)}
+  = k:'define'i { return addKeyword(k) }
 
 CALL
-  = k:'call'i { return addKeyword(k)}
+  = k:'call'i { return addKeyword(k) }
 
 DISPLAY
-  = k:'display'i { return addKeyword(k)}
+  = k:'display'i { return addKeyword(k) }
 
 END
-  = k:'end'i { return addKeyword(k)}
+  = k:'end'i { return addKeyword(k) }
 
 FUNCTION 
-  = k:'function'i { return addKeyword(k)}
+  = k:'function'i { return addKeyword(k) }
 
 GLOBALS
-  = k:'globals'i { return addKeyword(k)}
-
-INT
-  = k:'integer'i { return addKeyword(k)}
+  = k:'globals'i { return addKeyword(k) }
 
 LET
-  = k:'let'i { return addKeyword(k)}
+  = k:'let'i { return addKeyword(k) }
 
 MAIN
-  = k:'main'i { return addKeyword(k)}
+  = k:'main'i { return addKeyword(k) }
 
 STRING
-  = k:'string'i { return addKeyword(k)}
+  = k:'string'i { return addKeyword(k) }
 
 RETURNING
-  = k:'returning'i { return addKeyword(k)}
+  = k:'returning'i { return addKeyword(k) }
 
 OPERATOR
   = o:[~!@%^&*-+|/{}\:;<>?#_] { addOperator(o) } 
 
 EQUAL
-  = o:'='  { addOperator(o) };
+  = o:'='  { addOperator(o) }
 
 O_PARENTHESIS
-  = o:'('  { addOperator(o) };
+  = o:'('  { addOperator(o) }
 
 C_PARENTHESIS
-  = o:')'  { addOperator(o) };
+  = o:')'  { addOperator(o) }
 
 O_BRACKET
-  = o:'['  { addOperator(o) };
+  = o:'['  { addOperator(o) }
 
 C_BRACKET
-  = o:']'  { addOperator(o) };
+  = o:']'  { addOperator(o) }
 
-POINT
-  = o:'.'  { addOperator(o) };
+AT
+  = o:'@'  { addOperator(o) }
+
+DOT
+  = o:'.'  { addOperator(o) }
+
+COLON
+  = o:':'  { addOperator(o) }
 
 COMMA
-  = o:','  { addOperator(o) };
+  = o:','  { addOperator(o) }
 
 ASTERISK
-  = o:'*'  { addOperator(o) };
+  = o:'*'  { addOperator(o) }
+
+ARRAY
+  = k:'array'i { return addKeyword(k) }  
+
+BIGINT 
+  = k:'bigint'i { return addKeyword(k) }  
+
+BYTE 
+  = k:'byte'i { return addKeyword(k) }  
+
+CHAR 
+  = k:'CHAR'i { return addKeyword(k) }  
+
+CHARACTER 
+  = k:'character'i { return addKeyword(k) }  
+
+DATE 
+  = k:'date'i { return addKeyword(k) }  
+
+DATETIME 
+  = k:'datetime'i { return addKeyword(k) }  
+
+DEC 
+  = k:'dec'i { return addKeyword(k) }  
+
+DECIMAL 
+  = k:'decimal'i { return addKeyword(k) }  
+
+DOUBLE_PRECISION 
+  = k:$('double'i SPACE 'precision'i) { return addKeyword(k) }  
+
+DYNAMIC_ARRAY  
+  = k:$('dynamic'i SPACE 'array'i) { return addKeyword(k) }  
+
+FLOAT 
+  = k:'float'i { return addKeyword(k) }  
+
+INT 
+  = k:'int'i { return addKeyword(k) }  
+
+INTEGER 
+  = k:'integer'i { return addKeyword(k) }  
+
+INTERVAL 
+  = k:'interval'i { return addKeyword(k) }  
+
+LIKE 
+  = k:'like'i { return addKeyword(k) }  
+
+MONEY 
+  = k:'money'i { return addKeyword(k) }  
+
+NCHAR 
+  = k:'nchar'i { return addKeyword(k) }  
+
+NUMERIC 
+  = k:'numeric'i { return addKeyword(k) }  
+
+NVARCHAR
+  = k:'nvarchar'i { return addKeyword(k) }  
+
+OF
+  = k:'of'i { return addKeyword(k) }  
+
+REAL
+  = k:'real'i { return addKeyword(k) }  
+
+RECORD
+  = k:'record'i { return addKeyword(k) }  
+
+SMALLFLOAT
+  = k:'smallfloat'i { return addKeyword(k) }  
+
+SMALLINT
+  = k:'smallint'i { return addKeyword(k) }  
+
+TEXT
+  = k:'text'i { return addKeyword(k) }  
+
+TO
+  = k:'to'i { return addKeyword(k) }  
+
+VARCHAR
+  = k:'varchar'i { return addKeyword(k) }  
+
+YEAR 
+  = k:'year'i { return addKeyword(k) }  
+
+MONTH
+  = k:'month'i { return addKeyword(k) }  
+
+DAY
+  = k:'day'i { return addKeyword(k) }  
+
+HOUR
+  = k:'hour'i { return addKeyword(k) }  
+
+MINUTE
+  = k:'minute'i { return addKeyword(k) }  
+
+SECOND
+  = k:'second'i { return addKeyword(k) }  
+
+FRACTION 
+  = k:'fraction'i { return addKeyword(k) }  
 
 // words
 //   = (word (SPACE / NL))+
@@ -542,16 +706,22 @@ string_exp
   / single_quoted_string)    { return node(TokenType.string, s) }
 
 double_quoted_string
-  = $('"' double_quoted_char* '"')
+  = $(D_QUOTE double_quoted_char* D_QUOTE)
 
 single_quoted_string
-  = $("'" single_quoted_char* "'")
+  = $(S_QUOTE single_quoted_char* S_QUOTE)
 
 double_quoted_char
-  = ESCAPED / (!'"' c:. { return c })
+  = ESCAPED / (!D_QUOTE c:. { return c })
 
 single_quoted_char
-  = ESCAPED / (!"'" c:. { return c })
+  = ESCAPED / (!S_QUOTE c:. { return c })
+
+D_QUOTE
+  = '"'
+
+S_QUOTE
+  = "'"
 
 ESCAPED
   = '\\"'                { return '"'  }
