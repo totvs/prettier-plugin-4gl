@@ -2,7 +2,7 @@
   "name": "prettier-plugin-4gl",
   "displayName": "Prettier Plugin 4GL Formatter",
   "description": "Extensão para o adicional Prettier, para formatação de código 4GL.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "publisher": "TOTVS",
   "author": {
     "name": "TOTVS",
@@ -14,7 +14,7 @@
     "tds",
     "totvs",
     "prettier",
-    "plugin"
+    "formatter"
   ],
   "categories": [
     "Formatters"
@@ -26,22 +26,54 @@
   "bugs": {
     "url": "https://github.com/totvs/prettier-plugin-4gl/issues"
   },
+  "main": "src/index.js",
+  "files": [
+    "build"
+  ],
+  "bin": {
+    "prettier-plugin-4gl": "./build/index.js"
+  },
   "scripts": {
-    "prepare": "npm-run-all genparser:*",
-    "test": "npm-run-all prepare && jest",
-    "snapshot": "npm-run-all prepare && jest -u",
-    "debug": "npm-run-all gentrace:4gl && jest -t 'define2.4gl'",
-    "genparser:4gl": "pegjs --optimize speed -o ./src/4gl-parser.js ./grammar/4gl.pegjs",
-    "gentrace:4gl": "pegjs --optimize speed --trace -o ./src/4gl-parser.js ./grammar/4gl.pegjs"
+    "xprepublishOnly": "npm run clean && npm run build",
+    "clean": "rimraf ./build/",
+    "prebuild": "npm run genparser:4gl",
+    "build": "ncc build ./src/index.ts -o build/ --minify --no-cache --no-source-map-register",
+    "build:dev": "ncc build ./src/index.ts -o build/ --no-cache",
+    "publish": "npm publish",
+    "release": "standard-version",
+    "tag": "git push --follow-tags origin master",
+    "nb": "npm run release -- --prerelease nb",
+    "pretest": "npm run genparser:4gl",
+    "test": "jest",
+    "presnapshot": "npm run genparser:4gl",
+    "snapshot": "jest -u",
+    "debug": "gulp genparser_trace && jest -t 'define2.4gl'",
+    "genparser:4gl": "gulp genparser"
   },
   "dependencies": {
     "prettier": "^2.0.5"
   },
   "devDependencies": {
+    "@zeit/ncc": "^0.22.3",
+    "gulp": "^4.0.2",
+    "gulp-pegjs": "^0.2.0",
+    "husky": "^4.2.5",
     "jest": "^26.0.1",
     "jest-watch-typeahead": "^0.6.0",
-    "npm-run-all": "^4.1.5",
-    "pegjs": "^0.9.1"
+    "pegjs": "^0.10.0",
+    "standard-version": "^8.0.2",
+    "ora": "^4.0.3",
+    "@commitlint/cli": "^9.1.1",
+    "@commitlint/config-conventional": "^9.1.1"
   },
-  "main": "src/index.js"
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  }
 }

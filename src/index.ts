@@ -1,5 +1,4 @@
-"use strict";
-const parser_4gl = require("./4gl-parser.js");
+const parser_4gl = require("./parser/4gl.js");
 
 // const languages = [
 //   {
@@ -30,7 +29,7 @@ const languages = [
 
 const parsers = {
   "4gl-parser": {
-    parse: (text) => {
+    parse: (text: string) => {
       try {
         return parser_4gl.parse(text);
       } catch (error) {
@@ -48,14 +47,14 @@ const parsers = {
   },
 };
 
-function printjson(path, options, print) {
+function printjson(path: any, options:any, print: any) {
   const node = path.getValue();
 
   return JSON.stringify(node);
 }
 
 
-function print4gl(path, options, print) {
+function print4gl(path: any, options:any, print:any) {
   const node = path.getValue();
   
   if (!node) {
