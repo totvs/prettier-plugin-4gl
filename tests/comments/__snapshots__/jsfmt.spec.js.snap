@@ -23,5 +23,5 @@ exports[`comment.4gl 1`] = `
     linhas 
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-[{"type":"comment","value":"# linha 1\\n","offset":{"start":0,"end":10}},{"type":"comment","value":"# linha 2\\n","offset":{"start":10,"end":20}},{"type":"comment","value":"# linha 3\\n","offset":{"start":20,"end":30}},{"type":"whitespace","value":"\\n","offset":{"start":30,"end":31}},{"type":"comment","value":"--linha A\\n","offset":{"start":31,"end":41}},{"type":"comment","value":"--linha B\\n","offset":{"start":41,"end":51}},{"type":"whitespace","value":"\\n","offset":{"start":51,"end":52}},{"type":"comment","value":"--linha A1\\n","offset":{"start":52,"end":63}},{"type":"whitespace","value":"\\n","offset":{"start":63,"end":64}},{"type":"comment","value":"--linha B2\\n","offset":{"start":64,"end":75}},{"type":"comment","value":"--linha B3\\n","offset":{"start":75,"end":86}},{"type":"whitespace","value":"\\n","offset":{"start":86,"end":87}},{"type":"comment","value":"{ bloco comentado de uma linha }","offset":{"start":87,"end":119}},{"type":"whitespace","value":"\\n\\n","offset":{"start":119,"end":121}},{"type":"comment","value":"{ \\n    bloco \\n    comentado \\n    de \\n    varias\\n    linhas \\n}","offset":{"start":121,"end":182}},{"type":"whitespace","value":"\\n","offset":{"start":182,"end":183}}]
+
 `;

@@ -337,13 +337,15 @@ globals
 
 function 
   = MAIN SPACE
-        b:blockCommand?
-      END SPACE MAIN SPACE
+      b:blockCommand?
+    END SPACE MAIN SPACE
     { return addMain(b) }
     / FUNCTION SPACE i:ID p:parameterList 
         b:blockCommand?
       END SPACE FUNCTION SPACE
       { return addFunction(i,p,b) }
+    / MAIN SPACE
+    { return addMain(null) }
     
 blockCommand
   = c:commands+
