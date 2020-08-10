@@ -14,5 +14,5 @@ module.exports = {
   transform: {},
   watchPlugins: [
     'jest-watch-typeahead/filename'
-  ]
+  ],
 };
