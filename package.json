@@ -2,7 +2,7 @@
   "name": "@totvs/prettier-plugin-4gl",
   "displayName": "Prettier Plugin 4GL Formatter",
   "description": "Extensão para o adicional Prettier, para formatação de código 4GL.",
-  "version": "0.0.2",
+  "version": "0.0.3-beta.0",
   "publisher": "TOTVS",
   "author": {
     "name": "TOTVS",
@@ -35,18 +35,20 @@
   ],
   "scripts": {
     "prepublishOnly": "npm run clean",
-    "clean": "",
-    "prebuild": "npm run clean && npm run genparser:4gl",
-    "publish": "npm publish",
-    "release": "standard-version",
-    "tag": "git push --follow-tags origin master",
-    "nb": "npm run release -- --prerelease nb",
+    "prebuild": "npm run genparser:4gl",
     "pretest": "npm run genparser:4gl",
     "test": "jest",
     "presnapshot": "npm run genparser:4gl",
     "snapshot": "jest -u",
     "debug": "pegjs -o lib/4gl.js --trace grammar/4gl.pegjs && jest -t 'define2.4gl'",
-    "genparser:4gl": "pegjs -o lib/4gl.js grammar/4gl.pegjs"
+    "genparser:4gl": "pegjs -o lib/4gl.js grammar/4gl.pegjs",
+    "contributors:check": "all-contributors check",
+    "contributors:generate": "all-contributors generate",
+    "release": "standard-version",
+    "tag": "git push --follow-tags origin master",
+    "beta": "npm run release -- --prerelease beta",
+    "nb": "npm run release -- --prerelease nb",
+    "publish": "npm publish"
   },
   "peerDependencies": {
     "prettier": "^2.0.0"
