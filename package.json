@@ -56,9 +56,7 @@
     "prettier": "^2.0.0"
   },
   "dependencies": {
-    "jest": "^26.3.0",
-    "jest-watch-typeahead": "^0.6.0",
-    "prettier-plugin-pegjs": "^0.3.1"
+    "prettier": "^2.0.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^9.1.1",
@@ -67,8 +65,10 @@
     "husky": "^4.2.5",
     "ora": "^5.0.0",
     "pegjs": "^0.10.0",
-    "prettier": "^2.0.0",
-    "standard-version": "^8.0.2"
+    "standard-version": "^8.0.2",
+    "jest": "^26.3.0",
+    "jest-watch-typeahead": "^0.6.0",
+    "prettier-plugin-pegjs": "^0.3.1"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
