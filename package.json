@@ -2,7 +2,7 @@
   "name": "@totvs/prettier-plugin-4gl",
   "displayName": "Prettier Plugin 4GL Formatter",
   "description": "Extensão para o adicional Prettier, para formatação de código 4GL.",
-  "version": "0.0.3-rc.0",
+  "version": "0.0.1",
   "publisher": "TOTVS",
   "author": {
     "name": "TOTVS",
@@ -34,13 +34,11 @@
     "LICENSE"
   ],
   "scripts": {
-    "prebuild": "npm run genparser:4gl",
-    "pretest": "npm run genparser:4gl",
+    "prebuild": "npm run pegjs:4gl",
+    "pretest": "npm run pegjs:4gl",
     "test": "jest",
-    "presnapshot": "npm run genparser:4gl",
-    "snapshot": "jest -u",
-    "debug": "npm run prebuild --trace && jest -t 'main.4gl'",
-    "genparser:4gl": "pegjs -o lib/4gl.js grammar/4gl.pegjs",
+    "test:snapshot": "jest -u",
+    "test:debug": "npm run prebuild --trace && jest -t 'main.4gl'",
     "contributors:check": "all-contributors check",
     "contributors:generate": "all-contributors generate",
     "release": "standard-version",
@@ -50,22 +48,26 @@
     "nb": "npm run release -- --prerelease nb",
     "publish": "npm publish",
     "publish:nb": "npm publish --tag nb",
-    "publish:rc": "npm publish --tag rc"
+    "publish:rc": "npm publish --tag rc",
+    "pegjs:4gl": "pegjs -o lib/4gl.js grammar/4gl.pegjs",
+    "pegjs:format": "prettier grammar/4gl.pegjs --write"
   },
   "peerDependencies": {
     "prettier": "^2.0.0"
   },
   "dependencies": {
     "jest": "^26.3.0",
-    "jest-watch-typeahead": "^0.6.0"
+    "jest-watch-typeahead": "^0.6.0",
+    "prettier-plugin-pegjs": "^0.3.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^9.1.1",
     "@commitlint/config-conventional": "^9.1.1",
-    "prettier": "^2.0.0",
+    "codecov": "^3.7.2",
     "husky": "^4.2.5",
     "ora": "^5.0.0",
     "pegjs": "^0.10.0",
+    "prettier": "^2.0.0",
     "standard-version": "^8.0.2"
   },
   "publishConfig": {

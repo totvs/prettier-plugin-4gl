@@ -48,12 +48,12 @@ function run_spec(dirname, options) {
       });
     }
   });
-}
+} 
 
 global.run_spec = run_spec;
 
 function prettyprint(src, options) {
-  const result = prettier.formatWithCursor(src, options);
+  const result = prettier.format(src, options);
   if (options.cursorOffset >= 0) {
     result.formatted =
       result.formatted.slice(0, result.cursorOffset) +
@@ -83,7 +83,8 @@ function mergeDefaultOptions(parserConfig) {
   return Object.assign(
     {
       plugins: [path.dirname(__dirname)],
-      printWidth: 80
+      printWidth: 80,
+      loglevel: "debug"
     },
     parserConfig
   );
