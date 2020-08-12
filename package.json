@@ -38,19 +38,17 @@
     "pretest": "npm run pegjs:4gl",
     "test": "jest",
     "test:snapshot": "jest -u",
-    "test:debug": "npm run prebuild --trace && jest -t 'main.4gl'",
+    "test:debug": "jest -t 'hello1.4gl'",
     "contributors:check": "all-contributors check",
     "contributors:generate": "all-contributors generate",
     "release": "standard-version",
-    "tag:develop": "git push --follow-tags",
-    "tag:master": "git push --follow-tags origin master",
-    "rc": "npm run release -- --prerelease rc",
+    "tag": "git push --follow-tags",
     "nb": "npm run release -- --prerelease nb",
     "publish": "npm publish",
     "publish:nb": "npm publish --tag nb",
-    "publish:rc": "npm publish --tag rc",
     "pegjs:4gl": "pegjs -o lib/4gl.js grammar/4gl.pegjs",
-    "pegjs:format": "prettier grammar/4gl.pegjs --write"
+    "pegjs:format": "prettier grammar/4gl.pegjs --write",
+    "link:create": "npm link"
   },
   "peerDependencies": {
     "prettier": "^2.0.0"

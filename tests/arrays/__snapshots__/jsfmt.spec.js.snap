@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`array.4gl 1`] = `
+
+main
+    define lista array [5] of INTEGER
+end main
+
+
+function f1() 
+	DEFINE VAR1 ARRAY[1] OF INTEGER  
+	DEFINE VAR1 ARRAY[1,2] OF CHAR(30)  
+
+end function
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[[{"kind":"whitespace","value":"\\n","offset":{"start":0,"end":1}},{"kind":"main","value":"main","offset":{"start":1,"end":55},"info":{"id":"main","arguments":[],"block":[{"kind":"command","value":[{"kind":"keyword","value":"define","offset":{"start":10,"end":16}},{"kind":"whitespace","value":" ","offset":{"start":16,"end":17}},{"kind":"identifier","value":"lista","offset":{"start":17,"end":22}},{"kind":"whitespace","value":" ","offset":{"start":22,"end":23}},"array [5] of INTEGER"],"offset":{"start":10,"end":43}}]}},null,null],[null,{"kind":"function","value":"f1","offset":{"start":55,"end":157},"info":{"id":{"kind":"identifier","value":"f1","offset":{"start":64,"end":66}},"arguments":[],"block":[{"kind":"command","value":[{"kind":"keyword","value":"DEFINE","offset":{"start":71,"end":77}},{"kind":"whitespace","value":" ","offset":{"start":77,"end":78}},{"kind":"identifier","value":"VAR1","offset":{"start":78,"end":82}},{"kind":"whitespace","value":" ","offset":{"start":82,"end":83}},"ARRAY[1] OF INTEGER"],"offset":{"start":71,"end":102}},{"kind":"command","value":[{"kind":"keyword","value":"DEFINE","offset":{"start":106,"end":112}},{"kind":"whitespace","value":" ","offset":{"start":112,"end":113}},{"kind":"identifier","value":"VAR1","offset":{"start":113,"end":117}},{"kind":"whitespace","value":" ","offset":{"start":117,"end":118}},"ARRAY[1,2] OF CHAR(30)"],"offset":{"start":106,"end":140}}]}},null,null]]
+`;

@@ -25,12 +25,6 @@ function f1()
 	--DEFINE VAR1 INTERVAL  
 end function
 
-function f1() 
-	DEFINE VAR1 ARRAY[1] OF INTEGER  
-	DEFINE VAR1 ARRAY[1,2] OF CHAR(30)  
-
-end function
-
 function f2() 
 	DEFINE REC1 RECORD
     VAR1 BIGINT

@@ -196,7 +196,7 @@
   ];
 
   //Compatibilizar com Token4glType em index.ts
-  const TokenType = {
+  const TokenKind = {
     program: "program",
     keyword: "keyword",
     whitespace: "whitespace",
@@ -221,81 +221,81 @@
   };
 
   function addKeyword(value) {
-    return node(TokenType.keyword, value);
+    return node(TokenKind.keyword, value);
   }
 
   function addGlobal(value) {
-    return node(TokenType.global, value);
+    return node(TokenKind.global, value);
   }
 
   function addId(id) {
-    return node(TokenType.identifier, id);
+    return node(TokenKind.identifier, id);
   }
 
   function addSpace(value) {
-    return node(TokenType.whitespace, value);
+    return node(TokenKind.whitespace, value);
   }
 
   function addComment(value) {
-    return node(TokenType.comment, value);
+    return node(TokenKind.comment, value);
   }
 
   function addMain(code) {
     const info = { id: "main", arguments: [], block: code };
 
-    return node(TokenType.main, info.id, info);
+    return node(TokenKind.main, info.id, info);
   }
 
   function addVar(variable, index) {
     const info = { index: index };
 
-    return node(TokenType.variable, variable, info);
+    return node(TokenKind.variable, variable, info);
   }
 
   function addBuiltInVar(variable) {
-    return node(TokenType.builtInVar, variable);
+    return node(TokenKind.builtInVar, variable);
   }
 
   function addFunction(id, _arguments, code) {
     const info = { id: id, arguments: _arguments, block: code };
 
-    return node(TokenType.function, id.value, info);
+    return node(TokenKind.function, id.value, info);
   }
 
   function addExpression(operator, expression) {
     const info = { operator: operator, expression: expression };
 
-    return node(TokenType.expression, "", info);
+    return node(TokenKind.expression, "", info);
   }
 
   function addOperator(operator) {
-    return node(TokenType.operator, operator);
+    return node(TokenKind.operator, operator);
   }
 
   function addCommand(command) {
-    return node(TokenType.command, command);
+    return node(TokenKind.command, command);
   }
 
   function addNumber(dataType, value) {
     const info = { type: dataType };
 
-    return node(TokenType.number, value, info);
+    return node(TokenKind.number, value, info);
   }
 
   function addString(value) {
     const info = { type: ConstType.string };
 
-    return node(TokenType.string, value, info);
+    return node(TokenKind.string, value, info);
   }
 
-  function node(_type, value, info) {
+  function node(kind, value, info) {
     if (value) {
       const _location = location();
       const offset = {
         start: _location.start.offset,
         end: _location.end.offset,
       };
-      const obj = { type: _type, value: value, offset: offset };
+      const obj = { kind: kind, value: value, offset: offset };
 
       if (info) obj.info = info;
 
@@ -347,7 +347,7 @@ commands
   / SPACE
   / comment
 
-command = c:(define / display / call / let) { return addCommand(c); }
+command = c:(define / display / call / let / prompt) { return addCommand(c); }
 
 define = DEFINE SPACE ID SPACE dataType
 
@@ -361,7 +361,9 @@ call
     argumentList
     (SPACE RETURNING SPACE receivingVariables)?
 
-let = LET receivingVariables SPACE? EQUAL SPACE? expressions
+let = LET SPACE receivingVariables SPACE? EQUAL SPACE? expressions
+
+prompt = PROMPT SPACE string_exp SPACE FOR SPACE ID
 
 expressions
   = l:exp_list+ e:expression { return l.concat(e); }
@@ -466,13 +468,11 @@ largeDataType
 
 structuredDataType
   = $(
-    ARRAY
-      O_BRACKET
-      sizeArray
-      C_BRACKET
-      SPACE
-      OF
-      SPACE
+    ARRAY SPACE?
+      O_BRACKET SPACE?
+      sizeArray SPACE?
+      C_BRACKET SPACE
+      OF SPACE
       (simpleDataType / recordDataType / largeDataType)
   )
   / $DYNAMIC_ARRAY
@@ -533,6 +533,8 @@ FUNCTION = k:"function"i { return addKeyword(k); }
 GLOBALS = k:"globals"i { return addKeyword(k); }
 
 LET = k:"let"i { return addKeyword(k); }
+
+PROMPT = k:"prompt"i { return addKeyword(k); }
 
 MAIN = k:"main"i { return addKeyword(k); }
 
@@ -604,6 +606,8 @@ NVARCHAR = k:"nvarchar"i { return addKeyword(k); }
 
 OF = k:"of"i { return addKeyword(k); }
 
+FOR = k:"for"i { return addKeyword(k); }
+
 REAL = k:"real"i { return addKeyword(k); }
 
 RECORD = k:"record"i { return addKeyword(k); }
@@ -638,7 +642,7 @@ FRACTION = k:"fraction"i { return addKeyword(k); }
 // word
 //   = w:([a-zA-Z0-9_]+)  {
 //     const word = w.join("");
-//     const _type = keywordList.indexOf(word.toUpperCase()) === -1?TokenType.word:TokenType.keyword;
+//     const _type = keywordList.indexOf(word.toUpperCase()) === -1?TokenKind.word:TokenKind.keyword;
 
 //   return node(_type, word);
 // }

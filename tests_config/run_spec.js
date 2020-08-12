@@ -1,4 +1,3 @@
-// source: https://github.com/prettier/prettier/blob/ee2839bacbf6a52d004fa2f0373b732f6f191ccc/tests_config/run_spec.js
 'use strict';
 
 const fs = require('fs');
@@ -54,13 +53,16 @@ global.run_spec = run_spec;
 
 function prettyprint(src, options) {
   const result = prettier.format(src, options);
+  
   if (options.cursorOffset >= 0) {
-    result.formatted =
-      result.formatted.slice(0, result.cursorOffset) +
+    result = result.formatted || result;
+    result =
+      result.slice(0, result.cursorOffset) +
       '<|>' +
-      result.formatted.slice(result.cursorOffset);
+      result.slice(result.cursorOffset);
   }
-  return result.formatted;
+  
+  return result.formatted || result;
 }
 
 function read(filename) {
