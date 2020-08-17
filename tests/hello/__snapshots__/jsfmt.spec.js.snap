@@ -1,22 +1,45 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`hello1.4gl 1`] = `
-MAIN 
-  DISPLAY "HELLO "
-end MAIN
+exports[`hello1.4gl-ast 1`] = `
+main 
+  display "hello "
+end main
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-[[null,{"kind":"main","value":"main","offset":{"start":0,"end":34},"info":{"id":"main","arguments":[],"block":[{"kind":"command","value":[{"kind":"keyword","value":"DISPLAY","offset":{"start":8,"end":15}},{"kind":"whitespace","value":" ","offset":{"start":15,"end":16}},[{"kind":"string","value":"\\"HELLO \\"","offset":{"start":16,"end":24},"info":{"type":"string"}}]],"offset":{"start":8,"end":24}}]}},null,null]]
+[{"value":[{"kind":"keyword","value":"main","offset":{"start":0,"end":4}},{"kind":"whitespace","value":" \\n  ","offset":{"start":4,"end":8}},[[null,[{"kind":"keyword","value":"display","offset":{"start":8,"end":15}},{"kind":"whitespace","value":" ","offset":{"start":15,"end":16}},[{"kind":"string","value":"\\"hello \\"","offset":{"start":16,"end":24},"info":{"type":"string"}}]],{"kind":"whitespace","value":"\\n","offset":{"start":24,"end":25}},null,null]],{"kind":"keyword","value":"end","offset":{"start":25,"end":28}},{"kind":"whitespace","value":" ","offset":{"start":28,"end":29}},{"kind":"keyword","value":"main","offset":{"start":29,"end":33}},{"kind":"whitespace","value":"\\n","offset":{"start":33,"end":34}}],"offset":{"start":0,"end":34}}]
 `;
 
-exports[`hello2.4gl 1`] = `
-MAIN 
-
-  DEFINE NOME CHAR(50) # abc
-  PROMPT "DIGITE SEU NOME : " FOR NOME
-  
-  CALL fgl_winmessage( "HELLO",NOME, "info")
-  
-end MAIN
+exports[`hello1.4gl-source 1`] = `
+main 
+  display "hello "
+end main
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-[[null,{"kind":"main","value":"main","offset":{"start":0,"end":135},"info":{"id":"main","arguments":[],"block":[{"kind":"command","value":[{"kind":"keyword","value":"DEFINE","offset":{"start":9,"end":15}},{"kind":"whitespace","value":" ","offset":{"start":15,"end":16}},{"kind":"identifier","value":"NOME","offset":{"start":16,"end":20}},{"kind":"whitespace","value":" ","offset":{"start":20,"end":21}},"CHAR(50)"],"offset":{"start":9,"end":29}},{"kind":"command","value":[{"kind":"keyword","value":"PROMPT","offset":{"start":38,"end":44}},{"kind":"whitespace","value":" ","offset":{"start":44,"end":45}},{"kind":"string","value":"\\"DIGITE SEU NOME : \\"","offset":{"start":45,"end":65},"info":{"type":"string"}},{"kind":"whitespace","value":" ","offset":{"start":65,"end":66}},{"kind":"keyword","value":"FOR","offset":{"start":66,"end":69}},{"kind":"whitespace","value":" ","offset":{"start":69,"end":70}},{"kind":"identifier","value":"NOME","offset":{"start":70,"end":74}}],"offset":{"start":38,"end":74}},{"kind":"command","value":[{"kind":"keyword","value":"CALL","offset":{"start":80,"end":84}},{"kind":"whitespace","value":" ","offset":{"start":84,"end":85}},{"kind":"identifier","value":"fgl_winmessage","offset":{"start":85,"end":99}},null,[[{"kind":"string","value":"\\"HELLO\\"","offset":{"start":101,"end":108},"info":{"type":"string"}}],[{"kind":"variable","value":{"kind":"identifier","value":"NOME","offset":{"start":109,"end":113}},"offset":{"start":109,"end":113},"info":{}}],[{"kind":"string","value":"\\"info\\"","offset":{"start":115,"end":121},"info":{"type":"string"}}]],null],"offset":{"start":80,"end":122}}]}},null,null]]
+[{"value":[{"kind":"keyword","value":"main","offset":{"start":0,"end":4}},{"kind":"whitespace","value":" \\n  ","offset":{"start":4,"end":8}},[[null,[{"kind":"keyword","value":"display","offset":{"start":8,"end":15}},{"kind":"whitespace","value":" ","offset":{"start":15,"end":16}},[{"kind":"string","value":"\\"hello \\"","offset":{"start":16,"end":24},"info":{"type":"string"}}]],{"kind":"whitespace","value":"\\n","offset":{"start":24,"end":25}},null,null]],{"kind":"keyword","value":"end","offset":{"start":25,"end":28}},{"kind":"whitespace","value":" ","offset":{"start":28,"end":29}},{"kind":"keyword","value":"main","offset":{"start":29,"end":33}},{"kind":"whitespace","value":"\\n","offset":{"start":33,"end":34}}],"offset":{"start":0,"end":34}}]
+`;
+
+exports[`hello2.4gl-ast 1`] = `
+main 
+
+  define nome char(50) # abc
+  prompt "digite seu nome : " for nome
+  
+  call fgl_winmessage( "hello",nome, "info")
+  
+end main
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# abc
+
+`;
+
+exports[`hello2.4gl-source 1`] = `
+main 
+
+  define nome char(50) # abc
+  prompt "digite seu nome : " for nome
+  
+  call fgl_winmessage( "hello",nome, "info")
+  
+end main
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# abc
+
 `;

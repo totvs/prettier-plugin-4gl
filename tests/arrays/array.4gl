@@ -1,11 +1,10 @@
-
 main
-    define lista array [5] of INTEGER
+    define lista array [5] of integer
 end main
 
 
 function f1() 
-	DEFINE VAR1 ARRAY[1] OF INTEGER  
-	DEFINE VAR1 ARRAY[1,2] OF CHAR(30)  
+	define var1 array[1] of integer  
+	define var1 array[1,2] of char(30)  
 
 end function

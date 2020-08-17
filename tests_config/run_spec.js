@@ -39,8 +39,17 @@ function run_spec(dirname, options) {
         cursorOffset
       });
 
-      test(filename, () => {
-        const output = prettyprint(input, mergedOptions);
+      test(filename.concat("-ast"), () => {
+        const output = prettyprint(input, { ...mergedOptions, astFormat: "4gl-ast" });
+        expect(output).not.toBe("");
+        expect(
+          raw(source + '~'.repeat(mergedOptions.printWidth) + '\n' + output)
+        ).toMatchSnapshot();
+      });
+ 
+      test(filename.concat("-source"), () => {
+        const output = prettyprint(input, { ...mergedOptions, astFormat: "4gl-source"});
+        expect(output).not.toBe("");
         expect(
           raw(source + '~'.repeat(mergedOptions.printWidth) + '\n' + output)
         ).toMatchSnapshot();

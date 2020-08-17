@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`comment.4gl 1`] = `
+exports[`comment.4gl-ast 1`] = `
 # linha 1
 # linha 2
 # linha 3
@@ -23,5 +23,59 @@ exports[`comment.4gl 1`] = `
     linhas 
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-[{"kind":"comment","value":"# linha 1\\n","offset":{"start":0,"end":10}},{"kind":"comment","value":"# linha 2\\n","offset":{"start":10,"end":20}},{"kind":"comment","value":"# linha 3\\n","offset":{"start":20,"end":30}},{"kind":"whitespace","value":"\\n","offset":{"start":30,"end":31}},{"kind":"comment","value":"--linha A\\n","offset":{"start":31,"end":41}},{"kind":"comment","value":"--linha B\\n","offset":{"start":41,"end":51}},{"kind":"whitespace","value":"\\n","offset":{"start":51,"end":52}},{"kind":"comment","value":"--linha A1\\n","offset":{"start":52,"end":63}},{"kind":"whitespace","value":"\\n","offset":{"start":63,"end":64}},{"kind":"comment","value":"--linha B2\\n","offset":{"start":64,"end":75}},{"kind":"comment","value":"--linha B3\\n","offset":{"start":75,"end":86}},{"kind":"whitespace","value":"\\n","offset":{"start":86,"end":87}},{"kind":"comment","value":"{ bloco comentado de uma linha }","offset":{"start":87,"end":119}},{"kind":"whitespace","value":"\\n\\n","offset":{"start":119,"end":121}},{"kind":"comment","value":"{ \\n    bloco \\n    comentado \\n    de \\n    varias\\n    linhas \\n}","offset":{"start":121,"end":182}},{"kind":"whitespace","value":"\\n","offset":{"start":182,"end":183}}]
+# linha 1
+# linha 2
+# linha 3
+--linha A
+--linha B
+--linha A1
+--linha B2
+--linha B3
+{ bloco comentado de uma linha }{ 
+    bloco 
+    comentado 
+    de 
+    varias
+    linhas 
+}
+`;
+
+exports[`comment.4gl-source 1`] = `
+# linha 1
+# linha 2
+# linha 3
+
+--linha A
+--linha B
+
+--linha A1
+
+--linha B2
+--linha B3
+
+{ bloco comentado de uma linha }
+
+{ 
+    bloco 
+    comentado 
+    de 
+    varias
+    linhas 
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# linha 1
+# linha 2
+# linha 3
+--linha A
+--linha B
+--linha A1
+--linha B2
+--linha B3
+{ bloco comentado de uma linha }{ 
+    bloco 
+    comentado 
+    de 
+    varias
+    linhas 
+}
 `;

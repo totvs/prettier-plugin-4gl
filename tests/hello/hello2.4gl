@@ -1,8 +1,8 @@
-MAIN 
+main 
 
-  DEFINE NOME CHAR(50) # abc
-  PROMPT "DIGITE SEU NOME : " FOR NOME
+  define nome char(50) # abc
+  prompt "digite seu nome : " for nome
   
-  CALL fgl_winmessage( "HELLO",NOME, "info")
+  call fgl_winmessage( "hello",nome, "info")
   
-end MAIN
+end main

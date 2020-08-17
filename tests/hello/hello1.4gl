@@ -1,3 +1,3 @@
-MAIN 
-  DISPLAY "HELLO "
-end MAIN
+main 
+  display "hello "
+end main
