@@ -11,11 +11,13 @@ function run_spec(dirname, options) {
       path.extname(filename) !== '.snap' &&
       fs.lstatSync(filepath).isFile() &&
       filename[0] !== '.' &&
+      !filename.endsWith('.log') &&
       filename !== 'jsfmt.spec.js'
     ) {
       let rangeStart = 0;
       let rangeEnd = Infinity;
       let cursorOffset;
+
       const source = read(filepath)
         .replace(/\r\n/g, '\n')
         .replace('<<<PRETTIER_RANGE_START>>>', (match, offset) => {
@@ -29,6 +31,7 @@ function run_spec(dirname, options) {
 
       const input = source.replace('<|>', (match, offset) => {
         cursorOffset = offset;
+
         return '';
       });
 
@@ -36,16 +39,16 @@ function run_spec(dirname, options) {
         filepath,
         rangeStart,
         rangeEnd,
-        cursorOffset
+        cursorOffset,
       });
 
-      test(filename.concat("-ast"), () => {
-        const output = prettyprint(input, { ...mergedOptions, astFormat: "4gl-ast" });
-        expect(output).not.toBe("");
-        expect(
-          raw(source + '~'.repeat(mergedOptions.printWidth) + '\n' + output)
-        ).toMatchSnapshot();
-      });
+      // test(filename.concat("-ast"), () => {
+      //   const output = prettyprint(input, { ...mergedOptions, astFormat: "4gl-ast" });
+      //   expect(output).not.toBe("");
+      //   expect(
+      //     raw(source + '~'.repeat(mergedOptions.printWidth) + '\n' + output)
+      //   ).toMatchSnapshot();
+      // });
  
       test(filename.concat("-source"), () => {
         const output = prettyprint(input, { ...mergedOptions, astFormat: "4gl-source"});
@@ -61,7 +64,7 @@ function run_spec(dirname, options) {
 global.run_spec = run_spec;
 
 function prettyprint(src, options) {
-  const result = prettier.format(src, options);
+  let result = prettier.format(src, options);
   
   if (options.cursorOffset >= 0) {
     result = result.formatted || result;

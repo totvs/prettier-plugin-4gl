@@ -28,20 +28,27 @@
     "node": ">= 8.0.0"
   },
   "main": "lib/index.js",
+  "types": "typings/4gl-parser.d.ts",
   "files": [
+    "bin/",
     "lib/",
+    "typings/",
     "README.md",
     "LICENSE"
   ],
+  "bin": {
+    "formatter-4gl": "./bin/formatter-4gl.js"
+  },
   "scripts": {
-    "pegjs:4gl": "pegjs -o lib/4gl.js grammar/4gl.pegjs",
-    "prebuild": "npm run pegjs:4gl",
-    "build": "tsc -p .",
-    "pretest": "npm run build",
+    "clean": "rimraf lib",
+    "build": "tsc -p ./src",
     "test": "jest",
     "test:snapshot": "npm run test -- -u ",
-    "test:debug": "npm run test -- -t 'hello'",
+    "test:debug": "npm run test -- -t 'hello3'",
     "test:snapshotDbg": "npm run test -- -u -t 'hello'",
+    "pretest": "npm run build",
+    "prebuild": "npm run clean & npm run pegjs:4gl",
+    "pegjs:4gl": "pegjs -o src/4gl.js grammar/4gl.pegjs",
     "------": "",
     "release": "standard-version",
     "tag": "git push --follow-tags",
@@ -62,12 +69,12 @@
     "@commitlint/config-conventional": "^9.1.1",
     "codecov": "^3.7.2",
     "husky": "^4.2.5",
-    "ora": "^5.0.0",
-    "pegjs": "^0.10.0",
-    "standard-version": "^8.0.2",
     "jest": "^26.3.0",
     "jest-watch-typeahead": "^0.6.0",
-    "prettier-plugin-pegjs": "^0.3.1"
+    "ora": "^5.0.0",
+    "pegjs": "^0.10.0",
+    "prettier-plugin-pegjs": "^0.3.1",
+    "standard-version": "^8.0.2"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"

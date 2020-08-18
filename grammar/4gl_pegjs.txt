@@ -1,4 +1,7 @@
 {
+
+  require("./parserInt.js");
+
   const keywordList = [
     "AFTER",
     "ALL",
@@ -197,7 +200,6 @@
 
   //Compatibilizar com Token4glType em index.ts
   const TokenKind = {
-    program: "program",
     keyword: "keyword",
     whitespace: "whitespace",
     comment: "comment",
@@ -220,75 +222,19 @@
     string: "string",
   };
 
-  function addKeyword(value) {
-    return node(TokenKind.keyword, value);
+  var nodes = [];
+
+  function addNode(node, subnode) {
+    nodes.push(node);
+
+    if (subnode) {
+      const nodeAux = nodes;
+      nodes = [];
+      nodes.push(nodeAux);
+    } 
   }
 
-  function addGlobal(value) {
-    return node(TokenKind.global, value);
-  }
-
-  function addId(id) {
-    return node(TokenKind.identifier, id);
-  }
-
-  function addSpace(value) {
-    return node(TokenKind.whitespace, value);
-  }
-
-  function addComment(value) {
-    return node(TokenKind.comment, value);
-  }
-
-  function addMain(code) {
-    const info = { id: "main", arguments: [], block: code };
-
-    return node(TokenKind.main, info.id, info);
-  }
-
-  function addVar(variable, index) {
-    const info = { index: index };
-
-    return node(TokenKind.variable, variable, info);
-  }
-
-  function addBuiltInVar(variable) {
-    return node(TokenKind.builtInVar, variable);
-  }
-
-  function addFunction(id, _arguments, code) {
-    const info = { id: id, arguments: _arguments, block: code };
-
-    return node(TokenKind.function, id.value, info);
-  }
-
-  function addExpression(operator, expression) {
-    const info = { operator: operator, expression: expression };
-
-    return node(TokenKind.expression, "", info);
-  }
-
-  function addOperator(operator) {
-    return node(TokenKind.operator, operator);
-  }
-
-  function addCommand(command) {
-    return node(TokenKind.command, command);
-  }
-
-  function addNumber(dataType, value) {
-    const info = { type: dataType };
-
-    return node(TokenKind.number, value, info);
-  }
-
-  function addString(value) {
-    const info = { type: ConstType.string };
-
-    return node(TokenKind.string, value, info);
-  }
-
-  function node(kind, value, info) {
+  function createNode(kind, value, info) {
     if (value) {
       const _location = location();
       const offset = {
@@ -302,9 +248,95 @@
       return obj;
     }
   }
+
+  function createNodeKeyword(value) {
+    return createNode(TokenKind.keyword, value);
+  }
+
+  function createNodeId(id) {
+    return createNode(TokenKind.identifier, id);
+  }
+
+  function createNodeSpace(value) {
+    return createNode(TokenKind.whitespace, value);
+  }
+
+  function createNodeComment(value) {
+    return createNode(TokenKind.comment, value);
+  }
+
+  function createNodeLine(line) {
+
+    return createNode(TokenKind.line, line);
+  }
+
+  function createNodeSession(session) {
+
+    return createNode(TokenKind.session, session);
+  }
+
+
+
+
+
+
+
+  function createNodeGlobal(value) {
+    return createNode(TokenKind.global, value);
+  }
+
+  function createNodeMain(code) {
+    const info = { id: "main", arguments: [], block: code };
+
+    return createNode(TokenKind.main, info.id, info);
+  }
+
+
+  function createNodeVar(variable, index) {
+    const info = { index: index };
+
+    return createNode(TokenKind.variable, variable, info);
+  }
+
+  function createNodeBuiltInVar(variable) {
+    return createNode(TokenKind.builtInVar, variable);
+  }
+
+  function createNodeFunction(id, _arguments, code) {
+    const info = { id: id, arguments: _arguments, block: code };
+
+    return createNode(TokenKind.function, id.value, info);
+  }
+
+  function createNodeExpression(operator, expression) {
+    const info = { operator: operator, expression: expression };
+
+    return createNode(TokenKind.expression, "", info);
+  }
+
+  function createNodeOperator(operator) {
+    return createNode(TokenKind.operator, operator);
+  }
+
+  function createNodeCommand(command) {
+    return createNode(TokenKind.command, command);
+  }
+
+  function createNodeNumber(dataType, value) {
+    const info = { type: dataType };
+
+    return createNode(TokenKind.number, value, info);
+  }
+
+  function createNodeString(value) {
+    const info = { type: ConstType.string };
+
+    return createNode(TokenKind.string, value, info);
+  }
+
 }
 
-start = l:line*
+start = l:line* { return nodes }
 
 line
   = SPACE? session SPACE? comment?
@@ -312,44 +344,43 @@ line
   / SPACE
 
 session
-  = modular
-  / globals
-  / function
+  = s:modular  { addNode(createNodeSession(s), true); }
+  / s:globals  { addNode(createNodeSession(s), true); }
+  / s:function { addNode(createNodeSession(s), true); }
 
 comment
-  = c:$("#" (!NL .)* NL) { return addComment(c); }
-  / c:$("--" (!NL .)* NL) { return addComment(c); }
-  / c:$("{" (!"}" .)* "}") { return addComment(c); }
+  = c:$("#" (!NL .)* NL) { return addNode(createNodeComment(c), true); }
+  / c:$("--" (!NL .)* NL) { return addNode(createNodeComment(c), true); }
+  / c:$("{" (!"}" .)* "}") { return addNode(createNodeComment(c), true); }
 
 modular = define+
 
 globals
-  = b:(GLOBALS SPACE (define / SPACE / comment)* END SPACE GLOBALS SPACE) {
-      return addGlobal(b);
-    }
+  = GLOBALS SPACE (define / SPACE / comment)* END SPACE GLOBALS SPACE
+  / GLOBALS SPACE string_exp
 
 function
-  = MAIN SPACE b:blockCommand? END SPACE MAIN SPACE { return addMain(b); }
+  = MAIN SPACE blockCommand? END SPACE MAIN SPACE
   / FUNCTION
     SPACE
-    i:ID
-    p:parameterList
-    b:blockCommand?
+    ID
+    parameterList
+    blockCommand?
     END
     SPACE
     FUNCTION
-    SPACE { return addFunction(i, p, b); }
+    SPACE
 
-blockCommand = c:commands+
+blockCommand = commands+
 
 commands
-  = SPACE? c:command SPACE? comment? NL? { return c; }
+  = SPACE? command SPACE? comment? NL?
   / SPACE
   / comment
 
-command = c:(define / display / call / let / prompt) { return addCommand(c); }
+command = (define / display / call / let / prompt)
 
-define = DEFINE SPACE ID SPACE dataType
+define = DEFINE SPACE ID SPACE dataType 
 
 display = DISPLAY SPACE expressions
 
@@ -371,7 +402,7 @@ expressions
   / e:expression { return [e]; }
 
 exp_list
-  = SPACE? e:expression SPACE? o:OPERATOR SPACE? { return addExpression(o, e); }
+  = SPACE? e:expression SPACE? o:OPERATOR SPACE? { return createNodeExpression(o, e); }
 
 expression
   = string_exp
@@ -410,40 +441,40 @@ receivingVariables
 var_list = SPACE? v:variable SPACE? COMMA SPACE? { return; }
 
 variable
-  = v:$(ID DOT ID) { return addVar(v); }
-  / v:$(ID DOT ASTERISK) { return addVar(v); }
-  / v:ID O_BRACKET i:expressions C_BRACKET { return addVar(v, i); }
-  / v:ID { return addVar(v); }
+  = v:$(ID DOT ID) { return createNodeVar(v); }
+  / v:$(ID DOT ASTERISK) { return createNodeVar(v); }
+  / v:ID O_BRACKET i:expressions C_BRACKET { return createNodeVar(v, i); }
+  / v:ID { return createNodeVar(v); }
   / v:builtInVariables { return v; }
 
 builtInVariables
-  = v:"arg_val"i { return addBuiltInVar(v); }
-  / v:"arr_count"i { return addBuiltInVar(v); }
-  / v:"arr_curr"i { return addBuiltInVar(v); }
-  / v:"errorlog"i { return addBuiltInVar(v); }
-  / v:"fgl_keyval"i { return addBuiltInVar(v); }
-  / v:"fgl_lastkey"i { return addBuiltInVar(v); }
-  / v:"infield"i { return addBuiltInVar(v); }
-  / v:"int_flag"i { return addBuiltInVar(v); }
-  / v:"quit_flag"i { return addBuiltInVar(v); }
-  / v:"num_args"i { return addBuiltInVar(v); }
-  / v:"scr_line"i { return addBuiltInVar(v); }
-  / v:"set_count"i { return addBuiltInVar(v); }
-  / v:"showhelp"i { return addBuiltInVar(v); }
-  / v:"sqlca"i { return addBuiltInVar(v); }
-  / v:"sqlcode"i { return addBuiltInVar(v); }
-  / v:"sqlerrd"i { return addBuiltInVar(v); }
-  / v:"startlog"i { return addBuiltInVar(v); }
+  = v:"arg_val"i { return createNodeBuiltInVar(v); }
+  / v:"arr_count"i { return createNodeBuiltInVar(v); }
+  / v:"arr_curr"i { return createNodeBuiltInVar(v); }
+  / v:"errorlog"i { return createNodeBuiltInVar(v); }
+  / v:"fgl_keyval"i { return createNodeBuiltInVar(v); }
+  / v:"fgl_lastkey"i { return createNodeBuiltInVar(v); }
+  / v:"infield"i { return createNodeBuiltInVar(v); }
+  / v:"int_flag"i { return createNodeBuiltInVar(v); }
+  / v:"quit_flag"i { return createNodeBuiltInVar(v); }
+  / v:"num_args"i { return createNodeBuiltInVar(v); }
+  / v:"scr_line"i { return createNodeBuiltInVar(v); }
+  / v:"set_count"i { return createNodeBuiltInVar(v); }
+  / v:"showhelp"i { return createNodeBuiltInVar(v); }
+  / v:"sqlca"i { return createNodeBuiltInVar(v); }
+  / v:"sqlcode"i { return createNodeBuiltInVar(v); }
+  / v:"sqlerrd"i { return createNodeBuiltInVar(v); }
+  / v:"startlog"i { return createNodeBuiltInVar(v); }
 
 dataType
-  = simpleDataType
-  / structuredDataType
-  / largeDataType
+  = r:simpleDataType     { return r; }
+  / r:structuredDataType { return r; }
+  / r:largeDataType      { return r; }
 
 simpleDataType
-  = numberType
-  / timeType
-  / characterType
+  = r:numberType    { return r; }
+  / r:timeType      { return r; }
+  / r:characterType { return r; }
 
 numberType
   = $(BIGINT / INTEGER / INT)
@@ -518,123 +549,123 @@ tableQualifier
 
 columnQualifier = ID DOT (ID / ASTERISK)
 
-ID = id:$([a-zA-Z_] [a-zA-Z0-9_]*) { return addId(id); }
+ID = id:$([a-zA-Z_] [a-zA-Z0-9_]*) { return createNodeId(id); }
 
-DEFINE = k:"define"i { return addKeyword(k); }
+DEFINE = k:"define"i { return createNodeKeyword(k); }
 
-CALL = k:"call"i { return addKeyword(k); }
+CALL = k:"call"i { return createNodeKeyword(k); }
 
-DISPLAY = k:"display"i { return addKeyword(k); }
+DISPLAY = k:"display"i { return createNodeKeyword(k); }
 
-END = k:"end"i { return addKeyword(k); }
+END = k:"end"i { return createNodeKeyword(k); }
 
-FUNCTION = k:"function"i { return addKeyword(k); }
+FUNCTION = k:"function"i { return createNodeKeyword(k); }
 
-GLOBALS = k:"globals"i { return addKeyword(k); }
+GLOBALS = k:"globals"i { return createNodeKeyword(k); }
 
-LET = k:"let"i { return addKeyword(k); }
+LET = k:"let"i { return createNodeKeyword(k); }
 
-PROMPT = k:"prompt"i { return addKeyword(k); }
+PROMPT = k:"prompt"i { return createNodeKeyword(k); }
 
-MAIN = k:"main"i { return addKeyword(k); }
+MAIN = k:"main"i { return createNodeKeyword(k); }
 
-STRING = k:"string"i { return addKeyword(k); }
+STRING = k:"string"i { return createNodeKeyword(k); }
 
-RETURNING = k:"returning"i { return addKeyword(k); }
+RETURNING = k:"returning"i { return createNodeKeyword(k); }
 
-OPERATOR = o:[~!@%^&*-+|/{}\:;<>?#_] { addOperator(o); }
+OPERATOR = o:[~!@%^&*-+|/{}\:;<>?#_] { return createNodeOperator(o); }
 
-EQUAL = o:"=" { addOperator(o); }
+EQUAL = o:"=" { return createNodeOperator(o); }
 
-O_PARENTHESIS = o:"(" { addOperator(o); }
+O_PARENTHESIS = o:"(" { return createNodeOperator(o); }
 
-C_PARENTHESIS = o:")" { addOperator(o); }
+C_PARENTHESIS = o:")" { return createNodeOperator(o); }
 
-O_BRACKET = o:"[" { addOperator(o); }
+O_BRACKET = o:"[" { return createNodeOperator(o); }
 
-C_BRACKET = o:"]" { addOperator(o); }
+C_BRACKET = o:"]" { return createNodeOperator(o); }
 
-AT = o:"@" { addOperator(o); }
+AT = o:"@" { return createNodeOperator(o); }
 
-DOT = o:"." { addOperator(o); }
+DOT = o:"." { return createNodeOperator(o); }
 
-COLON = o:":" { addOperator(o); }
+COLON = o:":" { return createNodeOperator(o); }
 
-COMMA = o:"," { addOperator(o); }
+COMMA = o:"," { return createNodeOperator(o); }
 
-ASTERISK = o:"*" { addOperator(o); }
+ASTERISK = o:"*" { return createNodeOperator(o); }
 
-ARRAY = k:"array"i { return addKeyword(k); }
+ARRAY = k:"array"i { return createNodeKeyword(k); }
 
-BIGINT = k:"bigint"i { return addKeyword(k); }
+BIGINT = k:"bigint"i { return createNodeKeyword(k); }
 
-BYTE = k:"byte"i { return addKeyword(k); }
+BYTE = k:"byte"i { return createNodeKeyword(k); }
 
-CHAR = k:"CHAR"i { return addKeyword(k); }
+CHAR = k:"CHAR"i { return createNodeKeyword(k); }
 
-CHARACTER = k:"character"i { return addKeyword(k); }
+CHARACTER = k:"character"i { return createNodeKeyword(k); }
 
-DATE = k:"date"i { return addKeyword(k); }
+DATE = k:"date"i { return createNodeKeyword(k); }
 
-DATETIME = k:"datetime"i { return addKeyword(k); }
+DATETIME = k:"datetime"i { return createNodeKeyword(k); }
 
-DEC = k:"dec"i { return addKeyword(k); }
+DEC = k:"dec"i { return createNodeKeyword(k); }
 
-DECIMAL = k:"decimal"i { return addKeyword(k); }
+DECIMAL = k:"decimal"i { return createNodeKeyword(k); }
 
-DOUBLE_PRECISION = k:$("double"i SPACE "precision"i) { return addKeyword(k); }
+DOUBLE_PRECISION = k:$("double"i SPACE "precision"i) { return createNodeKeyword(k); }
 
-DYNAMIC_ARRAY = k:$("dynamic"i SPACE "array"i) { return addKeyword(k); }
+DYNAMIC_ARRAY = k:$("dynamic"i SPACE "array"i) { return createNodeKeyword(k); }
 
-FLOAT = k:"float"i { return addKeyword(k); }
+FLOAT = k:"float"i { return createNodeKeyword(k); }
 
-INT = k:"int"i { return addKeyword(k); }
+INT = k:"int"i { return createNodeKeyword(k); }
 
-INTEGER = k:"integer"i { return addKeyword(k); }
+INTEGER = k:"integer"i { return createNodeKeyword(k); }
 
-INTERVAL = k:"interval"i { return addKeyword(k); }
+INTERVAL = k:"interval"i { return createNodeKeyword(k); }
 
-LIKE = k:"like"i { return addKeyword(k); }
+LIKE = k:"like"i { return createNodeKeyword(k); }
 
-MONEY = k:"money"i { return addKeyword(k); }
+MONEY = k:"money"i { return createNodeKeyword(k); }
 
-NCHAR = k:"nchar"i { return addKeyword(k); }
+NCHAR = k:"nchar"i { return createNodeKeyword(k); }
 
-NUMERIC = k:"numeric"i { return addKeyword(k); }
+NUMERIC = k:"numeric"i { return createNodeKeyword(k); }
 
-NVARCHAR = k:"nvarchar"i { return addKeyword(k); }
+NVARCHAR = k:"nvarchar"i { return createNodeKeyword(k); }
 
-OF = k:"of"i { return addKeyword(k); }
+OF = k:"of"i { return createNodeKeyword(k); }
 
-FOR = k:"for"i { return addKeyword(k); }
+FOR = k:"for"i { return createNodeKeyword(k); }
 
-REAL = k:"real"i { return addKeyword(k); }
+REAL = k:"real"i { return createNodeKeyword(k); }
 
-RECORD = k:"record"i { return addKeyword(k); }
+RECORD = k:"record"i { return createNodeKeyword(k); }
 
-SMALLFLOAT = k:"smallfloat"i { return addKeyword(k); }
+SMALLFLOAT = k:"smallfloat"i { return createNodeKeyword(k); }
 
-SMALLINT = k:"smallint"i { return addKeyword(k); }
+SMALLINT = k:"smallint"i { return createNodeKeyword(k); }
 
-TEXT = k:"text"i { return addKeyword(k); }
+TEXT = k:"text"i { return createNodeKeyword(k); }
 
-TO = k:"to"i { return addKeyword(k); }
+TO = k:"to"i { return createNodeKeyword(k); }
 
-VARCHAR = k:"varchar"i { return addKeyword(k); }
+VARCHAR = k:"varchar"i { return createNodeKeyword(k); }
 
-YEAR = k:"year"i { return addKeyword(k); }
+YEAR = k:"year"i { return createNodeKeyword(k); }
 
-MONTH = k:"month"i { return addKeyword(k); }
+MONTH = k:"month"i { return createNodeKeyword(k); }
 
-DAY = k:"day"i { return addKeyword(k); }
+DAY = k:"day"i { return createNodeKeyword(k); }
 
-HOUR = k:"hour"i { return addKeyword(k); }
+HOUR = k:"hour"i { return createNodeKeyword(k); }
 
-MINUTE = k:"minute"i { return addKeyword(k); }
+MINUTE = k:"minute"i { return createNodeKeyword(k); }
 
-SECOND = k:"second"i { return addKeyword(k); }
+SECOND = k:"second"i { return createNodeKeyword(k); }
 
-FRACTION = k:"fraction"i { return addKeyword(k); }
+FRACTION = k:"fraction"i { return createNodeKeyword(k); }
 
 // words
 //   = (word (SPACE / NL))+
@@ -644,18 +675,18 @@ FRACTION = k:"fraction"i { return addKeyword(k); }
 //     const word = w.join("");
 //     const _type = keywordList.indexOf(word.toUpperCase()) === -1?TokenKind.word:TokenKind.keyword;
 
-//   return node(_type, word);
+//   return createNode_type, word);
 // }
 
 integer_exp
-  = t:integer_text { return addNumber(ConstType.integer, parseInt(text, 10)); }
+  = t:integer_text { return createNodeNumber(ConstType.integer, parseInt(text, 10)); }
 
 integer_text
   = "+"? d:$DIGIT+ !"."
   / "-" d:$DIGIT+ !"."
 
 string_exp
-  = s:(double_quoted_string / single_quoted_string) { return addString(s); }
+  = s:(double_quoted_string / single_quoted_string) { return createNodeString(s); }
 
 double_quoted_string = $(D_QUOTE double_quoted_char* D_QUOTE)
 
@@ -686,10 +717,10 @@ ESCAPED
 DIGIT = [0-9]
 
 SPACE
-  = s:$[ \t\n\r]+ { return addSpace(s); }
+  = s:$[ \t\n\r]+ { return createNodeSpace(s); }
   / s:NL+
 
-NL = s:$("\n" / "\r\n") { return addSpace(s); }
+NL = s:$("\n" / "\r\n") { return createNodeSpace(s); }
 
 NLS
   = NL

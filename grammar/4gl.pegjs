@@ -225,7 +225,9 @@
     nodes.push(node);
 
     if (subnode) {
-      nodes = { node };
+      const nodeAux = nodes;
+      nodes = [];
+      nodes.push(nodeAux);
     } 
   }
 
