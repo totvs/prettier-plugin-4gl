@@ -40,7 +40,7 @@ function f3()
 end function
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+functionmain([])function([])function([])function([])
 `;
 
 exports[`define.4gl 1`] = `
@@ -97,7 +97,7 @@ function f2()
 end function
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+functionmain([])function([])function([])
 `;
 
 exports[`define2.4gl 1`] = `
@@ -105,7 +105,7 @@ main
 	--DEFINE VAR1 record LIKE TAB1.*
 end main
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+functionmain([])
 `;
 
 exports[`function.4gl 1`] = `
@@ -125,5 +125,5 @@ function f2(p1, p2)
    
 end function
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+functionmain([])function([])function([{"kind":"identifier","value":"p1","offset":{"start":63,"end":65},"line":9,"column":13}])function([null,{"kind":"identifier","value":"p2","offset":{"start":101,"end":103},"line":13,"column":17}])
 `;

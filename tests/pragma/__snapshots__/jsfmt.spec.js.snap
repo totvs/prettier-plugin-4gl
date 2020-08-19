@@ -6,5 +6,14 @@ main
   display "hello "
 end main
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+{
+   "kind": "comment",
+   "value": "--@format\\n",
+   "offset": {
+      "start": 0,
+      "end": 10
+   },
+   "line": 1,
+   "column": 1
+}functionmain([])
 `;

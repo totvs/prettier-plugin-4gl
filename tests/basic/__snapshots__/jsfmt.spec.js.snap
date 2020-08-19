@@ -10,7 +10,7 @@ main
     
 end main
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+functionmain([])
 `;
 
 exports[`empty_main.4gl 1`] = `
@@ -18,7 +18,7 @@ main
 
 end main
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+functionmain([])
 `;
 
 exports[`globals.4gl 1`] = `
@@ -32,7 +32,120 @@ main
 
 end main
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+{
+   "value": [
+      {
+         "kind": "keyword",
+         "value": "globals",
+         "offset": {
+            "start": 0,
+            "end": 7
+         },
+         "line": 1,
+         "column": 1
+      },
+      null,
+      {
+         "kind": "string",
+         "value": {
+            "type": "string",
+            "value": "\\"abc.txt\\""
+         },
+         "offset": {
+            "start": 8,
+            "end": 17
+         },
+         "line": 1,
+         "column": 9
+      }
+   ],
+   "offset": {
+      "start": 0,
+      "end": 17
+   },
+   "line": 1,
+   "column": 1
+}{
+   "value": [
+      {
+         "kind": "keyword",
+         "value": "globals",
+         "offset": {
+            "start": 19,
+            "end": 26
+         },
+         "line": 3,
+         "column": 1
+      },
+      null,
+      [
+         [
+            {
+               "kind": "keyword",
+               "value": "DEFINE",
+               "offset": {
+                  "start": 29,
+                  "end": 35
+               },
+               "line": 4,
+               "column": 3
+            },
+            null,
+            {
+               "kind": "identifier",
+               "value": "NOME",
+               "offset": {
+                  "start": 36,
+                  "end": 40
+               },
+               "line": 4,
+               "column": 10
+            },
+            null,
+            "CHAR(50)"
+         ],
+         null,
+         {
+            "kind": "comment",
+            "value": "# abc\\n",
+            "offset": {
+               "start": 50,
+               "end": 56
+            },
+            "line": 4,
+            "column": 24
+         }
+      ],
+      {
+         "kind": "keyword",
+         "value": "end",
+         "offset": {
+            "start": 56,
+            "end": 59
+         },
+         "line": 5,
+         "column": 1
+      },
+      null,
+      {
+         "kind": "keyword",
+         "value": "globals",
+         "offset": {
+            "start": 60,
+            "end": 67
+         },
+         "line": 5,
+         "column": 5
+      },
+      null
+   ],
+   "offset": {
+      "start": 19,
+      "end": 69
+   },
+   "line": 3,
+   "column": 1
+}functionmain([])
 `;
 
 exports[`strings.4gl 1`] = `
@@ -54,5 +167,5 @@ function f1()
     
 end function
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+functionmain([])function([])
 `;

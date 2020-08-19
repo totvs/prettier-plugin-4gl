@@ -1,6 +1,6 @@
 const {
   doc: {
-    builders: { concat },
+    builders: { concat, group },
   },
 } = require("prettier");
 
@@ -12,10 +12,36 @@ function printJSON(path, options, print, args) {
 
 function keywordsCase(keywordsCase, node) {
   return keywordsCase === "upper"
-    ? node.value.toUpperCase()
+    ? node.getValue().toUpperCase()
     : keywordsCase === "lower"
-    ? node.value.toLowerCase()
-    : node.value;
+    ? node.getValue().toLowerCase()
+    : node.getValue();
+}
+
+function printFunction(path, options, print) {
+  const node = path.getValue();
+  const value = node.value;
+
+  return group(
+    concat([
+      node.kind,
+      value.id,
+      "(",
+      JSON.stringify(value.arguments),
+      ")",
+      // indent(
+      //   concat([
+      //     line,
+      //     join(
+      //       concat([",", line]),
+      //       path.map(print, "elements")
+      //     )
+      //   ])
+      // ),
+      // line,
+      // "]"
+    ])
+  );
 }
 
 function printSource(path, options, print, args) {
@@ -33,33 +59,23 @@ function printSource(path, options, print, args) {
     return concat(path.map(print));
   }
 
+  let result;
+
   switch (node.kind) {
     case "keyword":
-      return keywordsCase(options.keywordsCase, node);
+      result = keywordsCase(options.keywordsCase, node);
+      break;
+    case "program":
+      result = concat(path.map(print, "value"));
+      break;
+    case "function":
+      result = printFunction(path, options, print);
+      break;
     default:
-      return node.value;
+      result = JSON.stringify(node, undefined, 3);
   }
-  //   case "ws":
-  //   case "nl":
-  //     return node.value;
-  //   case "word":
-  //     return node.value.toUpperCase();
-  //   case "operator":
-  //     return node.value;
-  //   case "string":
-  //     return node.value;
 
-  return "";
+  return result;
 }
 
-function genericPrint(path, options, print) {
-  const node = path.getValue();
-
-  if (!node) {
-    return "";
-  } else if (typeof node === "string") {
-    return node;
-  }
-}
-
-module.exports = { printJSON: printJSON, printSource: printSource };
+module.exports = { printJSON, printSource };
