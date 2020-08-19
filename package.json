@@ -42,18 +42,19 @@
   "scripts": {
     "clean": "rimraf lib",
     "build": "tsc -p ./src",
+    "watch": "tsc -p ./src --watch",
+    "prebuild": "npm run clean",
+    "---TEST---": "",
     "test": "jest",
-    "test:snapshot": "npm run test -- -u ",
+    "test:snapshot": "npm run test -- --snapshot ",
     "test:debug": "npm run test -- -t 'hello3'",
-    "test:snapshotDbg": "npm run test -- -u -t 'hello'",
+    "test:coverage": "npm run test -- --coverage",
     "pretest": "npm run build",
-    "prebuild": "npm run clean & npm run pegjs:4gl",
-    "pegjs:4gl": "pegjs -o src/4gl.js grammar/4gl.pegjs",
-    "------": "",
+    "---RELEASE---": "",
     "release": "standard-version",
     "tag": "git push --follow-tags",
     "publish": "npm publish",
-    "-------": "",
+    "---MISC---": "",
     "contributors:check": "all-contributors check",
     "contributors:generate": "all-contributors generate",
     "link:create": "npm link"
@@ -62,19 +63,16 @@
     "prettier": "^2.0.0"
   },
   "dependencies": {
+    "@totvs/tds-parsers": "file:../tds-parsers",
     "prettier": "^2.0.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "^9.1.1",
-    "@commitlint/config-conventional": "^9.1.1",
-    "codecov": "^3.7.2",
+    "@commitlint/cli": "^9.1.2",
+    "@commitlint/config-conventional": "^10.0.0",
     "husky": "^4.2.5",
-    "jest": "^26.3.0",
+    "jest": "^26.4.0",
     "jest-watch-typeahead": "^0.6.0",
-    "ora": "^5.0.0",
-    "pegjs": "^0.10.0",
-    "prettier-plugin-pegjs": "^0.3.1",
-    "standard-version": "^8.0.2"
+    "standard-version": "^9.0.0"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"

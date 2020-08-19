@@ -30,7 +30,7 @@ function printSource(path, options, print, args) {
   }
 
   if (Array.isArray(node)) {
-    return concat(path.map(node));
+    return concat(path.map(print));
   }
 
   switch (node.kind) {

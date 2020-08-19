@@ -42,9 +42,9 @@ const parsers = {
     parse: (text, options) => {
       return parser_4gl(text, options);
     },
-    astFormat: "4gl-ast",
-    // locStart: locStart,
-    // locEnd: locEnd,
+    astFormat: "4gl-source",
+    locStart: locStart,
+    locEnd: locEnd,
     // genericPrint: print_4gl.genericPrint
   },
 };

@@ -1,38 +1,38 @@
-'use strict';
+"use strict";
 
-const fs = require('fs');
-const path = require('path');
-const prettier = require('prettier');
+const fs = require("fs");
+const path = require("path");
+const prettier = require("prettier");
 
 function run_spec(dirname, options) {
-  fs.readdirSync(dirname).forEach(filename => {
-    const filepath = dirname + '/' + filename;
+  fs.readdirSync(dirname).forEach((filename) => {
+    const filepath = dirname + "/" + filename;
     if (
-      path.extname(filename) !== '.snap' &&
+      path.extname(filename) !== ".snap" &&
       fs.lstatSync(filepath).isFile() &&
-      filename[0] !== '.' &&
-      !filename.endsWith('.log') &&
-      filename !== 'jsfmt.spec.js'
+      filename[0] !== "." &&
+      !filename.endsWith(".log") &&
+      filename !== "jsfmt.spec.js"
     ) {
       let rangeStart = 0;
       let rangeEnd = Infinity;
       let cursorOffset;
 
       const source = read(filepath)
-        .replace(/\r\n/g, '\n')
-        .replace('<<<PRETTIER_RANGE_START>>>', (match, offset) => {
+        .replace(/\r\n/g, "\n")
+        .replace("<<<PRETTIER_RANGE_START>>>", (match, offset) => {
           rangeStart = offset;
-          return '';
+          return "";
         })
-        .replace('<<<PRETTIER_RANGE_END>>>', (match, offset) => {
+        .replace("<<<PRETTIER_RANGE_END>>>", (match, offset) => {
           rangeEnd = offset;
-          return '';
+          return "";
         });
 
-      const input = source.replace('<|>', (match, offset) => {
+      const input = source.replace("<|>", (match, offset) => {
         cursorOffset = offset;
 
-        return '';
+        return "";
       });
 
       const mergedOptions = Object.assign(mergeDefaultOptions(options || {}), {
@@ -42,43 +42,35 @@ function run_spec(dirname, options) {
         cursorOffset,
       });
 
-      test(filename.concat("-ast2"), () => {
-        const output = prettyprint(input, { ...mergedOptions, astFormat: "4gl-ast" });
-        expect(output).not.toBe("");
+      test(filename, () => {
+        const output = prettyprint(input, { ...mergedOptions });
+
         expect(
-          raw(source + '~'.repeat(mergedOptions.printWidth) + '\n' + output)
+          raw(source + "~".repeat(mergedOptions.printWidth) + "\n" + output)
         ).toMatchSnapshot();
       });
- 
-      // test(filename.concat("-source"), () => {
-      //   const output = prettyprint(input, { ...mergedOptions, astFormat: "4gl-source"});
-      //   expect(output).not.toBe("");
-      //   expect(
-      //     raw(source + '~'.repeat(mergedOptions.printWidth) + '\n' + output)
-      //   ).toMatchSnapshot();
-      // });
     }
   });
-} 
+}
 
 global.run_spec = run_spec;
 
 function prettyprint(src, options) {
   let result = prettier.format(src, options);
-  
+
   if (options.cursorOffset >= 0) {
     result = result.formatted || result;
     result =
       result.slice(0, result.cursorOffset) +
-      '<|>' +
+      "<|>" +
       result.slice(result.cursorOffset);
   }
-  
+
   return result.formatted || result;
 }
 
 function read(filename) {
-  return fs.readFileSync(filename, 'utf8');
+  return fs.readFileSync(filename, "utf8");
 }
 
 /**
@@ -87,10 +79,10 @@ function read(filename) {
  * Backticks will still be escaped.
  */
 function raw(string) {
-  if (typeof string !== 'string') {
-    throw new Error('Raw snapshots have to be strings.');
+  if (typeof string !== "string") {
+    throw new Error("Raw snapshots have to be strings.");
   }
-  return { [Symbol.for('raw')]: string };
+  return { [Symbol.for("raw")]: string };
 }
 
 function mergeDefaultOptions(parserConfig) {
@@ -98,7 +90,7 @@ function mergeDefaultOptions(parserConfig) {
     {
       plugins: [path.dirname(__dirname)],
       printWidth: 80,
-      loglevel: "debug"
+      loglevel: "debug",
     },
     parserConfig
   );

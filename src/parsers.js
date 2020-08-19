@@ -1,8 +1,9 @@
-const parser_4gl = require("./4gl.js");
+const parser_4gl = require("@totvs/tds-parsers/lib").parser;
 
 function parser(text, options) {
   try {
-    return parser_4gl.parse(text, options);
+    const opt = { vscodeLanguageId: "4gl"};
+    return parser_4gl(text, opt);
   } catch (error) {
     if (error.location) {
       console.error(
