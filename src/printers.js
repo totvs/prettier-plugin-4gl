@@ -7,7 +7,7 @@ const {
 function printJSON(path, options, print, args) {
   const node = path.getValue();
 
-  return JSON.stringify(node);
+  return JSON.stringify(node, undefined, 2);
 }
 
 function keywordsCase(keywordsCase, node) {

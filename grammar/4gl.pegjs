@@ -219,15 +219,21 @@
     string: "string",
   };
 
+  var program = { kind: "program", value: [], offset: undefined };
   var nodes = [];
 
   function addNode(node, subnode) {
     nodes.push(node);
 
     if (subnode) {
-      const nodeAux = nodes;
+      if (node.type) {
+        program.value.push(node);
+      } else if (Array.isArray(node.value)) {
+        program.value.push(...node.value);
+      } else {
+        program.value.push(node);
+      }
       nodes = [];
-      nodes.push(nodeAux);
     } 
   }
 
@@ -333,7 +339,7 @@
 
 }
 
-start = l:line* { return nodes }
+start = l:line* { return program }
 
 line
   = SPACE? session SPACE? comment?

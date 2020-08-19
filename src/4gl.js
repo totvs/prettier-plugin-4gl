@@ -141,7 +141,7 @@ function peg$parse(input, options) {
       peg$startRuleFunctions = { start: peg$parsestart },
       peg$startRuleFunction  = peg$parsestart,
 
-      peg$c0 = function(l) { return nodes },
+      peg$c0 = function(l) { return program },
       peg$c1 = function(s) { addNode(createNodeSession(s), true); },
       peg$c2 = "#",
       peg$c3 = peg$literalExpectation("#", false),
@@ -5886,15 +5886,21 @@ function peg$parse(input, options) {
       string: "string",
     };
 
+    var program = { kind: "program", value: [], offset: undefined };
     var nodes = [];
 
     function addNode(node, subnode) {
       nodes.push(node);
 
       if (subnode) {
-        const nodeAux = nodes;
+        if (node.type) {
+          program.value.push(node);
+        } else if (Array.isArray(node.value)) {
+          program.value.push(...node.value);
+        } else {
+          program.value.push(node);
+        }
         nodes = [];
-        nodes.push(nodeAux);
       } 
     }
 

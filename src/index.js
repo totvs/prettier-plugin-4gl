@@ -43,8 +43,8 @@ const parsers = {
       return parser_4gl(text, options);
     },
     astFormat: "4gl-ast",
-    locStart: locStart,
-    locEnd: locEnd,
+    // locStart: locStart,
+    // locEnd: locEnd,
     // genericPrint: print_4gl.genericPrint
   },
 };
