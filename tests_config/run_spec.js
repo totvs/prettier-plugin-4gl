@@ -49,6 +49,14 @@ function run_spec(dirname, options) {
           raw(source + "~".repeat(mergedOptions.printWidth) + "\n" + output)
         ).toMatchSnapshot();
       });
+
+      // test(filename, () => {
+      //   const output = prettyprint(input, { ...mergedOptions });
+
+      //   expect(
+      //     raw(prepare(source) + "~".repeat(mergedOptions.printWidth) + "\n" + prepare(output))
+      //   ).toMatchSnapshot();
+      // });
     }
   });
 }
@@ -71,6 +79,14 @@ function prettyprint(src, options) {
 
 function read(filename) {
   return fs.readFileSync(filename, "utf8");
+}
+
+function prepare(content) {
+  return content
+    .replace(/[ \t]/g, (match, offset) => {
+      return "";
+    })
+    .toUpperCase();
 }
 
 /**

@@ -17,7 +17,7 @@ function locStart(ast) {
   if (Array.isArray(ast)) {
     if (ast.length > 0) {
       offsetStart = locStart(ast[0]);
-    } 
+    }
   } else if (ast.kind) {
     offsetStart = ast.offset.start;
   }
@@ -30,11 +30,23 @@ function locEnd(ast) {
 
   if (Array.isArray(ast)) {
     if (ast.length > 0) {
-      offsetEnd = locEnd(ast[ast.length-1]);
-    } 
+      offsetEnd = locEnd(ast[ast.length - 1]);
+    }
   } else if (ast.kind) {
     offsetEnd = ast.offset.end;
   }
+
+  return offsetEnd;
+}
+
+function hasPragma(text) {
+  console.log(text);
+
+  return false;
+}
+
+function insertPragma(text) {
+  return text;
 }
 
 const parsers = {
@@ -45,17 +57,18 @@ const parsers = {
     astFormat: "4gl-source",
     locStart: locStart,
     locEnd: locEnd,
-    // genericPrint: print_4gl.genericPrint
+    hasPragma: hasPragma,
   },
 };
 
 const printers = {
   "4gl-ast": {
-    print: print_4gl.printJSON
+    print: print_4gl.printJSON,
   },
   "4gl-source": {
-    print: print_4gl.printSource
-  }
+    print: print_4gl.printSource,
+    insertPragma: insertPragma,
+  },
 };
 
 module.exports = {
