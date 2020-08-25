@@ -42,14 +42,34 @@ function run_spec(dirname, options) {
         cursorOffset,
       });
 
-      test(filename, () => {
-        const output = prettyprint(input, { ...mergedOptions });
+      if (path.dirname(filepath) === "pragma") {
+        describe("Uso de PRAGMA", () => {
+          beforeEach(() => {
+            mergedOptions.requirePragma = true;
+            mergedOptions.insertPragma = true;
+          });
+          afterEach(() => {
+            mergedOptions.requirePragma = false;
+            mergedOptions.insertPragma = false;
+          });
 
-        expect(
-          raw(source + "~".repeat(mergedOptions.printWidth) + "\n" + output)
-        ).toMatchSnapshot();
-      });
+          test(filename, () => {
+            const output = prettyprint(input, { ...mergedOptions });
 
+            expect(
+              raw(source + "~".repeat(mergedOptions.printWidth) + "\n" + output)
+            ).toMatchSnapshot();
+          });
+        });
+      } else {
+        test(filename, () => {
+          const output = prettyprint(input, { ...mergedOptions });
+
+          expect(
+            raw(source + "~".repeat(mergedOptions.printWidth) + "\n" + output)
+          ).toMatchSnapshot();
+        });
+      }
       // test(filename, () => {
       //   const output = prettyprint(input, { ...mergedOptions });
 
@@ -107,6 +127,8 @@ function mergeDefaultOptions(parserConfig) {
       plugins: [path.dirname(__dirname)],
       printWidth: 80,
       loglevel: "debug",
+      requirePragma: false,
+      insertPragma: false,
     },
     parserConfig
   );

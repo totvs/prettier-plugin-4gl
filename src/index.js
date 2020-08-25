@@ -1,6 +1,7 @@
 const parser_4gl = require("./parsers");
 const print_4gl = require("./printers");
 const options = require("./config").options;
+const PRAGMA = "--@format";
 
 const languages = [
   {
@@ -40,13 +41,11 @@ function locEnd(ast) {
 }
 
 function hasPragma(text) {
-  console.log(text);
-
-  return false;
+  return text.startsWith(PRAGMA);
 }
 
 function insertPragma(text) {
-  return text;
+  return PRAGMA + "\n" + text;
 }
 
 const parsers = {

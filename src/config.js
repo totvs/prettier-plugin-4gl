@@ -8,13 +8,35 @@ module.exports = {
       since: "0.0.0",
       category: CATEGORY_4GL,
       type: "choice",
-      choices: [
-        { value: "upper" },
-        { value: "lower" },
-        { value: "none" }
-      ],
+      choices: [{ value: "upper" }, { value: "lower" }, { value: "none" }],
       default: "upper",
       description: "Put keywords to upper or lowser case. (4GL)",
+    },
+    stringStyle: {
+      since: "0.0.0",
+      category: CATEGORY_4GL,
+      type: "choice",
+      choices: [
+        { value: "double-quotes" },
+        { value: "single-quotes" },
+        { value: "none" },
+      ],
+      default: "single-quotes",
+      description: "Start and end strings with quotes. (4GL)",
+    },
+    formatNumber: {
+      since: "0.0.0",
+      category: CATEGORY_4GL,
+      type: "boolean",
+      default: false,
+      description: "Format number, e.g. 1234=1,234. (4GL)",
+    },
+    operatorSpacing: {
+      since: "0.0.0",
+      category: CATEGORY_4GL,
+      type: "boolean",
+      default: true,
+      description: "Spacing in operators. (4GL)",
     },
   },
 };
