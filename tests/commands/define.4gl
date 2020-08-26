@@ -1,52 +1,47 @@
-MAIN 
+main 
+	define var1 bigint   
+	define var1 byte   
+	define var1 char(100)
+	define var1 character  
+	define var1 date   
+	define var1 datetime  day to day
+	define var1 dec   
+	define var1 decimal(10,2)
+	define var1 decimal(10)
+	define var1 double precision  
+	define var1 dynamic array  
+	define var1 float  
+	define var1 int  
+	define var1 integer  
+	define var1 money  
+	define var1 nchar(100)  
+	define var1 numeric  
+	define var1 nvarchar(100)  
+end main
 
-	DEFINE VAR1 BIGINT   
-	DEFINE VAR1 BYTE   
-	DEFINE VAR1 CHAR(100)
-	DEFINE VAR1 CHARACTER  
-	DEFINE VAR1 DATE   
-	DEFINE VAR1 DATETIME  day to day
-	DEFINE VAR1 DEC   
-	DEFINE VAR1 DECIMAL(10,2)
-	DEFINE VAR1 DECIMAL(10)
-	DEFINE VAR1 DOUBLE PRECISION  
-	DEFINE VAR1 DYNAMIC ARRAY  
-	DEFINE VAR1 FLOAT  
-	DEFINE VAR1 INT  
-	DEFINE VAR1 INTEGER  
-	DEFINE VAR1 MONEY  
-	DEFINE VAR1 NCHAR(100)  
-	DEFINE VAR1 NUMERIC  
-	DEFINE VAR1 NVARCHAR(100)  
-
-end MAIN
-
-function f1() 
-	--DEFINE VAR1 INTERVAL  
-end function
 
 function f2() 
-	DEFINE REC1 RECORD
-    VAR1 BIGINT
-  END RECORD
+	define rec1 record
+    var1 bigint
+end record
+end function
 
-	DEFINE REC2 RECORD
-    VAR1 CHAR(100),
-    VAR1 CHARACTER,
-    VAR1 DATE,
-    VAR1 DATETIME  day to day,
-    VAR1 DEC,
-    VAR1 DECIMAL(10,2),
-    VAR1 DECIMAL(10),
-    VAR1 DOUBLE PRECISION,
-    VAR1 FLOAT,
-    VAR1 INT,
-    VAR1 INTEGER,
-    VAR1 MONEY,
-    VAR1 NCHAR(100),
-    VAR1 NUMERIC,
-    VAR1 NVARCHAR(100)
-  END RECORD  
-
+function f3() 
+	define rec2 record var1 char(100),
+    var1 character,
+    var1 date,
+    var1 datetime  day to day,
+    var1 dec,
+    var1 decimal(10,2),
+    var1 decimal(10),
+    var1 double precision,
+    var1 float,
+    var1 int,
+    var1 integer,
+    var1 money,
+    var1 nchar(100),
+    var1 numeric,
+    var1 nvarchar(100)
+  end record  
 end function
 

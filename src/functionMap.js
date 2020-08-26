@@ -1,3 +1,5 @@
+const { util } = require("prettier");
+
 const {
   concat,
   join,
@@ -7,10 +9,12 @@ const {
   hardline,
   fill,
   indent,
+  trim,
 } = require("prettier").doc.builders;
 
 const options4GLDef = require("./config").options;
 const options4GL = {};
+const OPERATORS_WHITOUT_SPACING = ["."];
 
 function buildComment(path, print) {
   const node = path.getValue();
@@ -33,8 +37,9 @@ function buildWhitespace(path, print, { tabWidth, useTabs }) {
 
 function buildBlock(path, print) {
   const node = path.getValue();
+  const value = path.map(print, "value");
 
-  return indent(concat(path.map(print, "value")));
+  return indent(concat(value));
 }
 
 function buildCommand(path, print) {
@@ -58,23 +63,19 @@ function buildKeyword(path, print, keywordsCase) {
 
 function buildString(path, print, stringOption) {
   const node = path.getValue();
-  const result = [];
   const value = node.value.value[1];
+  let result = undefined;
 
   if (stringOption === "none") {
-    result.push(node.value.value.join(""));
+    result = node.value.value.join("");
   } else if (stringOption === "single-quotes") {
-    result.push("'");
-    result.push(value.replace(/\'/g, "''")); //@acandido - verificar scape de aspas
-    result.push("'");
+    result = util.makeString(value, "'", true);
   } else {
     //double-quotes
-    result.push('"');
-    result.push(value.replace(/\"/g, '""')); //@acandido - verificar scape de aspas
-    result.push('"');
+    result = util.makeString(value, '"', true);
   }
 
-  return result.join("");
+  return result;
 }
 
 function buildIdentifier(path, print) {
@@ -100,7 +101,7 @@ function buildOperator(path, print, operatorSpacing) {
   const value = node.value;
   let result = value;
 
-  if (operatorSpacing) {
+  if (operatorSpacing && !OPERATORS_WHITOUT_SPACING.includes(value)) {
     result = concat([" ", value, " "]);
   }
 
@@ -152,6 +153,7 @@ function builderMap(options) {
   });
 
   map.program = (path, print) => concat(path.map(print, "value"));
+  map.global = (path, print) => concat(path.map(print, "value"));
   map.main = (path, print) => concat(path.map(print, "value"));
   map.function = (path, print) => concat(path.map(print, "value"));
   map.keyword = (path, print) =>
@@ -189,21 +191,16 @@ function printElement(path, options, print) {
   }
 
   const node = path.getValue();
-  if (Array.isArray(node)) {
-    return concat(path.map(print));
-  }
-
-  if (!node.kind || node.kind == undefined) {
-    console.log(JSON.stringify(node));
-  }
-
   const buildProcess = _builderMap[node.kind];
+  let result;
 
   if (buildProcess) {
-    return buildProcess(path, print, options);
+    result = buildProcess(path, print, options);
+  } else {
+    concat(`< no build process [${node.kind}]>`);
   }
 
-  return concat(`< no build process [${node.kind}]>`);
+  return result;
 }
 
 module.exports = { printElement, resetFunctionMap };

@@ -45,9 +45,13 @@ main
 
 end main
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-< no build process [global]>
+GLOBALS 'abc.txt'
 
-< no build process [global]>MAIN
+GLOBALS
+  DEFINE NOME CHAR ( 50 )  # abc
+END GLOBALS
+
+MAIN
 
 END MAIN
 
@@ -78,7 +82,7 @@ MAIN
     LET x ,  y  =  ''
     LET x ,  y  =  'ABC,DEF'
     LET x ,  y  =  '"'
-    LET x ,  y  =  'ABC\\''DEF'
+    LET x ,  y  =  'ABC\\'DEF'
     
 END MAIN
 
@@ -86,8 +90,8 @@ FUNCTION f1 (  )
 
     LET x ,  y  =  ''
     LET x ,  y  =  'ABC,DEF'
-    LET x ,  y  =  ''''
-    LET x ,  y  =  'ABC\\"DEF'
+    LET x ,  y  =  '\\''
+    LET x ,  y  =  'ABC"DEF'
     
 END FUNCTION
 
