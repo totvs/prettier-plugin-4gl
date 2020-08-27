@@ -12,15 +12,11 @@ const {
   trim,
 } = require("prettier").doc.builders;
 
+const { stripTrailingHardline, removeLines } = require("prettier").doc.utils;
+
 const options4GLDef = require("./config").options;
 const options4GL = {};
 const OPERATORS_WHITOUT_SPACING = ["."];
-
-function buildComment(path, print) {
-  const node = path.getValue();
-
-  return path.call(print, "value");
-}
 
 function buildWhitespace(path, print, { tabWidth, useTabs }) {
   const node = path.getValue();
@@ -32,20 +28,24 @@ function buildWhitespace(path, print, { tabWidth, useTabs }) {
     value = value.replace(/\\t/g, " ".repeat(tabWidth));
   }
 
-  return concat(value);
+  value = stripTrailingHardline(concat(value));
+
+  return value;
 }
 
 function buildBlock(path, print) {
   const node = path.getValue();
   const value = path.map(print, "value");
+  const values = concat(value);
 
-  return indent(concat(value));
+  return indent(values);
 }
 
 function buildCommand(path, print) {
   const node = path.getValue();
+  const values = path.map(print, "value");
 
-  return concat(path.map(print, "value"));
+  return concat(values);
 }
 
 function buildKeyword(path, print, keywordsCase) {
@@ -53,6 +53,7 @@ function buildKeyword(path, print, keywordsCase) {
   let value = node.value;
 
   if (keywordsCase === "upper") {
+    1;
     value = value.toUpperCase();
   } else if (keywordsCase === "lower") {
     value = value.toLowerCase();
@@ -78,20 +79,14 @@ function buildString(path, print, stringOption) {
   return result;
 }
 
-function buildIdentifier(path, print) {
-  const node = path.getValue();
-
-  return path.call(print, "value");
-}
-
 function buildBracket(path, print, bracketSpacing) {
   const node = path.getValue();
   const value = node.value;
   let result = value;
 
-  if (bracketSpacing) {
-    result = concat([" ", value, " "]);
-  }
+  // if (bracketSpacing) {
+  //   result = concat([" ", value, " "]);
+  // }
 
   return result;
 }
@@ -101,22 +96,9 @@ function buildOperator(path, print, operatorSpacing) {
   const value = node.value;
   let result = value;
 
-  if (operatorSpacing && !OPERATORS_WHITOUT_SPACING.includes(value)) {
-    result = concat([" ", value, " "]);
-  }
-
-  return result;
-}
-
-function buildList(path, print, operatorSpacing) {
-  const node = path.getValue();
-  const values = path.map(print, "value");
-
-  if (operatorSpacing) {
-    result = join(", ", values);
-  } else {
-    result = join(",", values);
-  }
+  // if (operatorSpacing && !OPERATORS_WHITOUT_SPACING.includes(value)) {
+  //   result = concat([" ", value, " "]);
+  // }
 
   return result;
 }
@@ -135,12 +117,6 @@ function buildNumber(path, print, formatNumber) {
   return result;
 }
 
-function buildVariable(path, print, formatNumber) {
-  const node = path.getValue();
-
-  return path.call(print, "value");
-}
-
 let _builderMap;
 
 function builderMap(options) {
@@ -153,30 +129,29 @@ function builderMap(options) {
   });
 
   map.program = (path, print) => concat(path.map(print, "value"));
-  map.global = (path, print) => concat(path.map(print, "value"));
+  map.globals = (path, print) => concat(path.map(print, "value"));
   map.main = (path, print) => concat(path.map(print, "value"));
   map.function = (path, print) => concat(path.map(print, "value"));
-  map.keyword = (path, print) =>
-    buildKeyword(path, print, options4GL.keywordsCase);
-  map.comment = (path, print) => buildComment(path, print, options4GL);
+  map.comment = (path, print) => concat(path.map(print, "value"));
   map.whitespace = (path, print) =>
     buildWhitespace(path, print, {
       tabWidth: options.tabWidth,
       useTabs: options.useTabs,
     });
+  map.keyword = (path, print) =>
+    buildKeyword(path, print, options4GL.keywordsCase);
   map.block = (path, print) => buildBlock(path, print);
   map.command = (path, print) => buildCommand(path, print);
   map.string = (path, print) =>
     buildString(path, print, options4GL.stringStyle);
-  map.identifier = (path, print) => buildIdentifier(path, print);
+  map.identifier = (path, print) => path.call(print, "value");
   map.bracket = (path, print) =>
     buildBracket(path, print, options.bracketSpacing);
   map.number = (path, print) => buildNumber(path, print, options.formatNumber);
-  map.variable = (path, print) =>
-    buildVariable(path, print, options.formatNumber);
+  map.variable = (path, print) => path.call(print, "value");
   map.operator = (path, print) =>
     buildOperator(path, print, options.operatorSpacing);
-  map.list = (path, print) => buildList(path, print, options.operatorSpacing);
+  map.list = (path, print) => join(", ", path.map(print, "value"));
 
   return map;
 }
@@ -197,7 +172,7 @@ function printElement(path, options, print) {
   if (buildProcess) {
     result = buildProcess(path, print, options);
   } else {
-    concat(`< no build process [${node.kind}]>`);
+    result = concat(`< no build process [${node.kind}]>`);
   }
 
   return result;
