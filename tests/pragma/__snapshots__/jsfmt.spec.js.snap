@@ -1,6 +1,42 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pragma.4gl 1`] = `
+exports[`Source Uso de PRAGMA no_pragma.4gl 1`] = `
+main 
+  display "hello "
+end main
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+main 
+  display "hello "
+end main
+
+`;
+
+exports[`Source Uso de PRAGMA pragma.4gl 1`] = `
+--@format
+main 
+  display "hello "
+end main
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+--@format
+MAIN 
+  DISPLAY 'hello '
+END MAIN
+
+
+`;
+
+exports[`Token Uso de PRAGMA no_pragma.4gl 1`] = `
+main 
+  display "hello "
+end main
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+main 
+  display "hello "
+end main
+
+`;
+
+exports[`Token Uso de PRAGMA pragma.4gl 1`] = `
 --@format
 main 
   display "hello "

@@ -7,37 +7,53 @@ const languages = [
   {
     extensions: [".4gl"],
     name: "4GL",
-    parsers: ["4gl-parser"],
+    parsers: ["4gl-source", "4gl-token"],
     vscodeLanguageIds: ["4gl"],
   },
 ];
 
 function locStart(ast) {
-  let offsetStart = 0;
+  let offset = 0;
 
   if (Array.isArray(ast)) {
     if (ast.length > 0) {
-      offsetStart = locStart(ast[0]);
+      for (let index = 0; index < ast.length; index++) {
+        const element = ast[index];
+        offset = locStart(element);
+        if (offset !== 0) {
+          break;
+        }
+      }
     }
+  } else if (!ast.offset) {
+    offset = locStart(ast.value);
   } else if (ast.kind) {
-    offsetStart = ast.offset.start;
+    offset = ast.offset.start;
   }
 
-  return offsetStart;
+  return offset;
 }
 
 function locEnd(ast) {
-  let offsetEnd = Infinity;
+  let offset = Infinity;
 
   if (Array.isArray(ast)) {
     if (ast.length > 0) {
-      offsetEnd = locEnd(ast[ast.length - 1]);
+      for (let index = 0; index < ast.length; index++) {
+        const element = ast[index];
+        offset = locEnd(element);
+        if (offset !== 0) {
+          break;
+        }
+      }
     }
+  } else if (!ast.offset) {
+    offset = locEnd(ast.value);
   } else if (ast.kind) {
-    offsetEnd = ast.offset.end;
+    offset = ast.offset.end;
   }
 
-  return offsetEnd;
+  return offset;
 }
 
 function hasPragma(text) {
@@ -49,11 +65,20 @@ function insertPragma(text) {
 }
 
 const parsers = {
-  "4gl-parser": {
-    parse: (text, options) => {
-      return parser_4gl(text, options);
+  "4gl-source": {
+    parse: (text, api, options) => {
+      return parser_4gl(text, api, options);
     },
     astFormat: "4gl-source",
+    locStart: locStart,
+    locEnd: locEnd,
+    hasPragma: hasPragma,
+  },
+  "4gl-token": {
+    parse: (text, api, options) => {
+      return parser_4gl(text, api, options);
+    },
+    astFormat: "4gl-token",
     locStart: locStart,
     locEnd: locEnd,
     hasPragma: hasPragma,
@@ -68,7 +93,10 @@ const printers = {
     print: print_4gl.printSource,
     insertPragma: insertPragma,
   },
-};
+  "4gl-token": {
+    print: print_4gl.printToken,
+    insertPragma: insertPragma,
+  },};
 
 module.exports = {
   name: "prettier-plugin-4gl",

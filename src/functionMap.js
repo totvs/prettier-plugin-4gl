@@ -64,16 +64,16 @@ function buildKeyword(path, print, keywordsCase) {
 
 function buildString(path, print, stringOption) {
   const node = path.getValue();
-  const value = node.value.value[1];
+  const value = node.value;
   let result = undefined;
 
   if (stringOption === "none") {
-    result = node.value.value.join("");
+    result = value.toString();
   } else if (stringOption === "single-quotes") {
-    result = util.makeString(value, "'", true);
+    result = util.makeString(value.substring(1, value.length -1), "'", true);
   } else {
     //double-quotes
-    result = util.makeString(value, '"', true);
+    result = util.makeString(value.substring(1, value.length -1), "\"", true);
   }
 
   return result;
@@ -106,12 +106,12 @@ function buildOperator(path, print, operatorSpacing) {
 function buildNumber(path, print, formatNumber) {
   const node = path.getValue();
   const value = node.value;
-  let result = value.value;
+  let result = undefined;
 
   if (formatNumber) {
-    result = result.toLocaleString("en");
+    result = value.toLocaleString("en");
   } else {
-    result = result.toString();
+    result = value.toString();
   }
 
   return result;

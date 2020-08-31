@@ -4,6 +4,9 @@ const fs = require("fs");
 const path = require("path");
 const prettier = require("prettier");
 
+const RANGE_START = "--range-start";
+const RANGE_END = "--range-end";
+
 function run_spec(dirname, options) {
   fs.readdirSync(dirname).forEach((filename) => {
     const filepath = dirname + "/" + filename;
@@ -42,46 +45,60 @@ function run_spec(dirname, options) {
         cursorOffset,
       });
 
-      if (path.dirname(filepath) === "pragma") {
-        describe("Uso de PRAGMA", () => {
-          beforeEach(() => {
-            mergedOptions.requirePragma = true;
-            mergedOptions.insertPragma = true;
-          });
-          afterEach(() => {
-            mergedOptions.requirePragma = false;
-            mergedOptions.insertPragma = false;
-          });
+      describe("Source", () => {
+        processTest(mergedOptions, filename, input);
+      });
 
-          test(filename, () => {
-            const output = prettyprint(input, { ...mergedOptions });
-
-            expect(
-              raw(source + "~".repeat(mergedOptions.printWidth) + "\n" + output)
-            ).toMatchSnapshot();
-          });
-        });
-      } else {
-        test(filename, () => {
-          const output = prettyprint(input, { ...mergedOptions });
-
-          expect(
-            raw(source + "~".repeat(mergedOptions.printWidth) + "\n" + output)
-          ).toMatchSnapshot();
-        });
-      }
-      // test(filename, () => {
-      //   const output = prettyprint(input, { ...mergedOptions });
-
-      //   expect(
-      //     raw(prepare(source) + "~".repeat(mergedOptions.printWidth) + "\n" + prepare(output))
-      //   ).toMatchSnapshot();
-      // });
+      describe("Token", () => {
+        processTest({ ...mergedOptions, parser: "4gl-token" }, filename, input);
+      });
     }
   });
 }
 
 global.run_spec = run_spec;
+
+function processTest(mergedOptions, filename, input) {
+  if (path.dirname(mergedOptions.filepath).endsWith("range")) {
+    //Range format not support: apparent prettier restriction
+    describe.skip("Uso de RANGE", () => {
+      test(filename, () => {
+        const output = prettyprint(input, { ...mergedOptions });
+
+        expect(
+          raw(input + "~".repeat(mergedOptions.printWidth) + "\n" + output)
+        ).toMatchSnapshot();
+      });
+    });
+  } else if (path.dirname(mergedOptions.filepath).endsWith("pragma")) {
+    describe("Uso de PRAGMA", () => {
+      beforeEach(() => {
+        mergedOptions.requirePragma = true;
+        mergedOptions.insertPragma = true;
+      });
+      afterEach(() => {
+        mergedOptions.requirePragma = false;
+        mergedOptions.insertPragma = false;
+      });
+
+      test(filename, () => {
+        const output = prettyprint(input, { ...mergedOptions });
+
+        expect(
+          raw(input + "~".repeat(mergedOptions.printWidth) + "\n" + output)
+        ).toMatchSnapshot();
+      });
+    });
+  } else {
+    test(filename, () => {
+      const output = prettyprint(input, { ...mergedOptions });
+
+      expect(
+        raw(input + "~".repeat(mergedOptions.printWidth) + "\n" + output)
+      ).toMatchSnapshot();
+    });
+  }
+}
 
 function prettyprint(src, options) {
   let result = prettier.format(src, options);
@@ -99,14 +116,6 @@ function prettyprint(src, options) {
 
 function read(filename) {
   return fs.readFileSync(filename, "utf8");
-}
-
-function prepare(content) {
-  return content
-    .replace(/[ \t]/g, (match, offset) => {
-      return "";
-    })
-    .toUpperCase();
 }
 
 /**
