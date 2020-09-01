@@ -53,16 +53,17 @@
     "release": "standard-version",
     "tag": "git push --follow-tags",
     "publish": "npm publish",
+    "pack": "npm pack",
     "---MISC---": "",
     "contributors:check": "all-contributors check",
     "contributors:generate": "all-contributors generate",
-    "link:create": "npm link"
+    "link:create": "npm link ../tds-parsers"
   },
   "peerDependencies": {
     "prettier": "^2.0.0"
   },
   "dependencies": {
-    "@totvs/tds-parsers": "file:../tds-parsers",
+    "@totvs/tds-parsers": "^0.0.2",
     "prettier": "^2.0.0"
   },
   "devDependencies": {
