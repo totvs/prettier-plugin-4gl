@@ -74,9 +74,6 @@
     "jest-watch-typeahead": "^0.6.0",
     "standard-version": "^9.0.0"
   },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
-  },
   "config": {
     "commitizen": {
       "path": "cz-conventional-changelog"
