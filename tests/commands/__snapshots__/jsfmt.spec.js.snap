@@ -1,0 +1,527 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Source call.4gl 1`] = `
+MAIN 
+
+  CALL fgl_winmessage()
+
+  CALL fgl_winmessage("p1")
+
+
+
+
+  CALL fgl_winmessage("p1","p2", "p3")
+  CALL fgl_winmessage(1,2,    3)
+
+end main
+
+function f1() 
+
+  CALL fgl_winmessage() returning var1
+
+  CALL fgl_winmessage() returning var1 , var2
+
+CALL fgl_winmessage() returning var1,var2,var3
+
+end function
+
+function f2() 
+
+  CALL fgl_winmessage() returning var1[ind1]
+
+end function
+
+function f3() 
+
+  CALL fgl_winmessage() returning rec1.var1
+
+  CALL fgl_winmessage() returning rec1.*
+
+end function
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+MAIN 
+
+  CALL fgl_winmessage()
+
+  CALL fgl_winmessage('p1')
+
+
+
+
+  CALL fgl_winmessage('p1', 'p2', 'p3')
+  CALL fgl_winmessage(1, 2, 3)
+
+END MAIN
+
+FUNCTION f1() 
+
+  CALL fgl_winmessage() RETURNING var1
+
+  CALL fgl_winmessage() RETURNING var1 , var2
+
+CALL fgl_winmessage() RETURNING var1,var2,var3
+
+END FUNCTION
+
+FUNCTION f2() 
+
+  CALL fgl_winmessage() RETURNING var1[ind1]
+
+END FUNCTION
+
+FUNCTION f3() 
+
+  CALL fgl_winmessage() RETURNING rec1.var1
+
+  CALL fgl_winmessage() RETURNING rec1.*
+
+END FUNCTION
+
+
+
+`;
+
+exports[`Source define.4gl 1`] = `
+main 
+	define var1 bigint   
+	define var1 byte   
+	define var1 char(100)
+	define var1 character  
+	define var1 date   
+	define var1 datetime  day to day
+	define var1 dec   
+	define var1 decimal(10,2)
+	define var1 decimal(10)
+	define var1 double precision  
+	define var1 dynamic array  
+	define var1 float  
+	define var1 int  
+	define var1 integer  
+	define var1 money  
+	define var1 nchar(100)  
+	define var1 numeric  
+	define var1 nvarchar(100)  
+end main
+
+
+function f2() 
+	define rec1 record
+    var1 bigint
+end record
+end function
+
+function f3() 
+	define rec2 record var1 char(100),
+    var1 character,
+    var1 date,
+    var1 datetime  day to day,
+    var1 dec,
+    var1 decimal(10,2),
+    var1 decimal(10),
+    var1 double precision,
+    var1 float,
+    var1 int,
+    var1 integer,
+    var1 money,
+    var1 nchar(100),
+    var1 numeric,
+    var1 nvarchar(100)
+  end record  
+end function
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+MAIN 
+	DEFINE var1 BIGINT   
+	DEFINE var1 byte   
+	DEFINE var1 CHAR(100)
+	DEFINE var1 CHARACTER  
+	DEFINE var1 date   
+	DEFINE var1 DATETIME  DAY TO DAY
+	DEFINE var1 DEC   
+	DEFINE var1 DECIMAL(10,2)
+	DEFINE var1 DECIMAL(10)
+	DEFINE var1 DOUBLE PRECISION  
+	DEFINE var1 DYNAMIC ARRAY  
+	DEFINE var1 FLOAT  
+	DEFINE var1 INT  
+	DEFINE var1 INTEGER  
+	DEFINE var1 MONEY  
+	DEFINE var1 NCHAR(100)  
+	DEFINE var1 NUMERIC  
+	DEFINE var1 NVARCHAR(100)  
+END MAIN
+
+
+FUNCTION f2() 
+	DEFINE rec1 RECORD
+    var1 BIGINT
+END RECORD
+END FUNCTION
+
+FUNCTION f3() 
+	DEFINE rec2 RECORD var1 CHAR(100), var1 CHARACTER, var1 date, var1 DATETIME  DAY TO DAY, var1 DEC, var1 DECIMAL(10,2), var1 DECIMAL(10), var1 DOUBLE PRECISION, var1 FLOAT, var1 INT, var1 INTEGER, var1 MONEY, var1 NCHAR(100), var1 NUMERIC, var1 NVARCHAR(100)
+  END RECORD  
+END FUNCTION
+
+
+
+`;
+
+exports[`Source define1.4gl 1`] = `
+globals
+define mod char(10)
+end globals
+
+main 
+	--define var1 record like tab1.*
+end main
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+GLOBALS
+DEFINE mod CHAR(10)
+END GLOBALS
+
+MAIN 
+	--define var1 record like tab1.*
+END MAIN
+
+
+`;
+
+exports[`Source define2.4gl 1`] = `
+main 
+	--DEFINE VAR1 record LIKE TAB1.*
+end main
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+MAIN 
+	--DEFINE VAR1 record LIKE TAB1.*
+END MAIN
+
+
+`;
+
+exports[`Source function.4gl 1`] = `
+main
+   
+end main
+
+function f0()
+   
+end function
+
+function f1(p1)
+   
+end function
+
+function f2(p1, p2)
+   
+end function
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+MAIN
+   
+END MAIN
+
+FUNCTION f0()
+   
+END FUNCTION
+
+FUNCTION f1(p1)
+   
+END FUNCTION
+
+FUNCTION f2(p1, p2)
+   
+END FUNCTION
+
+
+`;
+
+exports[`Source if.4gl 1`] = `
+main 
+
+  if a=b then
+      end if
+
+end main
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+MAIN 
+
+  IF < no build process [expression]>b THEN
+      END IF
+
+END MAIN
+
+
+
+`;
+
+exports[`Token call.4gl 1`] = `
+MAIN 
+
+  CALL fgl_winmessage()
+
+  CALL fgl_winmessage("p1")
+
+
+
+
+  CALL fgl_winmessage("p1","p2", "p3")
+  CALL fgl_winmessage(1,2,    3)
+
+end main
+
+function f1() 
+
+  CALL fgl_winmessage() returning var1
+
+  CALL fgl_winmessage() returning var1 , var2
+
+CALL fgl_winmessage() returning var1,var2,var3
+
+end function
+
+function f2() 
+
+  CALL fgl_winmessage() returning var1[ind1]
+
+end function
+
+function f3() 
+
+  CALL fgl_winmessage() returning rec1.var1
+
+  CALL fgl_winmessage() returning rec1.*
+
+end function
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+MAIN 
+
+  CALL fgl_winmessage()
+
+  CALL fgl_winmessage('p1')
+
+
+
+
+  CALL fgl_winmessage('p1','p2', 'p3')
+  CALL fgl_winmessage(1,2,    3)
+
+END MAIN
+
+FUNCTION f1() 
+
+  CALL fgl_winmessage() RETURNINg var1
+
+  CALL fgl_winmessage() RETURNINg var1 , var2
+
+CALL fgl_winmessage() RETURNINg var1,var2,var3
+
+END FUNCTION
+
+FUNCTION f2() 
+
+  CALL fgl_winmessage() RETURNINg var1[INd1]
+
+END FUNCTION
+
+FUNCTION f3() 
+
+  CALL fgl_winmessage() RETURNINg rec1.var1
+
+  CALL fgl_winmessage() RETURNINg rec1.*
+
+END FUNCTION
+
+
+
+`;
+
+exports[`Token define.4gl 1`] = `
+main 
+	define var1 bigint   
+	define var1 byte   
+	define var1 char(100)
+	define var1 character  
+	define var1 date   
+	define var1 datetime  day to day
+	define var1 dec   
+	define var1 decimal(10,2)
+	define var1 decimal(10)
+	define var1 double precision  
+	define var1 dynamic array  
+	define var1 float  
+	define var1 int  
+	define var1 integer  
+	define var1 money  
+	define var1 nchar(100)  
+	define var1 numeric  
+	define var1 nvarchar(100)  
+end main
+
+
+function f2() 
+	define rec1 record
+    var1 bigint
+end record
+end function
+
+function f3() 
+	define rec2 record var1 char(100),
+    var1 character,
+    var1 date,
+    var1 datetime  day to day,
+    var1 dec,
+    var1 decimal(10,2),
+    var1 decimal(10),
+    var1 double precision,
+    var1 float,
+    var1 int,
+    var1 integer,
+    var1 money,
+    var1 nchar(100),
+    var1 numeric,
+    var1 nvarchar(100)
+  end record  
+end function
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+MAIN 
+	DEFINE var1 bigint   
+	DEFINE var1 byte   
+	DEFINE var1 char(100)
+	DEFINE var1 character  
+	DEFINE var1 date   
+	DEFINE var1 datetime  DAY TO DAY
+	DEFINE var1 dec   
+	DEFINE var1 decimal(10,2)
+	DEFINE var1 decimal(10)
+	DEFINE var1 double precision  
+	DEFINE var1 DYNAMIC ARRAY  
+	DEFINE var1 float  
+	DEFINE var1 INt  
+	DEFINE var1 INteger  
+	DEFINE var1 money  
+	DEFINE var1 nchar(100)  
+	DEFINE var1 numeric  
+	DEFINE var1 nvarchar(100)  
+END MAIN
+
+
+FUNCTION f2() 
+	DEFINE rec1 RECORD
+    var1 bigint
+END RECORD
+END FUNCTION
+
+FUNCTION f3() 
+	DEFINE rec2 RECORD var1 char(100),
+    var1 character,
+    var1 date,
+    var1 datetime  DAY TO DAY,
+    var1 dec,
+    var1 decimal(10,2),
+    var1 decimal(10),
+    var1 double precision,
+    var1 float,
+    var1 INt,
+    var1 INteger,
+    var1 money,
+    var1 nchar(100),
+    var1 numeric,
+    var1 nvarchar(100)
+  END RECORD  
+END FUNCTION
+
+
+
+`;
+
+exports[`Token define1.4gl 1`] = `
+globals
+define mod char(10)
+end globals
+
+main 
+	--define var1 record like tab1.*
+end main
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+GLOBALS
+DEFINE MOD char(10)
+END GLOBALS
+
+MAIN 
+	--define var1 record like tab1.*
+END MAIN
+
+
+`;
+
+exports[`Token define2.4gl 1`] = `
+main 
+	--DEFINE VAR1 record LIKE TAB1.*
+end main
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+MAIN 
+	--DEFINE VAR1 record LIKE TAB1.*
+END MAIN
+
+
+`;
+
+exports[`Token function.4gl 1`] = `
+main
+   
+end main
+
+function f0()
+   
+end function
+
+function f1(p1)
+   
+end function
+
+function f2(p1, p2)
+   
+end function
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+MAIN
+   
+END MAIN
+
+FUNCTION f0()
+   
+END FUNCTION
+
+FUNCTION f1(p1)
+   
+END FUNCTION
+
+FUNCTION f2(p1, p2)
+   
+END FUNCTION
+
+
+`;
+
+exports[`Token if.4gl 1`] = `
+main 
+
+  if a=b then
+      end if
+
+end main
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+MAIN 
+
+  IF a=b THEN
+      END IF
+
+END MAIN
+
+
+
+`;

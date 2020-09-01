@@ -1,0 +1,197 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Source builtInVars.4gl 1`] = `
+main
+
+    let x, y = arg_val
+    let x, y = arr_count
+    let x, y = arr_cur
+    let x, y = sqlca
+    
+end main
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+MAIN
+
+    LET x, y = arg_val
+    LET x, y = arr_count
+    LET x, y = arr_cur
+    LET x, y = sqlca
+    
+END MAIN
+
+
+`;
+
+exports[`Source empty_main.4gl 1`] = `
+main
+
+end main
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+MAIN
+
+END MAIN
+
+
+`;
+
+exports[`Source globals.4gl 1`] = `
+globals "abc.txt"
+
+globals
+DEFINE NOME CHAR(50) # abc
+end globals
+
+main
+
+end main
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+GLOBALS 'abc.txt'
+
+GLOBALS
+DEFINE NOME CHAR(50) # abc
+END GLOBALS
+
+MAIN
+
+END MAIN
+
+
+`;
+
+exports[`Source strings.4gl 1`] = `
+main
+
+    let x, y = ''
+    let x, y = 'ABC,DEF'
+    let x, y = '"'
+    let x, y = 'ABC\\'DEF'
+    
+end main
+
+function f1()
+
+    let x, y = ""
+    let x, y = "ABC,DEF"
+    let x, y = "'"
+    let x, y = "ABC\\"DEF"
+    
+end function
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+MAIN
+
+    LET x, y = ''
+    LET x, y = 'ABC,DEF'
+    LET x, y = '"'
+    LET x, y = 'ABC\\'DEF'
+    
+END MAIN
+
+FUNCTION f1()
+
+    LET x, y = ''
+    LET x, y = 'ABC,DEF'
+    LET x, y = '\\''
+    LET x, y = 'ABC"DEF'
+    
+END FUNCTION
+
+
+`;
+
+exports[`Token builtInVars.4gl 1`] = `
+main
+
+    let x, y = arg_val
+    let x, y = arr_count
+    let x, y = arr_cur
+    let x, y = sqlca
+    
+end main
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+MAIN
+
+    LET x, y = < no build process [builtInVar]>
+    LET x, y = < no build process [builtInVar]>
+    LET x, y = arr_cur
+    LET x, y = SQLca
+    
+END MAIN
+
+
+`;
+
+exports[`Token empty_main.4gl 1`] = `
+main
+
+end main
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+MAIN
+
+END MAIN
+
+
+`;
+
+exports[`Token globals.4gl 1`] = `
+globals "abc.txt"
+
+globals
+DEFINE NOME CHAR(50) # abc
+end globals
+
+main
+
+end main
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+GLOBALS 'abc.txt'
+
+GLOBALS
+DEFINE NOME CHAR(50) # abc
+END GLOBALS
+
+MAIN
+
+END MAIN
+
+
+`;
+
+exports[`Token strings.4gl 1`] = `
+main
+
+    let x, y = ''
+    let x, y = 'ABC,DEF'
+    let x, y = '"'
+    let x, y = 'ABC\\'DEF'
+    
+end main
+
+function f1()
+
+    let x, y = ""
+    let x, y = "ABC,DEF"
+    let x, y = "'"
+    let x, y = "ABC\\"DEF"
+    
+end function
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+MAIN
+
+    LET x, y = ''
+    LET x, y = 'ABC,DEF'
+    LET x, y = '"'
+    LET x, y = 'ABC\\'DEF'
+    
+END MAIN
+
+FUNCTION f1()
+
+    LET x, y = ''
+    LET x, y = 'ABC,DEF'
+    LET x, y = '\\''
+    LET x, y = 'ABC"DEF'
+    
+END FUNCTION
+
+
+`;

@@ -1,0 +1,90 @@
+{
+  "name": "@totvs/prettier-plugin-4gl",
+  "displayName": "Prettier Plugin 4GL Formatter",
+  "description": "Extensão para o adicional Prettier, para formatação de código 4GL.",
+  "version": "0.0.2",
+  "publisher": "TOTVS",
+  "author": {
+    "name": "TOTVS",
+    "email": "tecnologia@totvs.com.br"
+  },
+  "license": "MIT",
+  "keywords": [
+    "4gl",
+    "tds",
+    "totvs",
+    "prettier",
+    "plugin",
+    "formatter"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/totvs/prettier-plugin-4gl.git"
+  },
+  "bugs": {
+    "url": "https://github.com/totvs/prettier-plugin-4gl/issues"
+  },
+  "engines": {
+    "node": ">= 8.0.0"
+  },
+  "main": "lib/index.js",
+  "types": "typings/index.d.ts",
+  "files": [
+    "bin/",
+    "lib/",
+    "typings/",
+    "README.md",
+    "LICENSE"
+  ],
+  "bin": {
+    "formatter-4gl": "./bin/formatter-4gl.js"
+  },
+  "scripts": {
+    "clean": "rimraf lib",
+    "build": "tsc -p ./src",
+    "watch": "tsc -p ./src --watch",
+    "prebuild": "npm run clean",
+    "---TEST---": "",
+    "test": "jest",
+    "test:snapshot": "npm run test -- --update-snapshot ",
+    "test:coverage": "npm run test -- --coverage",
+    "pretest": "npm run build",
+    "---RELEASE---": "",
+    "release": "standard-version",
+    "tag": "git push --follow-tags",
+    "publish": "npm publish",
+    "pack": "npm pack",
+    "---MISC---": "",
+    "contributors:check": "all-contributors check",
+    "contributors:generate": "all-contributors generate",
+    "link:create": "npm link ../tds-parsers"
+  },
+  "peerDependencies": {
+    "prettier": "^2.0.0"
+  },
+  "dependencies": {
+    "@totvs/tds-parsers": "^0.0.2",
+    "prettier": "^2.0.0"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^9.1.2",
+    "@commitlint/config-conventional": "^10.0.0",
+    "husky": "^4.2.5",
+    "jest": "^26.4.1",
+    "jest-watch-typeahead": "^0.6.0",
+    "standard-version": "^9.0.0"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  }
+}
