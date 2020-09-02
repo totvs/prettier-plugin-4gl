@@ -19,7 +19,7 @@ end main
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 --@format
 MAIN 
-  DISPLAY 'hello '
+  DISPLAY "hello "
 END MAIN
 
 
@@ -44,7 +44,7 @@ end main
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 --@format
 MAIN 
-  DISPLAY 'hello '
+  DISPLAY "hello "
 END MAIN
 
 

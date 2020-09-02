@@ -8,7 +8,7 @@ module.exports = {
       since: "0.0.0",
       category: CATEGORY_4GL,
       type: "choice",
-      choices: [{ value: "upper" }, { value: "lower" }, { value: "none" }],
+      choices: [{ value: "upper" }, { value: "lower" }, { value: "ignore" }],
       default: "upper",
       description: "Put keywords to upper or lowser case. (4GL)",
     },
@@ -19,9 +19,9 @@ module.exports = {
       choices: [
         { value: "double-quotes" },
         { value: "single-quotes" },
-        { value: "none" },
+        { value: "ignore" },
       ],
-      default: "single-quotes",
+      default: "ignore",
       description: "Start and end strings with quotes. (4GL)",
     },
     formatNumber: {

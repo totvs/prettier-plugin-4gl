@@ -14,6 +14,8 @@ npm install @totvs/prettier-plugin-4gl --save-dev
 
 ## Uso e opções
 
+### Opções
+
 -V, --version output the version number
 
 -v, --verbose detalha a execução (default: true)

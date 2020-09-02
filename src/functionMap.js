@@ -67,13 +67,13 @@ function buildString(path, print, stringOption) {
   const value = node.value;
   let result = undefined;
 
-  if (stringOption === "none") {
+  if (stringOption === "ignore") {
     result = value.toString();
   } else if (stringOption === "single-quotes") {
-    result = util.makeString(value.substring(1, value.length -1), "'", true);
+    result = util.makeString(value.substring(1, value.length - 1), "'", true);
   } else {
     //double-quotes
-    result = util.makeString(value.substring(1, value.length -1), "\"", true);
+    result = util.makeString(value.substring(1, value.length - 1), '"', true);
   }
 
   return result;
