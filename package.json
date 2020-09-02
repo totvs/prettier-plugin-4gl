@@ -1,7 +1,7 @@
 {
   "name": "@totvs/prettier-plugin-4gl",
   "displayName": "Prettier Plugin 4GL Formatter",
-  "description": "Extensão para o adicional Prettier, para formatação de código 4GL.",
+  "description": "Extensão para o Prettier, para formatação de código 4GL.",
   "version": "0.0.2",
   "publisher": "TOTVS",
   "author": {
@@ -37,13 +37,15 @@
     "LICENSE"
   ],
   "bin": {
-    "formatter-4gl": "./bin/formatter-4gl.js"
+    "formatter-4gl": "./bin/cli.js"
   },
   "scripts": {
     "clean": "rimraf lib",
     "build": "tsc -p ./src",
     "watch": "tsc -p ./src --watch",
     "prebuild": "npm run clean",
+    "---CLI---": "",
+    "cli:build": "tsc -p ./cli",
     "---TEST---": "",
     "test": "jest",
     "test:snapshot": "npm run test -- --update-snapshot ",
@@ -63,14 +65,15 @@
     "prettier": "^2.0.0"
   },
   "dependencies": {
-    "@totvs/tds-parsers": "^0.0.2",
-    "prettier": "^2.0.0"
+    "@totvs/tds-parsers": "file:../tds-parsers",
+    "commander": "^6.1.0",
+    "prettier": "^2.1.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^9.1.2",
     "@commitlint/config-conventional": "^10.0.0",
     "husky": "^4.2.5",
-    "jest": "^26.4.1",
+    "jest": "^26.4.2",
     "jest-watch-typeahead": "^0.6.0",
     "standard-version": "^9.0.0"
   },
