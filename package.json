@@ -36,9 +36,6 @@
     "README.md",
     "LICENSE"
   ],
-  "bin": {
-    "formatter-4gl": "./bin/cli.js"
-  },
   "scripts": {
     "clean": "rimraf ./lib",
     "build": "tsc -p ./src",
