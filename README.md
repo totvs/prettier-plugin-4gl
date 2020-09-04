@@ -9,7 +9,7 @@
 ## Instalação
 
 ```
-npm install @totvs/prettier-plugin-4gl --save-dev
+npm install prettier-plugin-4gl --save-dev
 ```
 
 ## Uso e opções
