@@ -2,7 +2,7 @@
   "name": "prettier-plugin-4gl",
   "displayName": "Prettier Plugin 4GL Formatter",
   "description": "Extensão para o Prettier, para formatação de código 4GL.",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "publisher": "TOTVS",
   "author": {
     "name": "TOTVS",
