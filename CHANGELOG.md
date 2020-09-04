@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.3](https://github.com/totvs/prettier-plugin-4gl/compare/v0.0.2...v0.0.3) (2020-09-04)
+
+
+### Features
+
+* implementação inicial de CLI ([cbc52de](https://github.com/totvs/prettier-plugin-4gl/commit/cbc52de4916f0e7ff3750ada5e52ffd42995d924))
+
+
+### Bug Fixes
+
+* ajustes de parametrização ([1f89b91](https://github.com/totvs/prettier-plugin-4gl/commit/1f89b91d3d4dbef0931714cb3641650df866d090))
+* correção de depêndencia ([8d60f3f](https://github.com/totvs/prettier-plugin-4gl/commit/8d60f3f239a09ee0a2815771141e0412334d0f6d))
+* correção de formatação de diversos blocos e adição de testes ([032891c](https://github.com/totvs/prettier-plugin-4gl/commit/032891cb6a7e82ad4b9f4e4cb03b264cd5579264))
+* correção de local de publicação ([051e871](https://github.com/totvs/prettier-plugin-4gl/commit/051e87143762b1cb52f8e91717efe7ba7c451354))
+* correção de testes e na gramática ([03fc8bd](https://github.com/totvs/prettier-plugin-4gl/commit/03fc8bdca1a356d4257553adac15db7eebeb4591))
+* correção na geração do fonte, testes e configurações ([fdeb970](https://github.com/totvs/prettier-plugin-4gl/commit/fdeb970b46afe9a521e1cc1129c655500075d9ae))
+* correção na gramática, procedimentos de testes e efetuado separação de index.js em mais fontes ([82f9047](https://github.com/totvs/prettier-plugin-4gl/commit/82f9047ecba305912fe89ca0b3bd5d1b7e9e77c0))
+* correção no processo de geração AST ([ffe4cd4](https://github.com/totvs/prettier-plugin-4gl/commit/ffe4cd48bcff08724ed7eca764588345fff88a1d))
+* correção nos processos de formatação ([42bf869](https://github.com/totvs/prettier-plugin-4gl/commit/42bf8697f3db43d52ce65b3236bbb0a9ae0f9ada))
+* geração dos fontes formatados ([1de9cb2](https://github.com/totvs/prettier-plugin-4gl/commit/1de9cb2e603848a9f8a1f6ed4fc1b217dbeb336e))
+* implementação de mapa de funções para formatação ([8d2b514](https://github.com/totvs/prettier-plugin-4gl/commit/8d2b514a989925738360e634b137cb75125fc946))
+
 ### 0.0.2 (2020-08-11)
 
 
