@@ -6,7 +6,7 @@ display "hello "
 end main
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 MAIN 
-DISPLAY 'hello '
+DISPLAY "hello "
 END MAIN
 
 
@@ -27,9 +27,9 @@ MAIN
 
 DEFINE nome CHAR(50) # abc
       DEFINE big_field CHAR(1234) # abc
-PROMPT 'digite seu nome : ' FOR nome
+PROMPT "digite seu nome : " FOR nome
 
-              CALL fgl_winmessage('hello', nome, 'info')
+              CALL fgl_winmessage("hello", nome, "info")
 
 END MAIN
 
@@ -47,7 +47,7 @@ display "hello "
 end main
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 MAIN 
-DISPLAY 'hello '
+DISPLAY "hello "
 END MAIN
 
 
@@ -68,9 +68,9 @@ MAIN
 
 DEFINE NOme char(50) # abc
       DEFINE big_field char(1234) # abc
-PROMPT 'digite seu nome : ' FOR NOme
+PROMPT "digite seu nome : " FOR NOme
 
-              CALL fgl_winmessage( 'hello',NOme, 'info')
+              CALL fgl_winmessage( "hello",NOme, "info")
 
 END MAIN
 

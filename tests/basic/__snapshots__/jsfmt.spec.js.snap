@@ -45,7 +45,7 @@ main
 
 end main
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-GLOBALS 'abc.txt'
+GLOBALS "abc.txt"
 
 GLOBALS
 DEFINE NOME CHAR(50) # abc
@@ -88,10 +88,10 @@ END MAIN
 
 FUNCTION f1()
 
-    LET x, y = ''
-    LET x, y = 'ABC,DEF'
-    LET x, y = '\\''
-    LET x, y = 'ABC"DEF'
+    LET x, y = ""
+    LET x, y = "ABC,DEF"
+    LET x, y = "'"
+    LET x, y = "ABC\\"DEF"
     
 END FUNCTION
 
@@ -143,7 +143,7 @@ main
 
 end main
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-GLOBALS 'abc.txt'
+GLOBALS "abc.txt"
 
 GLOBALS
 DEFINE NOME CHAR(50) # abc
@@ -186,10 +186,10 @@ END MAIN
 
 FUNCTION f1()
 
-    LET x, y = ''
-    LET x, y = 'ABC,DEF'
-    LET x, y = '\\''
-    LET x, y = 'ABC"DEF'
+    LET x, y = ""
+    LET x, y = "ABC,DEF"
+    LET x, y = "'"
+    LET x, y = "ABC\\"DEF"
     
 END FUNCTION
 

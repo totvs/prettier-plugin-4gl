@@ -1,16 +1,59 @@
 # Prettier 4GL Plugin
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+
 [![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## Instalação
 
-## Uso
+```
+npm install prettier-plugin-4gl --save-dev
+```
+
+## Uso e opções
+
+### Opções
+
+-V, --version output the version number
+
+-v, --verbose detalha a execução (default: true)
+
+--no-banner omite a abertura
+
+-h, --help display help for command
 
 ### Linha de comando
 
+```
+npm formatter-4gl [options]
+```
+
 ### Embarcado
+
+Nesse modo informe as opções usando o nome longo da opção sem o `--`.
+
+```Typescript
+  const options: any = { ... } //Prettier Options and Formatter 4GL Options*
+  //Full source
+  let result: any = prettier.format(content, {
+    parser: "4gl-source",
+    ...options,
+  });
+```
+
+```Typescript
+  const options: any = { ..., //Prettier Options and Formatter 4GL Options*
+    rangeStart: <start offset>,
+    rangeEnd: <end offset>
+  }
+  //Range source
+  let result: any = prettier.format(content, {
+    parser: "4gl-token",
+    ...options,
+  });
+```
 
 ## Mantenedor
 
@@ -33,4 +76,5 @@
 
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
