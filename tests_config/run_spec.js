@@ -49,9 +49,9 @@ function run_spec(dirname, options) {
         processTest(mergedOptions, filename, input);
       });
 
-      describe("Token", () => {
-        processTest({ ...mergedOptions, parser: "4gl-token" }, filename, input);
-      });
+      // describe("Token", () => {
+      //   processTest({ ...mergedOptions, parser: "4gl-token" }, filename, input);
+      // });
     }
   });
 }
@@ -61,7 +61,7 @@ global.run_spec = run_spec;
 function processTest(mergedOptions, filename, input) {
   if (path.dirname(mergedOptions.filepath).endsWith("range")) {
     //Range format not support: apparent prettier restriction
-    describe.skip("Uso de RANGE", () => {
+    describe("Uso de RANGE", () => {
       test(filename, () => {
         const output = prettyprint(input, { ...mergedOptions });
 

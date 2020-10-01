@@ -1,4 +1,4 @@
-const tds_parser = require("tds-parsers/lib").parser;
+const tds_parser = require("tds-parsers").parser;
 
 function parser(text, api, options) {
   try {

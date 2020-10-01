@@ -16,18 +16,67 @@ npm install prettier-plugin-4gl --save-dev
 
 ### Opções
 
--V, --version output the version number
+#### Prettier
 
--v, --verbose detalha a execução (default: true)
+| Chave                | Uso                                                                                 |
+| -------------------- | ----------------------------------------------------------------------------------- |
+| -V, --version        | Apresenta o número da versão.                                                       |
+| -v, --verbose        | Detalha a execução.                                                                 |
+|                      | Padrão: true                                                                        |
+| -h, --help           | Exibir texto de ajuda para o comando                                                |
+| --no-bracket-spacing | Não imprima espaços entre colchetes.                                                |
+|                      | Padrão: true                                                                        |
+| --tab-width <int>    | Número de espaços por nível de indentação.                                          |
+|                      | Padrão: 2                                                                           |
+| --use-tabs           | Recuar com tabulações em vez de espaços.                                            |
+|                      | Padrão: false                                                                       |
+| --insert-pragma      | Insere '@format' no primeiro comentário docblock do arquivo.                        |
+|                      | Padrão false                                                                        |
+| --loglevel <<silent  | Nível de registros relatar.                                                         |
+| \| error \| warn     | Padrão: log                                                                         |
+| \| log \| debug>     |                                                                                     |
+| --require-pragma     | Requer que '@prettier' ou '@format' esteja presente no primeiro bloco de comentário |
+|                      | do arquivo para que seja formatado.                                                 |
+|                      | Padrão: false                                                                       |
 
---no-banner omite a abertura
+#### AdvPL
 
--h, --help display help for command
+#### 4GL
+
+| Chave                           | Uso                                                    |
+| ------------------------------- | ------------------------------------------------------ |
+| --align-fields                  | Alinhe a definição do campo.                           |
+|                                 | Padrão: true                                           |
+| --format-number                 | Formartar números, por exemplo 1234 = 1,234.           |
+|                                 | Padrão: false                                          |
+| --keywords-case <upper \| lower | Coloque as palavras-chave em maiúsculas ou minúsculas. |
+| \| ignore>                      | Padrão: upper                                          |
+| --operator-spacing              | Espaçamento em operadores.                             |
+|                                 | Padrão: true                                           |
+| --string-style <double-quotes   | Start and end strings with quotes.                     |
+| \| single-quotes \| ignore>     | Padrão: ignore                                         |
 
 ### Linha de comando
 
 ```
-npm formatter-4gl [options]
+npm ????????????????????????  [options]
+```
+
+### VS-Code
+
+Nesse modo informe as opções usando o nome longo da opção sem o `--` e as letras precedidas por '-' em maiúsculas, na sessão `4gl.formatter` ou `advpl.formatter` no arquivo `settings.json`.
+
+```JSON
+{
+  ...
+  "4gl.formatter": {
+    "keywordsCase": "upper",
+    "stringStyle": "ignore",
+    "formatNumber": false,
+    "operatorSpacing": true,
+    "alignFields": true,
+  }
+  ...
 ```
 
 ### Embarcado

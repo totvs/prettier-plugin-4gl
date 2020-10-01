@@ -14,10 +14,6 @@ const {
 
 const { stripTrailingHardline, removeLines } = require("prettier").doc.utils;
 
-const options4GLDef = require("./config").options;
-const options4GL = {};
-const OPERATORS_WHITOUT_SPACING = ["."];
-
 function buildWhitespace(path, print, { tabWidth, useTabs }) {
   const node = path.getValue();
   let value = node.value;
@@ -48,28 +44,27 @@ function buildCommand(path, print) {
   return concat(values);
 }
 
-function buildKeyword(path, print, keywordsCase) {
+function buildKeyword(path, print, options) {
   const node = path.getValue();
   let value = node.value;
 
-  if (keywordsCase === "upper") {
-    1;
+  if (options.keywordsCase === "upper") {
     value = value.toUpperCase();
-  } else if (keywordsCase === "lower") {
+  } else if (options.keywordsCase === "lower") {
     value = value.toLowerCase();
   }
 
   return value;
 }
 
-function buildString(path, print, stringOption) {
+function buildString(path, print, options) {
   const node = path.getValue();
   const value = node.value;
   let result = undefined;
 
-  if (stringOption === "ignore") {
+  if (options.stringOption === "ignore") {
     result = value.toString();
-  } else if (stringOption === "single-quotes") {
+  } else if (options.stringOption === "single-quotes") {
     result = util.makeString(value.substring(1, value.length - 1), "'", true);
   } else {
     //double-quotes
@@ -79,36 +74,32 @@ function buildString(path, print, stringOption) {
   return result;
 }
 
-function buildBracket(path, print, bracketSpacing) {
+function buildBracket(path, print, options) {
   const node = path.getValue();
   const value = node.value;
   let result = value;
 
-  // if (bracketSpacing) {
+  // if (options.bracketSpacing) {
   //   result = concat([" ", value, " "]);
   // }
 
   return result;
 }
 
-function buildOperator(path, print, operatorSpacing) {
+function buildOperator(path, print, options) {
   const node = path.getValue();
   const value = node.value;
   let result = value;
-
-  // if (operatorSpacing && !OPERATORS_WHITOUT_SPACING.includes(value)) {
-  //   result = concat([" ", value, " "]);
-  // }
-
+  //options.operatorSpacing
   return result;
 }
 
-function buildNumber(path, print, formatNumber) {
+function buildNumber(path, print, options) {
   const node = path.getValue();
   const value = node.value;
   let result = undefined;
 
-  if (formatNumber) {
+  if (options.formatNumber) {
     result = value.toLocaleString("en");
   } else {
     result = value.toString();
@@ -119,39 +110,38 @@ function buildNumber(path, print, formatNumber) {
 
 let _builderMap;
 
-function builderMap(options) {
+function builderMap(_options) {
+  const options = _options;
   const map = {};
+  const options4GLDef = require("./config").options;
 
   Object.keys(options4GLDef).forEach((key) => {
-    if (options[key]) {
-      options4GL[key] = options[key];
+    if (options[key] == undefined) {
+      options[key] = options4GL[key];
     }
   });
 
-  map.program = (path, print) => concat(path.map(print, "value"));
-  map.globals = (path, print) => concat(path.map(print, "value"));
-  map.main = (path, print) => concat(path.map(print, "value"));
-  map.function = (path, print) => concat(path.map(print, "value"));
+  map.block = (path, print) => buildBlock(path, print, options);
+  map.bracket = (path, print) => buildBracket(path, print, options);
+  map.close_operator = (path, print) => buildOperator(path, print, options);
+  map.command = (path, print) => buildCommand(path, print, options);
   map.comment = (path, print) => concat(path.map(print, "value"));
-  map.whitespace = (path, print) =>
-    buildWhitespace(path, print, {
-      tabWidth: options.tabWidth,
-      useTabs: options.useTabs,
-    });
-  map.keyword = (path, print) =>
-    buildKeyword(path, print, options4GL.keywordsCase);
-  map.block = (path, print) => buildBlock(path, print);
-  map.command = (path, print) => buildCommand(path, print);
-  map.string = (path, print) =>
-    buildString(path, print, options4GL.stringStyle);
+  map.double_operator = (path, print) => buildOperator(path, print, options);
+  map.function = (path, print) => buildBlock(path, print, options);
+  map.globals = (path, print) => concat(path.map(print, "value"));
   map.identifier = (path, print) => path.call(print, "value");
-  map.bracket = (path, print) =>
-    buildBracket(path, print, options.bracketSpacing);
-  map.number = (path, print) => buildNumber(path, print, options.formatNumber);
-  map.variable = (path, print) => path.call(print, "value");
-  map.operator = (path, print) =>
-    buildOperator(path, print, options.operatorSpacing);
+  map.keyword = (path, print) => buildKeyword(path, print, options);
   map.list = (path, print) => join(", ", path.map(print, "value"));
+  map.main = (path, print) => buildBlock(path, print, options);
+  map.number = (path, print) => buildNumber(path, print, options);
+  map.open_operator = (path, print) => buildOperator(path, print, options);
+  map.operator = (path, print) => buildOperator(path, print, options);
+  map.program = (path, print) => concat(path.map(print, "value"));
+  map.string = (path, print) => buildString(path, print, options);
+  map.whitespace = (path, print) => buildWhitespace(path, print, options);
+  map.variable = (path, print) => path.call(print, "value");
+  map.constant = (path, print) => path.map(print, "value");
+  map.expression = (path, print) => path.map(print, "value");
 
   return map;
 }

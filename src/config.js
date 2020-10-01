@@ -38,5 +38,12 @@ module.exports = {
       default: true,
       description: "Spacing in operators. (4GL)",
     },
+    alignFields: {
+      since: "0.0.0",
+      category: CATEGORY_4GL,
+      type: "boolean",
+      default: true,
+      description: "Align field definition. (4GL)",
+    },
   },
 };

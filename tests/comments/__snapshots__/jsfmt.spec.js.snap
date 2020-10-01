@@ -27,61 +27,13 @@ exports[`Source comment.4gl 1`] = `
 # linha 2
 # linha 3
 
---linha A
---linha B
+-linha A
+-linha B
 
---linha A1
+-linha A1
 
---linha B2
---linha B3
-
-{ bloco comentado de uma linha }
-
-{ 
-    bloco 
-    comentado 
-    de 
-    varias
-    linhas 
-}
-
-
-`;
-
-exports[`Token comment.4gl 1`] = `
-# linha 1
-# linha 2
-# linha 3
-
---linha A
---linha B
-
---linha A1
-
---linha B2
---linha B3
-
-{ bloco comentado de uma linha }
-
-{ 
-    bloco 
-    comentado 
-    de 
-    varias
-    linhas 
-}
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# linha 1
-# linha 2
-# linha 3
-
---linha A
---linha B
-
---linha A1
-
---linha B2
---linha B3
+-linha B2
+-linha B3
 
 { bloco comentado de uma linha }
 

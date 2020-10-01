@@ -37,10 +37,10 @@
     "LICENSE"
   ],
   "bin": {
-    "formatter-4gl": "./bin/cli.js"
+    "formatter-4gl": "./bin/cli/formatter-4gl.js"
   },
   "scripts": {
-    "clean": "rimraf ./lib",
+    "clean": "rimraf ./lib && rimraf ./typings",
     "build": "tsc -p ./src",
     "watch": "tsc -p ./src --watch",
     "prebuild": "npm run clean",
@@ -49,7 +49,7 @@
     "build:cli": "tsc -p ./cli",
     "prebuild:cli": "npm run clean:cli",
     "---TEST---": "",
-    "test": "jest",
+    "test": "jest --runInBand -t hello2.4gl",
     "test:snapshot": "npm run test -- --update-snapshot ",
     "test:coverage": "npm run test -- --coverage",
     "pretest": "npm run build",
@@ -62,22 +62,22 @@
     "---MISC---": "",
     "contributors:check": "all-contributors check",
     "contributors:generate": "all-contributors generate",
-    "link:create": "npm link ../tds-parsers"
+    "link:tds-parsers": "npm link ../tds-parsers --force"
   },
   "peerDependencies": {
     "prettier": "^2.0.0"
   },
   "dependencies": {
-    "tds-parsers": "^0.0.3",
     "commander": "^6.1.0",
-    "prettier": "^2.1.1"
+    "prettier": "^2.1.2",
+    "tds-parsers": "^0.0.3"
   },
   "devDependencies": {
-    "@commitlint/cli": "^9.1.2",
-    "@commitlint/config-conventional": "^10.0.0",
-    "husky": "^4.2.5",
+    "@commitlint/cli": "^11.0.0",
+    "@commitlint/config-conventional": "^11.0.0",
+    "husky": "^4.3.0",
     "jest": "^26.4.2",
-    "jest-watch-typeahead": "^0.6.0",
+    "jest-watch-typeahead": "^0.6.1",
     "standard-version": "^9.0.0"
   },
   "config": {
