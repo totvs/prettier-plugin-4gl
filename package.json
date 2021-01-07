@@ -36,9 +36,6 @@
     "README.md",
     "LICENSE"
   ],
-  "bin": {
-    "formatter-4gl": "./bin/cli/formatter-4gl.js"
-  },
   "scripts": {
     "clean": "rimraf ./lib && rimraf ./typings",
     "build": "tsc -p ./src",
@@ -57,7 +54,6 @@
     "release": "standard-version",
     "tag": "git push --follow-tags",
     "publish": "npm publish",
-    "pack": "npm pack",
     "prepack": "npm run build:cli && npm run build",
     "---MISC---": "",
     "contributors:check": "all-contributors check",
