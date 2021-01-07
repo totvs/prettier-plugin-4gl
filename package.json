@@ -2,7 +2,7 @@
   "name": "prettier-plugin-4gl",
   "displayName": "Prettier Plugin 4GL Formatter",
   "description": "Extensão Prettier para formatação de código 4GL.",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "publisher": "TOTVS",
   "author": {
     "name": "TOTVS",
@@ -70,7 +70,7 @@
   "dependencies": {
     "commander": "^6.2.1",
     "prettier": "^2.2.1",
-    "tds-parsers": "^0.0.3"
+    "tds-parsers": "^0.0.4"
   },
   "devDependencies": {
     "@commitlint/cli": "^11.0.0",

@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.5](https://github.com/totvs/prettier-plugin-4gl/compare/v0.0.3...v0.0.5) (2021-01-07)
+
+
+### Features
+
+* implementação da opção "alignFields" e correções na formatação ([6ae5f79](https://github.com/totvs/prettier-plugin-4gl/commit/6ae5f796ac2d0d33df2a485bc961b893c95491cd))
+
+
+### Bug Fixes
+
+* ajustes de formatação ([1895b87](https://github.com/totvs/prettier-plugin-4gl/commit/1895b87e649b7c82e730627942fe5fe3cf54bf8f))
+
 ### [0.0.3](https://github.com/totvs/prettier-plugin-4gl/compare/v0.0.2...v0.0.3) (2020-09-04)
 
 
