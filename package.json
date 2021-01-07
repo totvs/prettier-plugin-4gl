@@ -2,7 +2,7 @@
   "name": "prettier-plugin-4gl",
   "displayName": "Prettier Plugin 4GL Formatter",
   "description": "Extensão Prettier para formatação de código 4GL.",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "publisher": "TOTVS",
   "author": {
     "name": "TOTVS",
@@ -53,7 +53,7 @@
     "---RELEASE---": "",
     "release": "standard-version",
     "tag": "git push --follow-tags",
-    "publish": "npm publish",
+    "to_publish": "npm publish",
     "prepack": "npm run build:cli && npm run build",
     "---MISC---": "",
     "contributors:check": "all-contributors check",
