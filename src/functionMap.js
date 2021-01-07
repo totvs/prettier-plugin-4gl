@@ -1,4 +1,5 @@
 const { util } = require("prettier");
+//const { printDocToDebug } = require("prettier").doc.debug;
 
 const {
   concat,
@@ -7,8 +8,10 @@ const {
   ifBreak,
   group,
   hardline,
+  softline,
   fill,
   indent,
+  dedent,
   trim,
 } = require("prettier").doc.builders;
 
@@ -18,30 +21,36 @@ function buildWhitespace(path, print, { tabWidth, useTabs }) {
   const node = path.getValue();
   let value = node.value;
 
-  if (useTabs) {
+  if (value.startsWith("\n")) {
+    value = softline;
+  } else if (useTabs) {
     value = value.replace(" ".repeat(tabWidth), "\t");
   } else {
     value = value.replace(/\\t/g, " ".repeat(tabWidth));
   }
 
-  value = stripTrailingHardline(concat(value));
-
   return value;
+}
+
+function buildFunction(path, print, options) {
+  const node = path.getValue();
+  const value = path.map(print, "value");
+
+  return concat(value);
 }
 
 function buildBlock(path, print) {
   const node = path.getValue();
   const value = path.map(print, "value");
-  const values = concat(value);
 
-  return indent(values);
+  return concat(value);
 }
 
 function buildCommand(path, print) {
   const node = path.getValue();
   const values = path.map(print, "value");
 
-  return concat(values);
+  return concat([trim, ...values]);
 }
 
 function buildKeyword(path, print, options) {
@@ -127,12 +136,12 @@ function builderMap(_options) {
   map.command = (path, print) => buildCommand(path, print, options);
   map.comment = (path, print) => concat(path.map(print, "value"));
   map.double_operator = (path, print) => buildOperator(path, print, options);
-  map.function = (path, print) => buildBlock(path, print, options);
+  map.function = (path, print) => buildFunction(path, print, options);
   map.globals = (path, print) => concat(path.map(print, "value"));
   map.identifier = (path, print) => path.call(print, "value");
   map.keyword = (path, print) => buildKeyword(path, print, options);
   map.list = (path, print) => join(", ", path.map(print, "value"));
-  map.main = (path, print) => buildBlock(path, print, options);
+  map.main = (path, print) => buildFunction(path, print, options);
   map.number = (path, print) => buildNumber(path, print, options);
   map.open_operator = (path, print) => buildOperator(path, print, options);
   map.operator = (path, print) => buildOperator(path, print, options);

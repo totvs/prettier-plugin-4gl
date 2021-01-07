@@ -73,8 +73,7 @@ Nesse modo informe as opções usando o nome longo da opção sem o `--` e as le
     "keywordsCase": "upper",
     "stringStyle": "ignore",
     "formatNumber": false,
-    "operatorSpacing": true,
-    "alignFields": true,
+    "operatorSpacing": true
   }
   ...
 ```
