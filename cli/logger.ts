@@ -1,13 +1,21 @@
-const chalk = require("chalk");
-const program = require("commander");
-const chalkRaw = new chalk.Instance({ raw: ["bold", {}], level: 0 });
+import { IAppInfo } from "./interfaces";
+
+import chalk = require("chalk");
 
 type Color = (...text: string[]) => string;
 
 let _bundleProgressBar: any;
 let _oraSpinner: any;
-
 let _printNewLineBeforeNextLog = false;
+
+let options = {
+  verbose: false,
+  showBanner: true,
+  nonInteractive: false,
+  banner: false,
+  appInfo: {} as IAppInfo
+};
+
 
 // const output = fs.createWriteStream('./stdout.log');
 // const errorOutput = fs.createWriteStream('./stderr.log');
@@ -26,16 +34,22 @@ function _maybePrintNewLine() {
 }
 
 function consoleLog(...args: any[]) {
+  logger.showBanner();
+
   _maybePrintNewLine();
   console.log(...args);
 }
 
 function consoleWarn(...args: any[]) {
+  logger.showBanner();
+
   _maybePrintNewLine();
   console.log(...args);
 }
 
 function consoleError(...args: any[]) {
+  logger.showBanner();
+
   _maybePrintNewLine();
   console.log(...args);
 }
@@ -58,36 +72,22 @@ function respectProgressBars(commitLogs: () => void) {
   }
 }
 
-function getPrefix(chalkColor: Color) {
-  return chalkColor(`[${new Date().toTimeString().slice(0, 8)}]`);
-}
+let oldColor: Color;
 
-function withPrefixAndTextColor(
-  args: any[],
-  chalkColor: Color = logger.chalk.gray
-) {
-  if (program.nonInteractive) {
-    return [getPrefix(chalkColor), ...args.map((arg) => arg)];
+function getPrefix(chalkColor: Color) {
+  if (chalkColor !== oldColor) {
+    oldColor = chalkColor;
+    return chalkColor(`[${new Date().toTimeString().slice(0, 8)}]`); 
   } else {
-    return args.map((arg) => arg);
+    return chalkColor(' '.repeat(10)); 
   }
 }
 
 function withPrefix(args: any[], chalkColor = logger.chalk.gray) {
-  if (program.nonInteractive) {
-    return [getPrefix(chalkColor), ...args];
-  } else {
-    return args;
-  }
-}
-
-function adjustRaw() {
-  logger.chalk = logger.config.raw ? chalkRaw : chalk;
+  return [getPrefix(chalkColor), ...args.map((arg) => chalkColor(arg))];
 }
 
 function logger(...args: any[]) {
-  adjustRaw();
-
   respectProgressBars(() => {
     consoleLog(...withPrefix(args));
   });
@@ -110,31 +110,27 @@ logger.printNewLineBeforeNextLog = function printNewLineBeforeNextLog() {
 };
 
 logger.error = function error(...args: any[]) {
-  adjustRaw();
-
   respectProgressBars(() => {
-    consoleError(...withPrefixAndTextColor(args, logger.chalk.red));
+    consoleError(...withPrefix(args, logger.chalk.red));
   });
 };
 
 logger.warn = function warn(...args: any[]) {
-  adjustRaw();
 
   respectProgressBars(() => {
-    consoleWarn(...withPrefixAndTextColor(args, logger.chalk.yellow));
+    consoleWarn(...withPrefix(args, logger.chalk.yellow));
   });
 };
 
 logger.gray = (...args: any[]) => {
-  adjustRaw();
 
   respectProgressBars(() => {
-    consoleLog(...withPrefixAndTextColor(args));
+    consoleLog(...withPrefix(args));
   });
 };
 
 logger.verbose = (text: string | string[], args?: any) => {
-  if (!logger.config.verboseEnable) {
+  if (!options.verbose) {
     return;
   }
 
@@ -150,34 +146,28 @@ logger.verbose = (text: string | string[], args?: any) => {
 
 logger.chalk = chalk;
 
-logger.config = {
-  raw: false,
-  verboseEnable: false,
-  showSplash: false,
-};
-
-export interface IAppInfo {
-  name: string;
-  version: string;
-  description: string;
-  url: string;
+logger.setConfig = (config: {}) => {
+  options = { ...options, ...config};
 }
 
-function appText(appInfo: IAppInfo): string[] {
+function appText(): string[] {
+  const appInfo: IAppInfo = options.appInfo;
+  const b = logger.chalk.bold;
+
   return [
-    `${logger.chalk.bold("TDS")} - ${appInfo.name}`,
-    `Version: [${appInfo.version}]`,
-    `${appInfo.description}`,
-    `See ${appInfo.url}`,
+    `${b("TDS")} - ${b(appInfo.name)} - ${appInfo.description}`,
+    `Version: [${appInfo.version}] ${appInfo.url}`,
   ];
 }
 
-function banner(appInfo: IAppInfo): string[] {
+function banner(): string[] {
+  const appInfo: IAppInfo = options.appInfo;
+
   const b = logger.chalk.bold;
   /* prettier-ignore-start */
   return [
     "---------------------------v---------------------------------------------------",
-    "   //////  ////    //////  |  TOTVS Developer Studio: " + appInfo.name,
+    "   //////  ////    //////  |  " + b(`TOTVS Developer Studio: ${appInfo.name}`),
     "    //    //  //  //       |  Version " + appInfo.version,
     "   //    //  //  //////    |  TOTVS Technology",
     "  //    //  //      //     |  " + appInfo.description,
@@ -187,15 +177,17 @@ function banner(appInfo: IAppInfo): string[] {
   /* prettier-ignore-end */
 }
 
-logger.showBanner = (appInfo: IAppInfo) => {
-  adjustRaw();
+logger.showBanner = () => {
+  if (options.banner) {
+    return;
+  }
+  
+  options.banner = true;
 
-  const description = appInfo.description;
-
-  if (!logger.config.showSplash) {
-    appText(appInfo).forEach((line: string) => logger.gray(line));
+  if (!options.showBanner) {
+    appText().forEach((line: string) => logger.gray(line));
   } else {
-    banner(appInfo).forEach((line: string) => logger.gray(line));
+    banner().forEach((line: string) => logger.gray(line));
   }
 };
 

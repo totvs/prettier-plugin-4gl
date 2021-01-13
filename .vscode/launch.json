@@ -2,20 +2,26 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Debug Program",
+      "program": "${workspaceFolder}/bin/cli/cli.js",
+      "request": "launch",
+      "args": ["--no-banner", "format", "e:\\4gl\\**\\*.4gl"],
+      "type": "node",
+      "preLaunchTask": "npm:build:cli"
+    },
+    {
       "type": "node",
       "request": "launch",
       "name": "Jest All",
       "program": "${workspaceFolder}/node_modules/.bin/jest",
-      "args": [
-        "--runInBand",
-      ],
+      "args": ["--runInBand"],
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
       "preLaunchTask": "npm:build",
       "windows": {
-        "program": "${workspaceFolder}/node_modules/jest/bin/jest",
+        "program": "${workspaceFolder}/node_modules/jest/bin/jest"
       },
-      "disableOptimisticBPs": true,
+      "disableOptimisticBPs": true
     },
     {
       "type": "node",
@@ -32,9 +38,9 @@
       "internalConsoleOptions": "neverOpen",
       "preLaunchTask": "npm:build",
       "windows": {
-        "program": "${workspaceFolder}/node_modules/jest/bin/jest",
+        "program": "${workspaceFolder}/node_modules/jest/bin/jest"
       },
-      "disableOptimisticBPs": true,
+      "disableOptimisticBPs": true
     },
     {
       "type": "node",
@@ -51,9 +57,9 @@
       "internalConsoleOptions": "neverOpen",
       "preLaunchTask": "npm:build",
       "windows": {
-        "program": "${workspaceFolder}/node_modules/jest/bin/jest",
+        "program": "${workspaceFolder}/node_modules/jest/bin/jest"
       },
-      "disableOptimisticBPs": true,
-    },
+      "disableOptimisticBPs": true
+    }
   ]
 }
