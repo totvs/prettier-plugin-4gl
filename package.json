@@ -2,7 +2,7 @@
   "name": "prettier-plugin-4gl",
   "displayName": "Prettier Plugin 4GL Formatter",
   "description": "Extensão Prettier para formatação de código 4GL.",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "publisher": "TOTVS",
   "author": {
     "name": "TOTVS",
@@ -36,7 +36,6 @@
     "README.md",
     "LICENSE"
   ],
-  "bin": "bin/cli/cli.js",
   "scripts": {
     "clean": "rimraf ./lib && rimraf ./typings",
     "build": "tsc -p ./src",
