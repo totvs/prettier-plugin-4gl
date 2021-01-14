@@ -1,4 +1,4 @@
-const parser_4gl = require("./parsers");
+const parser_4gl = require("./parsers").default;
 const print_4gl = require("./printers");
 const options = require("./config").options;
 const PRAGMA = "--@format";
@@ -7,7 +7,8 @@ const languages = [
   {
     extensions: [".4gl"],
     name: "4GL",
-    parsers: ["4gl-source", "4gl-token"],
+    //parsers: ["4gl-source", "4gl-token"],
+    parsers: ["4gl-token"],
     vscodeLanguageIds: ["4gl"],
   },
 ];
@@ -65,15 +66,15 @@ function insertPragma(text) {
 }
 
 const parsers = {
-  "4gl-source": {
-    parse: (text, api, options) => {
-      return parser_4gl(text, api, options);
-    },
-    astFormat: "4gl-source",
-    locStart: locStart,
-    locEnd: locEnd,
-    hasPragma: hasPragma,
-  },
+  // "4gl-source": {
+  //   parse: (text, api, options) => {
+  //     return parser_4gl(text, api, options);
+  //   },
+  //   astFormat: "4gl-source",
+  //   locStart: locStart,
+  //   locEnd: locEnd,
+  //   hasPragma: hasPragma,
+  // },
   "4gl-token": {
     parse: (text, api, options) => {
       return parser_4gl(text, api, options);
@@ -89,10 +90,10 @@ const printers = {
   "4gl-ast": {
     print: print_4gl.printJSON,
   },
-  "4gl-source": {
-    print: print_4gl.printSource,
-    insertPragma: insertPragma,
-  },
+  // "4gl-source": {
+  //   print: print_4gl.printSource,
+  //   insertPragma: insertPragma,
+  // },
   "4gl-token": {
     print: print_4gl.printToken,
     insertPragma: insertPragma,

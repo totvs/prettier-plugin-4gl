@@ -32,25 +32,11 @@ function buildWhitespace(path, print, { tabWidth, useTabs }) {
   return value;
 }
 
-function buildFunction(path, print, options) {
+function buildIdentifier(path, print, options) {
   const node = path.getValue();
-  const value = path.map(print, "value");
+  let value = node.value;
 
-  return concat(value);
-}
-
-function buildBlock(path, print) {
-  const node = path.getValue();
-  const value = path.map(print, "value");
-
-  return concat(value);
-}
-
-function buildCommand(path, print) {
-  const node = path.getValue();
-  const values = path.map(print, "value");
-
-  return concat([trim, ...values]);
+  return value;
 }
 
 function buildKeyword(path, print, options) {
@@ -64,6 +50,16 @@ function buildKeyword(path, print, options) {
   }
 
   return value;
+}
+
+function buildBeginBlock(path, print, options) {
+  //return buildKeyword(path, print, options);
+  return [buildKeyword(path, print, options), indent(), "XXXXXXXXXX>>>>"];
+}
+
+function buildEndBlock(path, print, options) {
+  //return buildKeyword(path, print, options);
+  return [dedent(), "<<<<XXXXXXXXXX", buildKeyword(path, print, options)];
 }
 
 function buildString(path, print, options) {
@@ -83,24 +79,20 @@ function buildString(path, print, options) {
   return result;
 }
 
-function buildBracket(path, print, options) {
-  const node = path.getValue();
-  const value = node.value;
-  let result = value;
-
-  // if (options.bracketSpacing) {
-  //   result = concat([" ", value, " "]);
-  // }
-
-  return result;
-}
-
 function buildOperator(path, print, options) {
   const node = path.getValue();
   const value = node.value;
   let result = value;
   //options.operatorSpacing
   return result;
+}
+
+function buildOpenOperator(path, print, options) {
+  return buildOperator(path, print, options);
+}
+
+function buildCloseOperator(path, print, options) {
+  return buildOperator(path, print, options);
 }
 
 function buildNumber(path, print, options) {
@@ -130,27 +122,32 @@ function builderMap(_options) {
     }
   });
 
-  map.block = (path, print) => buildBlock(path, print, options);
-  map.bracket = (path, print) => buildBracket(path, print, options);
-  map.close_operator = (path, print) => buildOperator(path, print, options);
-  map.command = (path, print) => buildCommand(path, print, options);
-  map.comment = (path, print) => concat(path.map(print, "value"));
-  map.double_operator = (path, print) => buildOperator(path, print, options);
-  map.function = (path, print) => buildFunction(path, print, options);
-  map.globals = (path, print) => concat(path.map(print, "value"));
-  map.identifier = (path, print) => path.call(print, "value");
-  map.keyword = (path, print) => buildKeyword(path, print, options);
-  map.list = (path, print) => join(", ", path.map(print, "value"));
-  map.main = (path, print) => buildFunction(path, print, options);
-  map.number = (path, print) => buildNumber(path, print, options);
-  map.open_operator = (path, print) => buildOperator(path, print, options);
-  map.operator = (path, print) => buildOperator(path, print, options);
-  map.program = (path, print) => concat(path.map(print, "value"));
   map.string = (path, print) => buildString(path, print, options);
   map.whitespace = (path, print) => buildWhitespace(path, print, options);
-  map.variable = (path, print) => path.call(print, "value");
-  map.constant = (path, print) => path.map(print, "value");
-  map.expression = (path, print) => path.map(print, "value");
+  map.identifier = (path, print) => buildIdentifier(path, print, options);
+  map.keyword = (path, print) => buildKeyword(path, print, options);
+  map.beginBlock = (path, print) => buildBeginBlock(path, print, options);
+  map.endBlock = (path, print) => buildEndBlock(path, print, options);
+  map.number = (path, print) => buildNumber(path, print, options);
+  map.operator = (path, print) => buildOperator(path, print, options);
+  map.openOperator = (path, print) => buildOpenOperator(path, print, options);
+  map.closeOperator = (path, print) => buildCloseOperator(path, print, options);
+  map.comment = (path, print) => concat(path.map(print, "value"));
+
+  // map.block = (path, print) => buildBlock(path, print, options);
+  // map.bracket = (path, print) => buildBracket(path, print, options);
+  // map.command = (path, print) => buildCommand(path, print, options);
+  // map.double_operator = (path, print) => buildOperator(path, print, options);
+  // map.function = (path, print) => buildFunction(path, print, options);
+  // map.globals = (path, print) => concat(path.map(print, "value"));
+  // map.list = (path, print) => join(", ", path.map(print, "value"));
+  // map.main = (path, print) => buildFunction(path, print, options);
+  // map.open_operator = (path, print) => buildOperator(path, print, options);
+  // map.operator = (path, print) => buildOperator(path, print, options);
+  // map.program = (path, print) => concat(path.map(print, "value"));
+  // map.variable = (path, print) => path.call(print, "value");
+  // map.constant = (path, print) => path.map(print, "value");
+  // map.expression = (path, print) => path.map(print, "value");
 
   return map;
 }
@@ -171,7 +168,7 @@ function printElement(path, options, print) {
   if (buildProcess) {
     result = buildProcess(path, print, options);
   } else {
-    result = concat(`< no build process [${node.kind}]>`);
+    result = null; //concat(`< no build process [${node.kind}]>`);
   }
 
   return result;

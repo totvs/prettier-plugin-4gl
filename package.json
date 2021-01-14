@@ -70,7 +70,7 @@
     "commander": "^6.2.1",
     "prettier": "^2.2.1",
     "progress": "^2.0.3",
-    "tds-parsers": "^0.0.4"
+    "tds-parsers": "^0.0.5"
   },
   "devDependencies": {
     "@commitlint/cli": "^11.0.0",
