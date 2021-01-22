@@ -1,6 +1,7 @@
-const parser_4gl = require("./parsers").default;
-const print_4gl = require("./printers");
-const options = require("./config").options;
+import { options } from "./config";
+import parser from "./parsers";
+import { printJSON, printToken } from "./printers";
+
 const PRAGMA = "--@format";
 
 const languages = [
@@ -77,7 +78,7 @@ const parsers = {
   // },
   "4gl-token": {
     parse: (text, api, options) => {
-      return parser_4gl(text, api, options);
+      return parser(text, api, options);
     },
     astFormat: "4gl-token",
     locStart: locStart,
@@ -88,14 +89,14 @@ const parsers = {
 
 const printers = {
   "4gl-ast": {
-    print: print_4gl.printJSON,
+    print: printJSON,
   },
   // "4gl-source": {
   //   print: print_4gl.printSource,
   //   insertPragma: insertPragma,
   // },
   "4gl-token": {
-    print: print_4gl.printToken,
+    print: printToken,
     insertPragma: insertPragma,
   },};
 
