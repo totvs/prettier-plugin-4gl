@@ -47,9 +47,10 @@
     "watch:cli": "tsc -p ./cli --watch",
     "prebuild:cli": "npm run clean:cli",
     "---TEST---": "",
-    "test": "jest --runInBand -t hello2.4gl",
+    "test": "jest --runInBand ",
     "test:snapshot": "npm run test -- --update-snapshot ",
     "test:coverage": "npm run test -- --coverage",
+    "test:single-file": "npm run test -t hello2.4gl",
     "pretest": "npm run build",
     "---RELEASE---": "",
     "release": "standard-version",
@@ -70,7 +71,8 @@
     "commander": "^6.2.1",
     "prettier": "^2.2.1",
     "progress": "^2.0.3",
-    "tds-parsers": "^0.0.5"
+    "tds-parsers": "^0.0.5",
+    "typescript": "^4.1.3"
   },
   "devDependencies": {
     "@commitlint/cli": "^11.0.0",
