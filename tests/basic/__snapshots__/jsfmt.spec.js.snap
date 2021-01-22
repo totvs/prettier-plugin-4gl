@@ -10,12 +10,14 @@ main
     
 end main
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-MAIN    LET
-    LET
-    LET
-    LET   SQL
+MAIN
+    LET x, y = arg_val
+    LET x, y = arr_count
+    LET x, y = arr_cur
+    LET x, y = sqlca
 
-ENDMAIN
+ MAIN
+
 `;
 
 exports[`Source empty_main.4gl 1`] = `
@@ -23,7 +25,9 @@ main
 
 end main
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-MAINENDMAIN
+MAIN
+ MAIN
+
 `;
 
 exports[`Source globals.4gl 1`] = `
@@ -37,10 +41,13 @@ main
 
 end main
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-GLOBALS"abc.txt"
+GLOBALS "abc.txt"
+GLOBALS
+DEFINE NOME CHAR(50) # abc
+ GLOBALS
+MAIN
+ MAIN
 
-GLOBALSDEFINENO  # abc
-ENDGLOBALSMAINENDMAIN
 `;
 
 exports[`Source strings.4gl 1`] = `
@@ -62,17 +69,21 @@ function f1()
     
 end function
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-MAIN    LET   ""
-    LET   "ABC,DEF"
-    LET   "\\""
-    LET   "ABC\\"
+MAIN
+    LET x, y = ""
+    LET x, y = "ABC,DEF"
+    LET x, y = "\\""
+    LET x, y = "ABC\\"DEF"
+    
+end main
 
-ENDMAINFUNCTION
+function f1()
 
-    LET   ""
-    LET   "ABC,DEF"
-    LET   "'"
-    LET   "ABC\\"
+    let x, y = \\"\\"
+    let x, y = \\"ABC,DEF\\"
+    let x, y = \\"""
+    let x, y = "ABC
 
-ENDFUNCTION
+ FUNCTION
+
 `;

@@ -47,7 +47,7 @@
     "watch:cli": "tsc -p ./cli --watch",
     "prebuild:cli": "npm run clean:cli",
     "---TEST---": "",
-    "test": "jest --runInBand -t",
+    "test": "jest --runInBand",
     "test:snapshot": "npm run test -- --update-snapshot ",
     "test:coverage": "npm run test -- --coverage",
     "test:single-file": "npm run test -- --runInBand -t hello2.4gl",

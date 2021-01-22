@@ -12,10 +12,12 @@ function f1()
 
 end function
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-MAIN    DEFINE ARRAY[5]  IN
-ENDMAINFUNCTION
-	DEFINE ARRAY[1]  IN
-	DEFINE ARRAY[1,2]
+MAIN
+    DEFINE lista ARRAY [5] of integer
+ MAIN
+FUNCTION f1()
+	DEFINE var1 array[1] of integer
+	DEFINE var1 array[1,2] of char(30)
+ FUNCTION
 
-ENDFUNCTION
 `;

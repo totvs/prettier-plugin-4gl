@@ -17,8 +17,9 @@ main
   display "hello "
 end main
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+--
 MAIN
-  DISPLAY"hello "
-ENDMAIN
+  DISPLAY "hello "
+ MAIN
+
 `;

@@ -41,36 +41,32 @@ end function
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 MAIN
+  CALL fgl_winmessage()
 
-  CALL
-
-  CALL
-
+  CALL fgl_winmessage("p1")
 
 
 
-  CALL "p3")
-  CALL    3)
 
-ENDMAINFUNCTION
+  CALL fgl_winmessage("p1","p2", "p3")
+  CALL fgl_winmessage(1,2,    3)
 
-  CALL RETURNIN
+ MAIN
+FUNCTION f1()
+  CALL fgl_winmessage() RETURNING var1
+  CALL fgl_winmessage() RETURNING var1 , var2
+CALL fgl_winmessage() RETURNING var1,var2,var3
+ FUNCTION
+FUNCTION f2()
+  CALL fgl_winmessage() RETURNING var1[ind1]
 
-  CALL RETURNIN  ,
+ FUNCTION
+FUNCTION f3()
+  CALL fgl_winmessage() RETURNING rec1.var1
+  CALL fgl_winmessage() RETURNING rec1.*
 
-CALL RETURNIN
+ FUNCTION
 
-ENDFUNCTIONFUNCTION
-
-  CALL RETURNIN
-
-ENDFUNCTIONFUNCTION
-
-  CALL RETURNIN
-
-  CALL RETURNIN
-
-ENDFUNCTION
 `;
 
 exports[`Source define.4gl 1`] = `
@@ -123,43 +119,49 @@ end function
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 MAIN
-	DEFINE
-	DEFINE BYTE
-	DEFINE
-	DEFINE
-	DEFINE
-	DEFINE   DAYTODAY	DEFINE
-	DEFINE
-	DEFINE
-	DEFINE
-	DEFINE DYNAMICARRAY
-	DEFINE
-	DEFINE IN
-	DEFINE IN
-	DEFINE
-	DEFINE
-	DEFINE
-	DEFINE
-ENDMAINFUNCTION
-	DEFINE RECORD
-ENDRECORDENDFUNCTIONFUNCTION
-	DEFINE RECORD
+	DEFINE var1 BIGINT
+	DEFINE var1 BYTE
+	DEFINE var1 char(100)
+	DEFINE var1 character
+	DEFINE var1 date
+	DEFINE var1 datetime  DAY TO DAY
+	DEFINE var1 dec
+	DEFINE var1 decimal(10,2)
+	DEFINE var1 decimal(10)
+	DEFINE var1 double precision
+	DEFINE var1 DYNAMIC ARRAY
+	DEFINE var1 float
+	DEFINE var1 int
+	DEFINE var1 integer
+	DEFINE var1 money
+	DEFINE var1 nchar(100)
+	DEFINE var1 numeric
+	DEFINE var1 nvarchar(100)
+ MAIN
+FUNCTION f2()
+	DEFINE rec1 RECORD
+    var1 BIGINT
+ RECORD
+ FUNCTION
+FUNCTION f3()
+	DEFINE rec2 RECORD var1 char(100),
+    var1 character,
+    var1 date,
+    var1 datetime  DAY TO day,
+    var1 dec,
+    var1 decimal(10,2),
+    var1 decimal(10),
+    var1 double precision,
+    var1 float,
+    var1 int,
+    var1 integer,
+    var1 money,
+    var1 nchar(100),
+    var1 numeric,
+    var1 nvarchar(100)
+   RECORD
+ FUNCTION
 
-
-       DAYTODAY,
-
-
-
-
-
-     IN
-     IN
-
-
-
-
-  ENDRECORD
-ENDFUNCTION
 `;
 
 exports[`Source define1.4gl 1`] = `
@@ -171,10 +173,13 @@ main
 	--define var1 record like tab1.*
 end main
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-GLOBALSDEFINEMOD
-ENDGLOBALSMAIN
-	  RECORDLIKE
-ENDMAIN
+GLOBALS
+DEFINE MOD char(10)
+ GLOBALS
+MAIN
+	--DEFINE var1 RECORD LIKE tab1.*
+ MAIN
+
 `;
 
 exports[`Source define2.4gl 1`] = `
@@ -183,8 +188,9 @@ main
 end main
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 MAIN
-	  RECORDLIKE
-ENDMAIN
+	--DEFINE VAR1 RECORD LIKE TAB1.*
+ MAIN
+
 `;
 
 exports[`Source function.4gl 1`] = `
@@ -205,13 +211,18 @@ function f2(p1, p2)
 end function
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 MAIN
-ENDMAINFUNCTION
 
-ENDFUNCTIONFUNCTION
+ MAIN
+FUNCTION f0()
 
-ENDFUNCTIONFUNCTION
+ FUNCTION
+FUNCTION f1(p1)
 
-ENDFUNCTION
+ FUNCTION
+FUNCTION f2(p1, p2)
+
+ FUNCTION
+
 `;
 
 exports[`Source if.4gl 1`] = `
@@ -224,6 +235,8 @@ end main
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 MAIN
+  IF a=b THEN
+       IF
+ MAIN
 
-  IF THEN      ENDIFENDMAIN
 `;
