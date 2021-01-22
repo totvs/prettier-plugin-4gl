@@ -1,18 +1,18 @@
+import { printElement } from "./functionMap";
+
 const {
   doc: {
     builders: { concat, group },
   },
 } = require("prettier");
 
-const printElement = require("./functionMap").printElement;
-
-function printJSON(path, options, print, args) {
+export function printJSON(path, options, print, args) {
   const node = path.getValue();
 
   return JSON.stringify(node, undefined, 2);
 }
 
-function printSource(path, options, print, args) {
+export function printSource(path, options, print, args) {
   const node = path.getValue();
 
   if (!node) {
@@ -37,7 +37,7 @@ function printSource(path, options, print, args) {
   return result;
 }
 
-function printToken(path, options, print, args) {
+export function printToken(path, options, print, args) {
   const node = path.getValue();
 
   if (!node) {
@@ -61,5 +61,3 @@ function printToken(path, options, print, args) {
 
   return result;
 }
-
-module.exports = { printJSON, printSource, printToken };

@@ -1,5 +1,7 @@
-const { util } = require("prettier");
+//import { util } from "prettier";
 //const { printDocToDebug } = require("prettier").doc.debug;
+
+import { util } from "prettier";
 
 const {
   concat,
@@ -54,12 +56,12 @@ function buildKeyword(path, print, options) {
 
 function buildBeginBlock(path, print, options) {
   //return buildKeyword(path, print, options);
-  return [buildKeyword(path, print, options), indent(), "XXXXXXXXXX>>>>"];
+  return concat(buildKeyword(path, print, options), indent(), "XXXXXXXXXX>>>>");
 }
 
 function buildEndBlock(path, print, options) {
   //return buildKeyword(path, print, options);
-  return [dedent(), "<<<<XXXXXXXXXX", buildKeyword(path, print, options)];
+  return concat(dedent(), "<<<<XXXXXXXXXX", buildKeyword(path, print, options));
 }
 
 function buildString(path, print, options) {
@@ -113,26 +115,26 @@ let _builderMap;
 
 function builderMap(_options) {
   const options = _options;
-  const map = {};
-  const options4GLDef = require("./config").options;
+  const map: {} = {};
+  const options4GLDef: {} = require("./config").options;
 
   Object.keys(options4GLDef).forEach((key) => {
     if (options[key] == undefined) {
-      options[key] = options4GL[key];
+      options[key] = options4GLDef[key];
     }
   });
 
-  map.string = (path, print) => buildString(path, print, options);
-  map.whitespace = (path, print) => buildWhitespace(path, print, options);
-  map.identifier = (path, print) => buildIdentifier(path, print, options);
-  map.keyword = (path, print) => buildKeyword(path, print, options);
-  map.beginBlock = (path, print) => buildBeginBlock(path, print, options);
-  map.endBlock = (path, print) => buildEndBlock(path, print, options);
-  map.number = (path, print) => buildNumber(path, print, options);
-  map.operator = (path, print) => buildOperator(path, print, options);
-  map.openOperator = (path, print) => buildOpenOperator(path, print, options);
-  map.closeOperator = (path, print) => buildCloseOperator(path, print, options);
-  map.comment = (path, print) => concat(path.map(print, "value"));
+  map["string"] = (path, print) => buildString(path, print, options);
+  map["whitespace"] = (path, print) => buildWhitespace(path, print, options);
+  map["identifier"] = (path, print) => buildIdentifier(path, print, options);
+  map["keyword"] = (path, print) => buildKeyword(path, print, options);
+  map["beginBlock"] = (path, print) => buildBeginBlock(path, print, options);
+  map["endBlock"] = (path, print) => buildEndBlock(path, print, options);
+  map["number"] = (path, print) => buildNumber(path, print, options);
+  map["operator"] = (path, print) => buildOperator(path, print, options);
+  map["openOperator"] = (path, print) => buildOpenOperator(path, print, options);
+  map["closeOperator"] = (path, print) => buildCloseOperator(path, print, options);
+  map["comment"] = (path, print) => concat(path.map(print, "value"));
 
   // map.block = (path, print) => buildBlock(path, print, options);
   // map.bracket = (path, print) => buildBracket(path, print, options);
@@ -156,19 +158,18 @@ function resetFunctionMap() {
   _builderMap = undefined;
 }
 
-function printElement(path, options, print) {
+export function printElement(path, options, print) {
   if (!_builderMap) {
     _builderMap = builderMap(options);
   }
 
   const node = path.getValue();
-  const buildProcess = _builderMap[node.kind];
-  let result;
+  const builder = _builderMap[node.kind];
+  let result: any = undefined;
 
-  if (buildProcess) {
-    result = buildProcess(path, print, options);
-  } else {
-    result = null; //concat(`< no build process [${node.kind}]>`);
+  if (builder) {
+    console.log(node.kind);
+    result = builder(path, print, options);
   }
 
   return result;

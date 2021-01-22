@@ -17,10 +17,8 @@ main
   display "hello "
 end main
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
--@format
-MAIN 
-  DISPLAY "hello "
-END MAIN
 
-
+MAIN
+  DISPLAY"hello "
+ENDMAIN
 `;

@@ -51,7 +51,7 @@
         "${workspaceFolder}/node_modules/jest/bin/jest",
         "--runInBand",
         "-t",
-        "hello3.4gl"
+        "hello2.4gl"
       ],
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
