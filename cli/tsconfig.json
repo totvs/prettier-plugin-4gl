@@ -15,15 +15,15 @@
             "es2015",
             "dom"
         ],
-        "declaration": false,
-        "declarationMap": false,
+        "declaration": true,
+        "declarationMap": true,
         "strict": false, /* enable all strict type-checking options */
         "noUnusedParameters": false,
         "resolveJsonModule": true,
     },
     "exclude": [
         "node_modules/",
-        "../out/",
+        "out/",
         "test/",
         "package.json"
     ]

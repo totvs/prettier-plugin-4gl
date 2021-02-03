@@ -160,7 +160,7 @@ function appText(): string[] {
   ];
 }
 
-function banner(): string[] {
+logger.banner = ():string[] =>  {
   const appInfo: IAppInfo = options.appInfo;
 
   const b = logger.chalk.bold;
@@ -187,7 +187,7 @@ logger.showBanner = () => {
   if (!options.showBanner) {
     appText().forEach((line: string) => logger.gray(line));
   } else {
-    banner().forEach((line: string) => logger.gray(line));
+    logger.banner().forEach((line: string) => logger.gray(line));
   }
 };
 

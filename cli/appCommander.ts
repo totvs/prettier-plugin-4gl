@@ -12,8 +12,9 @@ export class AppCommander {
 		});
 		
     this._command
+      .addHelpText("beforeAll", logger.banner().join("\n"))
       .on("option:verbose", () => {
-        logger.setConfig({ verbose: this._command.verbose });
+        logger.setConfig({ verbose: true });
       })
       .on("option:no-banner", () => {
         logger.setConfig({ showBanner: false });
@@ -50,7 +51,7 @@ function newAppCommand(options: IAppOptions): AppCommand {
       "detalhamento da execução",
       false
     ) //
-    .option("--no-banner", "omite a abertura", true);
+    .option("--no-banner", "omite a abertura", true)
 
   return program;
 }

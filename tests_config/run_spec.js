@@ -49,9 +49,6 @@ function run_spec(dirname, options) {
         processTest(mergedOptions, filename, input);
       });
 
-      // describe("Token", () => {
-      //   processTest({ ...mergedOptions, parser: "4gl-token" }, filename, input);
-      // });
     }
   });
 }

@@ -30,7 +30,6 @@
   "main": "lib/index.js",
   "types": "typings/index.d.ts",
   "files": [
-    "bin/",
     "lib/",
     "typings/",
     "README.md",
@@ -41,16 +40,12 @@
     "build": "tsc -p ./src",
     "watch": "tsc -p ./src --watch",
     "prebuild": "npm run clean",
-    "---CLI---": "",
-    "clean:cli": "rimraf ./bin",
-    "build:cli": "tsc -p ./cli",
-    "watch:cli": "tsc -p ./cli --watch",
-    "prebuild:cli": "npm run clean:cli",
     "---TEST---": "",
-    "test": "jest --runInBand",
-    "test:snapshot": "npm run test -- --update-snapshot ",
+    "test": "jest",
+    "test:snapshot": "npm run test -- --updateSnapshot",
+    "test:singlefile": "npm run test -- --updateSnapsh,ot --testNamePattern hello2.4gl",
     "test:coverage": "npm run test -- --coverage",
-    "test:single-file": "npm run test -- --runInBand -t hello2.4gl",
+    "test:onlyFailures": "npm run test --onlyFailures ",
     "pretest": "npm run build",
     "---RELEASE---": "",
     "release": "standard-version",
@@ -61,17 +56,18 @@
     "contributors:check": "all-contributors check",
     "contributors:generate": "all-contributors generate",
     "link:tds-parsers": "npm link ../tds-parsers --force",
-    "cli": "node bin/cli/cli.js"
+    "prettier": "prettier --plugin=. --parser=4gl",
+    "prettier-dev": "npm run build && npm run prettier"
   },
   "peerDependencies": {
     "prettier": "^2.0.0"
   },
   "dependencies": {
     "cli-progress": "^3.8.2",
-    "commander": "^6.2.1",
+    "commander": "^7.0.0",
     "prettier": "^2.2.1",
     "progress": "^2.0.3",
-    "tds-parsers": "^0.0.5",
+    "tds-parsers": "^0.0.10",
     "typescript": "^4.1.3"
   },
   "devDependencies": {
@@ -79,7 +75,7 @@
     "@commitlint/config-conventional": "^11.0.0",
     "@types/fs-extra": "^9.0.6",
     "@types/glob": "^7.1.3",
-    "husky": "^4.3.6",
+    "husky": "^4.3.8",
     "jest": "^26.6.3",
     "jest-watch-typeahead": "^0.6.1",
     "standard-version": "^9.1.0"

@@ -4,8 +4,8 @@ end main
 
 
 
-
- function f1()
+  --# função 2
+         function f1()
 
        define nome char(50) # abc
        define big_field char(1234) # abc

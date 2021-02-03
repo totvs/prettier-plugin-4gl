@@ -13,14 +13,14 @@ export class AppCommand extends Command.Command {
 		super(name);
 	}
 
-	outputHelp(cb?: (str: string) => string): void {
-		if (logger) {
-			logger.gray(this.helpInformation());
-			this.emit(this._helpLongFlag);
-		} else {
-			super.outputHelp(cb);
-		}
-	}
+	// outputHelp(cb?: (str: string) => string): void {
+	// 	if (logger) {
+	// 		logger.gray(this.helpInformation());
+	// 		this.emit(this._helpLongFlag);
+	// 	} else {
+	// 		super.outputHelp(cb);
+	// 	}
+	// }
 
 	createCommand(name: string): AppCommand {
 		return new AppCommand(name);

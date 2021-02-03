@@ -5,10 +5,155 @@ main
 display "hello "
 end main
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-MAIN
-DISPLAY "hello "
- MAIN
-
+{
+   "_type": "program",
+   "_location": {
+      "line": 1,
+      "column": 1,
+      "offset": 0
+   },
+   "_source": "",
+   "_children": [
+      {
+         "_type": "block",
+         "_location": {
+            "line": 1,
+            "column": 1,
+            "offset": 0
+         },
+         "_source": "",
+         "_children": [
+            {
+               "_type": "keyword",
+               "_location": {
+                  "line": 1,
+                  "column": 1,
+                  "offset": 0
+               },
+               "_source": "main",
+               "_children": []
+            },
+            [
+               [
+                  {
+                     "_type": "whiteSpace",
+                     "_location": {
+                        "line": 1,
+                        "column": 5,
+                        "offset": 4
+                     },
+                     "_source": "\\\\b",
+                     "_children": []
+                  },
+                  {
+                     "_type": "newLine",
+                     "_location": {
+                        "line": 1,
+                        "column": 6,
+                        "offset": 5
+                     },
+                     "_source": "\\\\n",
+                     "_children": []
+                  }
+               ],
+               {
+                  "_type": "keyword",
+                  "_location": {
+                     "line": 2,
+                     "column": 1,
+                     "offset": 6
+                  },
+                  "_source": "display",
+                  "_children": []
+               },
+               [
+                  {
+                     "_type": "whiteSpace",
+                     "_location": {
+                        "line": 2,
+                        "column": 8,
+                        "offset": 13
+                     },
+                     "_source": "\\\\b",
+                     "_children": []
+                  }
+               ],
+               {
+                  "_type": "string",
+                  "_location": {
+                     "line": 2,
+                     "column": 9,
+                     "offset": 14
+                  },
+                  "_source": "\\"hello \\"",
+                  "_children": []
+               },
+               [
+                  {
+                     "_type": "newLine",
+                     "_location": {
+                        "line": 2,
+                        "column": 17,
+                        "offset": 22
+                     },
+                     "_source": "\\\\n",
+                     "_children": []
+                  }
+               ]
+            ],
+            [
+               {
+                  "_type": "keyword",
+                  "_location": {
+                     "line": 3,
+                     "column": 1,
+                     "offset": 23
+                  },
+                  "_source": "end",
+                  "_children": []
+               },
+               [
+                  {
+                     "_type": "whiteSpace",
+                     "_location": {
+                        "line": 3,
+                        "column": 4,
+                        "offset": 26
+                     },
+                     "_source": "\\\\b",
+                     "_children": []
+                  }
+               ],
+               {
+                  "_type": "keyword",
+                  "_location": {
+                     "line": 3,
+                     "column": 5,
+                     "offset": 27
+                  },
+                  "_source": "main",
+                  "_children": []
+               },
+               null
+            ]
+         ]
+      },
+      [
+         [
+            {
+               "_type": "newLine",
+               "_location": {
+                  "line": 3,
+                  "column": 9,
+                  "offset": 31
+               },
+               "_source": "\\\\n\\\\n",
+               "_children": []
+            }
+         ]
+      ]
+   ]
+}
 `;
 
 exports[`Source hello2.4gl 1`] = `
@@ -18,8 +163,8 @@ end main
 
 
 
-
- function f1()
+  --# função 2
+         function f1()
 
        define nome char(50) # abc
        define big_field char(1234) # abc
@@ -30,16 +175,21 @@ end main
  end function
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 MAIN
-CALL f1()
- MAIN
- FUNCTION f1()
 
-       DEFINE nome char(50) # abc
-       DEFINE big_field char(1234) # abc
- PROMPT "digite seu nome : " FOR nome
-             CALL fgl_winmessage( "hello",nome, "info")
+  CALL f1(  )
 
-  FUNCTION
+END MAIN
+
+  --# função 2
+         FUNCTION f1
+(  )
+         DEFINE nome CHAR( 50 ) # abc
+         DEFINE big_field CHAR( 1.234 ) # abc
+   PROMPT "digite seu nome : " FOR nome
+               CALL fgl_winmessage(  "hello",nome, "info" )
+
+END FUNCTION
+
 
 `;
 
@@ -120,66 +270,4999 @@ for l_ind = 1 to 3
 end for
 end main
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-# erro de não poder sobescrever
-MAIN
-	DEFINE l_ind smallint
-	DEFINE ma_char array[5] of char(3)
-
-	DEFINE ma_integer ARRAY [3] of integer
-	DEFINE ma_array ARRAY [3] of RECORD
-	f2_check      char(1),
-	f2_integer    integer,
-	f2_smallint   smallint,
-	f2_decimal    decimal(17,6),
-	f2_decimal0   decimal(10,0),
-	f2_char       char(10),
-	f2_date       date,
-	f2_dttime_y2s datetime YEAR TO second,
-	f2_dttime_y2m datetime YEAR TO month,
-	f2_dttime_y2f datetime YEAR TO fraction(3),
-	f2_scroll     char(100),
-	f2_varchar    varchar(20)
- RECORD
-INITIALIZE ma_array TO NULL
-INITIALIZE ma_integer TO NULL
-DISPLAY "hello world"
-CALL arraydeleteitem(ma_array)
-CALL arrayadditem(ma_array,3)
-
-CALL arraydeleteitem(ma_integer)
-CALL arrayadditem(ma_integer,3)
-
-FOR l_ind = 1 TO 3
-	LET ma_integer[l_ind] = NULL
-	LET ma_array[l_ind].f2_check      = NULL
-	LET ma_array[l_ind].f2_integer    = NULL
-	LET ma_array[l_ind].f2_smallint   = NULL
-	LET ma_array[l_ind].f2_decimal    = NULL
-	LET ma_array[l_ind].f2_decimal0   = NULL
-	LET ma_array[l_ind].f2_char       = " "
-	LET ma_array[l_ind].f2_varchar    = " "
-	LET ma_array[l_ind].f2_date       = TODAY + l_ind UNITS DAY
-	LET ma_array[l_ind].f2_dttime_y2s = NULL
-	LET ma_array[l_ind].f2_dttime_y2m = NULL
-	LET ma_array[l_ind].f2_dttime_y2f = NULL
-	LET ma_array[l_ind].f2_scroll     = NULL
- FOR
-FOR l_ind = 1 TO 3
-	LET ma_integer[l_ind] = l_ind
-	LET ma_array[l_ind].f2_check      = "s"
-	LET ma_array[l_ind].f2_integer    = 339782827 + l_ind
-	LET ma_array[l_ind].f2_smallint   = 18721 + l_ind
-	LET ma_array[l_ind].f2_decimal    = -19838849.087712 + l_ind
-	LET ma_array[l_ind].f2_decimal0   = 9389007739 + l_ind
-	LET ma_array[l_ind].f2_char       = "texto"
-	LET ma_array[l_ind].f2_varchar    = "textovarchar   "
-	LET ma_array[l_ind].f2_date       = TODAY + 3 UNITS DAY
-	LET ma_array[l_ind].f2_dttime_y2s = CURRENT + l_ind UNITS DAY
-	LET ma_array[l_ind].f2_dttime_y2m = CURRENT + l_ind + 1 UNITS DAY
-	LET ma_array[l_ind].f2_dttime_y2f = CURRENT + l_ind + 2 UNITS DAY
-	LET ma_array[l_ind].f2_scroll     = "texto scroll texto scroll texto scroll "
- FOR
- MAIN
-
+{
+   "_type": "program",
+   "_location": {
+      "line": 1,
+      "column": 1,
+      "offset": 0
+   },
+   "_source": "",
+   "_children": [
+      [
+         {
+            "_type": "newLine",
+            "_location": {
+               "line": 1,
+               "column": 1,
+               "offset": 0
+            },
+            "_source": "\\\\n",
+            "_children": []
+         }
+      ],
+      [
+         {
+            "_type": "comment",
+            "_location": {
+               "line": 2,
+               "column": 1,
+               "offset": 1
+            },
+            "_source": [
+               {
+                  "_type": "operator",
+                  "_location": {
+                     "line": 2,
+                     "column": 1,
+                     "offset": 1
+                  },
+                  "_source": "#",
+                  "_children": []
+               },
+               " erro de não poder sobescrever",
+               {
+                  "_type": "newLine",
+                  "_location": {
+                     "line": 2,
+                     "column": 32,
+                     "offset": 32
+                  },
+                  "_source": "\\\\n",
+                  "_children": []
+               }
+            ],
+            "_children": []
+         },
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 3,
+               "column": 1,
+               "offset": 33
+            },
+            "_source": "main\\n",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 4,
+                  "column": 1,
+                  "offset": 38
+               },
+               "_source": "\\\\t",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 4,
+               "column": 2,
+               "offset": 39
+            },
+            "_source": "define",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 4,
+                  "column": 8,
+                  "offset": 45
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 4,
+               "column": 9,
+               "offset": 46
+            },
+            "_source": "l_ind",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 4,
+                  "column": 14,
+                  "offset": 51
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 4,
+               "column": 15,
+               "offset": 52
+            },
+            "_source": "smallint\\n",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 5,
+                  "column": 1,
+                  "offset": 61
+               },
+               "_source": "\\\\t",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 5,
+               "column": 2,
+               "offset": 62
+            },
+            "_source": "define",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 5,
+                  "column": 8,
+                  "offset": 68
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 5,
+               "column": 9,
+               "offset": 69
+            },
+            "_source": "ma_char",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 5,
+                  "column": 16,
+                  "offset": 76
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 5,
+               "column": 17,
+               "offset": 77
+            },
+            "_source": "array[5]",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 5,
+                  "column": 25,
+                  "offset": 85
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 5,
+               "column": 26,
+               "offset": 86
+            },
+            "_source": "of",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 5,
+                  "column": 28,
+                  "offset": 88
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 5,
+               "column": 29,
+               "offset": 89
+            },
+            "_source": "char(3)\\n\\n",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 7,
+                  "column": 1,
+                  "offset": 98
+               },
+               "_source": "\\\\t",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 7,
+               "column": 2,
+               "offset": 99
+            },
+            "_source": "define",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 7,
+                  "column": 8,
+                  "offset": 105
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 7,
+               "column": 9,
+               "offset": 106
+            },
+            "_source": "ma_integer",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 7,
+                  "column": 19,
+                  "offset": 116
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 7,
+               "column": 20,
+               "offset": 117
+            },
+            "_source": "array",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 7,
+                  "column": 25,
+                  "offset": 122
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 7,
+               "column": 26,
+               "offset": 123
+            },
+            "_source": "[3]",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 7,
+                  "column": 29,
+                  "offset": 126
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 7,
+               "column": 30,
+               "offset": 127
+            },
+            "_source": "of",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 7,
+                  "column": 32,
+                  "offset": 129
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 7,
+               "column": 33,
+               "offset": 130
+            },
+            "_source": "integer\\n\\n",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 9,
+                  "column": 1,
+                  "offset": 139
+               },
+               "_source": "\\\\t",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 9,
+               "column": 2,
+               "offset": 140
+            },
+            "_source": "define",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 9,
+                  "column": 8,
+                  "offset": 146
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 9,
+               "column": 9,
+               "offset": 147
+            },
+            "_source": "ma_array",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 9,
+                  "column": 17,
+                  "offset": 155
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 9,
+               "column": 18,
+               "offset": 156
+            },
+            "_source": "array",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 9,
+                  "column": 23,
+                  "offset": 161
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 9,
+               "column": 24,
+               "offset": 162
+            },
+            "_source": "[3]",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 9,
+                  "column": 27,
+                  "offset": 165
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 9,
+               "column": 28,
+               "offset": 166
+            },
+            "_source": "of",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 9,
+                  "column": 30,
+                  "offset": 168
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 9,
+               "column": 31,
+               "offset": 169
+            },
+            "_source": "record\\n",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 10,
+                  "column": 1,
+                  "offset": 176
+               },
+               "_source": "\\\\t",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 10,
+               "column": 2,
+               "offset": 177
+            },
+            "_source": "f2_check",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 10,
+                  "column": 10,
+                  "offset": 185
+               },
+               "_source": "\\\\b\\\\b\\\\b\\\\b\\\\b\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 10,
+               "column": 16,
+               "offset": 191
+            },
+            "_source": "char(1),\\n",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 11,
+                  "column": 1,
+                  "offset": 200
+               },
+               "_source": "\\\\t",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 11,
+               "column": 2,
+               "offset": 201
+            },
+            "_source": "f2_integer",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 11,
+                  "column": 12,
+                  "offset": 211
+               },
+               "_source": "\\\\b\\\\b\\\\b\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 11,
+               "column": 16,
+               "offset": 215
+            },
+            "_source": "integer,\\n",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 12,
+                  "column": 1,
+                  "offset": 224
+               },
+               "_source": "\\\\t",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 12,
+               "column": 2,
+               "offset": 225
+            },
+            "_source": "f2_smallint",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 12,
+                  "column": 13,
+                  "offset": 236
+               },
+               "_source": "\\\\b\\\\b\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 12,
+               "column": 16,
+               "offset": 239
+            },
+            "_source": "smallint,\\n",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 13,
+                  "column": 1,
+                  "offset": 249
+               },
+               "_source": "\\\\t",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 13,
+               "column": 2,
+               "offset": 250
+            },
+            "_source": "f2_decimal",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 13,
+                  "column": 12,
+                  "offset": 260
+               },
+               "_source": "\\\\b\\\\b\\\\b\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 13,
+               "column": 16,
+               "offset": 264
+            },
+            "_source": "decimal(17,6),\\n",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 14,
+                  "column": 1,
+                  "offset": 279
+               },
+               "_source": "\\\\t",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 14,
+               "column": 2,
+               "offset": 280
+            },
+            "_source": "f2_decimal0",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 14,
+                  "column": 13,
+                  "offset": 291
+               },
+               "_source": "\\\\b\\\\b\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 14,
+               "column": 16,
+               "offset": 294
+            },
+            "_source": "decimal(10,0),\\n",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 15,
+                  "column": 1,
+                  "offset": 309
+               },
+               "_source": "\\\\t",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 15,
+               "column": 2,
+               "offset": 310
+            },
+            "_source": "f2_char",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 15,
+                  "column": 9,
+                  "offset": 317
+               },
+               "_source": "\\\\b\\\\b\\\\b\\\\b\\\\b\\\\b\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 15,
+               "column": 16,
+               "offset": 324
+            },
+            "_source": "char(10),\\n",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 16,
+                  "column": 1,
+                  "offset": 334
+               },
+               "_source": "\\\\t",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 16,
+               "column": 2,
+               "offset": 335
+            },
+            "_source": "f2_date",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 16,
+                  "column": 9,
+                  "offset": 342
+               },
+               "_source": "\\\\b\\\\b\\\\b\\\\b\\\\b\\\\b\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 16,
+               "column": 16,
+               "offset": 349
+            },
+            "_source": "date,\\n",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 17,
+                  "column": 1,
+                  "offset": 355
+               },
+               "_source": "\\\\t",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 17,
+               "column": 2,
+               "offset": 356
+            },
+            "_source": "f2_dttime_y2s",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 17,
+                  "column": 15,
+                  "offset": 369
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 17,
+               "column": 16,
+               "offset": 370
+            },
+            "_source": "datetime",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 17,
+                  "column": 24,
+                  "offset": 378
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 17,
+               "column": 25,
+               "offset": 379
+            },
+            "_source": "year",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 17,
+                  "column": 29,
+                  "offset": 383
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 17,
+               "column": 30,
+               "offset": 384
+            },
+            "_source": "to",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 17,
+                  "column": 32,
+                  "offset": 386
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 17,
+               "column": 33,
+               "offset": 387
+            },
+            "_source": "second,\\n",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 18,
+                  "column": 1,
+                  "offset": 395
+               },
+               "_source": "\\\\t",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 18,
+               "column": 2,
+               "offset": 396
+            },
+            "_source": "f2_dttime_y2m",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 18,
+                  "column": 15,
+                  "offset": 409
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 18,
+               "column": 16,
+               "offset": 410
+            },
+            "_source": "datetime",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 18,
+                  "column": 24,
+                  "offset": 418
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 18,
+               "column": 25,
+               "offset": 419
+            },
+            "_source": "year",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 18,
+                  "column": 29,
+                  "offset": 423
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 18,
+               "column": 30,
+               "offset": 424
+            },
+            "_source": "to",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 18,
+                  "column": 32,
+                  "offset": 426
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 18,
+               "column": 33,
+               "offset": 427
+            },
+            "_source": "month,\\n",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 19,
+                  "column": 1,
+                  "offset": 434
+               },
+               "_source": "\\\\t",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 19,
+               "column": 2,
+               "offset": 435
+            },
+            "_source": "f2_dttime_y2f",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 19,
+                  "column": 15,
+                  "offset": 448
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 19,
+               "column": 16,
+               "offset": 449
+            },
+            "_source": "datetime",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 19,
+                  "column": 24,
+                  "offset": 457
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 19,
+               "column": 25,
+               "offset": 458
+            },
+            "_source": "year",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 19,
+                  "column": 29,
+                  "offset": 462
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 19,
+               "column": 30,
+               "offset": 463
+            },
+            "_source": "to",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 19,
+                  "column": 32,
+                  "offset": 465
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 19,
+               "column": 33,
+               "offset": 466
+            },
+            "_source": "fraction(3),\\n",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 20,
+                  "column": 1,
+                  "offset": 479
+               },
+               "_source": "\\\\t",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 20,
+               "column": 2,
+               "offset": 480
+            },
+            "_source": "f2_scroll",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 20,
+                  "column": 11,
+                  "offset": 489
+               },
+               "_source": "\\\\b\\\\b\\\\b\\\\b\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 20,
+               "column": 16,
+               "offset": 494
+            },
+            "_source": "char(100),\\n",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 21,
+                  "column": 1,
+                  "offset": 505
+               },
+               "_source": "\\\\t",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 21,
+               "column": 2,
+               "offset": 506
+            },
+            "_source": "f2_varchar",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 21,
+                  "column": 12,
+                  "offset": 516
+               },
+               "_source": "\\\\b\\\\b\\\\b\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 21,
+               "column": 16,
+               "offset": 520
+            },
+            "_source": "varchar(20)\\nend",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 22,
+                  "column": 4,
+                  "offset": 535
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 22,
+               "column": 5,
+               "offset": 536
+            },
+            "_source": "record\\n\\ninitialize",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 24,
+                  "column": 11,
+                  "offset": 554
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 24,
+               "column": 12,
+               "offset": 555
+            },
+            "_source": "ma_array",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 24,
+                  "column": 20,
+                  "offset": 563
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 24,
+               "column": 21,
+               "offset": 564
+            },
+            "_source": "to",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 24,
+                  "column": 23,
+                  "offset": 566
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 24,
+               "column": 24,
+               "offset": 567
+            },
+            "_source": "null\\ninitialize",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 25,
+                  "column": 11,
+                  "offset": 582
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 25,
+               "column": 12,
+               "offset": 583
+            },
+            "_source": "ma_integer",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 25,
+                  "column": 22,
+                  "offset": 593
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 25,
+               "column": 23,
+               "offset": 594
+            },
+            "_source": "to",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 25,
+                  "column": 25,
+                  "offset": 596
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 25,
+               "column": 26,
+               "offset": 597
+            },
+            "_source": "null\\n\\n\\ndisplay",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 28,
+                  "column": 8,
+                  "offset": 611
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 28,
+               "column": 9,
+               "offset": 612
+            },
+            "_source": "\\"hello",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 28,
+                  "column": 15,
+                  "offset": 618
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 28,
+               "column": 16,
+               "offset": 619
+            },
+            "_source": "world\\"\\n\\ncall",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 30,
+                  "column": 5,
+                  "offset": 631
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 30,
+               "column": 6,
+               "offset": 632
+            },
+            "_source": "arraydeleteitem(ma_array)\\ncall",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 31,
+                  "column": 5,
+                  "offset": 662
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 31,
+               "column": 6,
+               "offset": 663
+            },
+            "_source": "arrayadditem(ma_array,3)\\n\\ncall",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 33,
+                  "column": 5,
+                  "offset": 693
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 33,
+               "column": 6,
+               "offset": 694
+            },
+            "_source": "arraydeleteitem(ma_integer)\\ncall",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 34,
+                  "column": 5,
+                  "offset": 726
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 34,
+               "column": 6,
+               "offset": 727
+            },
+            "_source": "arrayadditem(ma_integer,3)\\n\\nfor",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 36,
+                  "column": 4,
+                  "offset": 758
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 36,
+               "column": 5,
+               "offset": 759
+            },
+            "_source": "l_ind",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 36,
+                  "column": 10,
+                  "offset": 764
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 36,
+               "column": 11,
+               "offset": 765
+            },
+            "_source": "=",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 36,
+                  "column": 12,
+                  "offset": 766
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 36,
+               "column": 13,
+               "offset": 767
+            },
+            "_source": "1",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 36,
+                  "column": 14,
+                  "offset": 768
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 36,
+               "column": 15,
+               "offset": 769
+            },
+            "_source": "to",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 36,
+                  "column": 17,
+                  "offset": 771
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 36,
+               "column": 18,
+               "offset": 772
+            },
+            "_source": "3\\n",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 37,
+                  "column": 1,
+                  "offset": 774
+               },
+               "_source": "\\\\t",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 37,
+               "column": 2,
+               "offset": 775
+            },
+            "_source": "let",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 37,
+                  "column": 5,
+                  "offset": 778
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 37,
+               "column": 6,
+               "offset": 779
+            },
+            "_source": "ma_integer[l_ind]",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 37,
+                  "column": 23,
+                  "offset": 796
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 37,
+               "column": 24,
+               "offset": 797
+            },
+            "_source": "=",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 37,
+                  "column": 25,
+                  "offset": 798
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 37,
+               "column": 26,
+               "offset": 799
+            },
+            "_source": "null\\n\\n",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 39,
+                  "column": 1,
+                  "offset": 805
+               },
+               "_source": "\\\\t",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 39,
+               "column": 2,
+               "offset": 806
+            },
+            "_source": "let",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 39,
+                  "column": 5,
+                  "offset": 809
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 39,
+               "column": 6,
+               "offset": 810
+            },
+            "_source": "ma_array[l_ind].f2_check",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 39,
+                  "column": 30,
+                  "offset": 834
+               },
+               "_source": "\\\\b\\\\b\\\\b\\\\b\\\\b\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 39,
+               "column": 36,
+               "offset": 840
+            },
+            "_source": "=",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 39,
+                  "column": 37,
+                  "offset": 841
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 39,
+               "column": 38,
+               "offset": 842
+            },
+            "_source": "null\\n",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 40,
+                  "column": 1,
+                  "offset": 847
+               },
+               "_source": "\\\\t",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 40,
+               "column": 2,
+               "offset": 848
+            },
+            "_source": "let",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 40,
+                  "column": 5,
+                  "offset": 851
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 40,
+               "column": 6,
+               "offset": 852
+            },
+            "_source": "ma_array[l_ind].f2_integer",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 40,
+                  "column": 32,
+                  "offset": 878
+               },
+               "_source": "\\\\b\\\\b\\\\b\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 40,
+               "column": 36,
+               "offset": 882
+            },
+            "_source": "=",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 40,
+                  "column": 37,
+                  "offset": 883
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 40,
+               "column": 38,
+               "offset": 884
+            },
+            "_source": "null\\n",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 41,
+                  "column": 1,
+                  "offset": 889
+               },
+               "_source": "\\\\t",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 41,
+               "column": 2,
+               "offset": 890
+            },
+            "_source": "let",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 41,
+                  "column": 5,
+                  "offset": 893
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 41,
+               "column": 6,
+               "offset": 894
+            },
+            "_source": "ma_array[l_ind].f2_smallint",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 41,
+                  "column": 33,
+                  "offset": 921
+               },
+               "_source": "\\\\b\\\\b\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 41,
+               "column": 36,
+               "offset": 924
+            },
+            "_source": "=",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 41,
+                  "column": 37,
+                  "offset": 925
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 41,
+               "column": 38,
+               "offset": 926
+            },
+            "_source": "null\\n",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 42,
+                  "column": 1,
+                  "offset": 931
+               },
+               "_source": "\\\\t",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 42,
+               "column": 2,
+               "offset": 932
+            },
+            "_source": "let",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 42,
+                  "column": 5,
+                  "offset": 935
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 42,
+               "column": 6,
+               "offset": 936
+            },
+            "_source": "ma_array[l_ind].f2_decimal",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 42,
+                  "column": 32,
+                  "offset": 962
+               },
+               "_source": "\\\\b\\\\b\\\\b\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 42,
+               "column": 36,
+               "offset": 966
+            },
+            "_source": "=",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 42,
+                  "column": 37,
+                  "offset": 967
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 42,
+               "column": 38,
+               "offset": 968
+            },
+            "_source": "null\\n",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 43,
+                  "column": 1,
+                  "offset": 973
+               },
+               "_source": "\\\\t",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 43,
+               "column": 2,
+               "offset": 974
+            },
+            "_source": "let",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 43,
+                  "column": 5,
+                  "offset": 977
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 43,
+               "column": 6,
+               "offset": 978
+            },
+            "_source": "ma_array[l_ind].f2_decimal0",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 43,
+                  "column": 33,
+                  "offset": 1005
+               },
+               "_source": "\\\\b\\\\b\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 43,
+               "column": 36,
+               "offset": 1008
+            },
+            "_source": "=",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 43,
+                  "column": 37,
+                  "offset": 1009
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 43,
+               "column": 38,
+               "offset": 1010
+            },
+            "_source": "null\\n",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 44,
+                  "column": 1,
+                  "offset": 1015
+               },
+               "_source": "\\\\t",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 44,
+               "column": 2,
+               "offset": 1016
+            },
+            "_source": "let",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 44,
+                  "column": 5,
+                  "offset": 1019
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 44,
+               "column": 6,
+               "offset": 1020
+            },
+            "_source": "ma_array[l_ind].f2_char",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 44,
+                  "column": 29,
+                  "offset": 1043
+               },
+               "_source": "\\\\b\\\\b\\\\b\\\\b\\\\b\\\\b\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 44,
+               "column": 36,
+               "offset": 1050
+            },
+            "_source": "=",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 44,
+                  "column": 37,
+                  "offset": 1051
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 44,
+               "column": 38,
+               "offset": 1052
+            },
+            "_source": "\\"",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 44,
+                  "column": 39,
+                  "offset": 1053
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 44,
+               "column": 40,
+               "offset": 1054
+            },
+            "_source": "\\"\\n",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 45,
+                  "column": 1,
+                  "offset": 1056
+               },
+               "_source": "\\\\t",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 45,
+               "column": 2,
+               "offset": 1057
+            },
+            "_source": "let",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 45,
+                  "column": 5,
+                  "offset": 1060
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 45,
+               "column": 6,
+               "offset": 1061
+            },
+            "_source": "ma_array[l_ind].f2_varchar",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 45,
+                  "column": 32,
+                  "offset": 1087
+               },
+               "_source": "\\\\b\\\\b\\\\b\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 45,
+               "column": 36,
+               "offset": 1091
+            },
+            "_source": "=",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 45,
+                  "column": 37,
+                  "offset": 1092
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 45,
+               "column": 38,
+               "offset": 1093
+            },
+            "_source": "\\"",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 45,
+                  "column": 39,
+                  "offset": 1094
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 45,
+               "column": 40,
+               "offset": 1095
+            },
+            "_source": "\\"\\n",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 46,
+                  "column": 1,
+                  "offset": 1097
+               },
+               "_source": "\\\\t",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 46,
+               "column": 2,
+               "offset": 1098
+            },
+            "_source": "let",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 46,
+                  "column": 5,
+                  "offset": 1101
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 46,
+               "column": 6,
+               "offset": 1102
+            },
+            "_source": "ma_array[l_ind].f2_date",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 46,
+                  "column": 29,
+                  "offset": 1125
+               },
+               "_source": "\\\\b\\\\b\\\\b\\\\b\\\\b\\\\b\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 46,
+               "column": 36,
+               "offset": 1132
+            },
+            "_source": "=",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 46,
+                  "column": 37,
+                  "offset": 1133
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 46,
+               "column": 38,
+               "offset": 1134
+            },
+            "_source": "today",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 46,
+                  "column": 43,
+                  "offset": 1139
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 46,
+               "column": 44,
+               "offset": 1140
+            },
+            "_source": "+",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 46,
+                  "column": 45,
+                  "offset": 1141
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 46,
+               "column": 46,
+               "offset": 1142
+            },
+            "_source": "l_ind",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 46,
+                  "column": 51,
+                  "offset": 1147
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 46,
+               "column": 52,
+               "offset": 1148
+            },
+            "_source": "units",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 46,
+                  "column": 57,
+                  "offset": 1153
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 46,
+               "column": 58,
+               "offset": 1154
+            },
+            "_source": "day\\n",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 47,
+                  "column": 1,
+                  "offset": 1158
+               },
+               "_source": "\\\\t",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 47,
+               "column": 2,
+               "offset": 1159
+            },
+            "_source": "let",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 47,
+                  "column": 5,
+                  "offset": 1162
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 47,
+               "column": 6,
+               "offset": 1163
+            },
+            "_source": "ma_array[l_ind].f2_dttime_y2s",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 47,
+                  "column": 35,
+                  "offset": 1192
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 47,
+               "column": 36,
+               "offset": 1193
+            },
+            "_source": "=",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 47,
+                  "column": 37,
+                  "offset": 1194
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 47,
+               "column": 38,
+               "offset": 1195
+            },
+            "_source": "null\\n",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 48,
+                  "column": 1,
+                  "offset": 1200
+               },
+               "_source": "\\\\t",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 48,
+               "column": 2,
+               "offset": 1201
+            },
+            "_source": "let",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 48,
+                  "column": 5,
+                  "offset": 1204
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 48,
+               "column": 6,
+               "offset": 1205
+            },
+            "_source": "ma_array[l_ind].f2_dttime_y2m",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 48,
+                  "column": 35,
+                  "offset": 1234
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 48,
+               "column": 36,
+               "offset": 1235
+            },
+            "_source": "=",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 48,
+                  "column": 37,
+                  "offset": 1236
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 48,
+               "column": 38,
+               "offset": 1237
+            },
+            "_source": "null\\n",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 49,
+                  "column": 1,
+                  "offset": 1242
+               },
+               "_source": "\\\\t",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 49,
+               "column": 2,
+               "offset": 1243
+            },
+            "_source": "let",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 49,
+                  "column": 5,
+                  "offset": 1246
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 49,
+               "column": 6,
+               "offset": 1247
+            },
+            "_source": "ma_array[l_ind].f2_dttime_y2f",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 49,
+                  "column": 35,
+                  "offset": 1276
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 49,
+               "column": 36,
+               "offset": 1277
+            },
+            "_source": "=",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 49,
+                  "column": 37,
+                  "offset": 1278
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 49,
+               "column": 38,
+               "offset": 1279
+            },
+            "_source": "null\\n",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 50,
+                  "column": 1,
+                  "offset": 1284
+               },
+               "_source": "\\\\t",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 50,
+               "column": 2,
+               "offset": 1285
+            },
+            "_source": "let",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 50,
+                  "column": 5,
+                  "offset": 1288
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 50,
+               "column": 6,
+               "offset": 1289
+            },
+            "_source": "ma_array[l_ind].f2_scroll",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 50,
+                  "column": 31,
+                  "offset": 1314
+               },
+               "_source": "\\\\b\\\\b\\\\b\\\\b\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 50,
+               "column": 36,
+               "offset": 1319
+            },
+            "_source": "=",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 50,
+                  "column": 37,
+                  "offset": 1320
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 50,
+               "column": 38,
+               "offset": 1321
+            },
+            "_source": "null\\n\\nend",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 52,
+                  "column": 4,
+                  "offset": 1330
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 52,
+               "column": 5,
+               "offset": 1331
+            },
+            "_source": "for\\n\\nfor",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 54,
+                  "column": 4,
+                  "offset": 1339
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 54,
+               "column": 5,
+               "offset": 1340
+            },
+            "_source": "l_ind",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 54,
+                  "column": 10,
+                  "offset": 1345
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 54,
+               "column": 11,
+               "offset": 1346
+            },
+            "_source": "=",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 54,
+                  "column": 12,
+                  "offset": 1347
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 54,
+               "column": 13,
+               "offset": 1348
+            },
+            "_source": "1",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 54,
+                  "column": 14,
+                  "offset": 1349
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 54,
+               "column": 15,
+               "offset": 1350
+            },
+            "_source": "to",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 54,
+                  "column": 17,
+                  "offset": 1352
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 54,
+               "column": 18,
+               "offset": 1353
+            },
+            "_source": "3\\n",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 55,
+                  "column": 1,
+                  "offset": 1355
+               },
+               "_source": "\\\\t",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 55,
+               "column": 2,
+               "offset": 1356
+            },
+            "_source": "let",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 55,
+                  "column": 5,
+                  "offset": 1359
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 55,
+               "column": 6,
+               "offset": 1360
+            },
+            "_source": "ma_integer[l_ind]",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 55,
+                  "column": 23,
+                  "offset": 1377
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 55,
+               "column": 24,
+               "offset": 1378
+            },
+            "_source": "=",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 55,
+                  "column": 25,
+                  "offset": 1379
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 55,
+               "column": 26,
+               "offset": 1380
+            },
+            "_source": "l_ind\\n\\n",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 57,
+                  "column": 1,
+                  "offset": 1387
+               },
+               "_source": "\\\\t",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 57,
+               "column": 2,
+               "offset": 1388
+            },
+            "_source": "let",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 57,
+                  "column": 5,
+                  "offset": 1391
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 57,
+               "column": 6,
+               "offset": 1392
+            },
+            "_source": "ma_array[l_ind].f2_check",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 57,
+                  "column": 30,
+                  "offset": 1416
+               },
+               "_source": "\\\\b\\\\b\\\\b\\\\b\\\\b\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 57,
+               "column": 36,
+               "offset": 1422
+            },
+            "_source": "=",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 57,
+                  "column": 37,
+                  "offset": 1423
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 57,
+               "column": 38,
+               "offset": 1424
+            },
+            "_source": "\\"s\\"\\n",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 58,
+                  "column": 1,
+                  "offset": 1428
+               },
+               "_source": "\\\\t",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 58,
+               "column": 2,
+               "offset": 1429
+            },
+            "_source": "let",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 58,
+                  "column": 5,
+                  "offset": 1432
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 58,
+               "column": 6,
+               "offset": 1433
+            },
+            "_source": "ma_array[l_ind].f2_integer",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 58,
+                  "column": 32,
+                  "offset": 1459
+               },
+               "_source": "\\\\b\\\\b\\\\b\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 58,
+               "column": 36,
+               "offset": 1463
+            },
+            "_source": "=",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 58,
+                  "column": 37,
+                  "offset": 1464
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 58,
+               "column": 38,
+               "offset": 1465
+            },
+            "_source": "339782827",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 58,
+                  "column": 47,
+                  "offset": 1474
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 58,
+               "column": 48,
+               "offset": 1475
+            },
+            "_source": "+",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 58,
+                  "column": 49,
+                  "offset": 1476
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 58,
+               "column": 50,
+               "offset": 1477
+            },
+            "_source": "l_ind\\n",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 59,
+                  "column": 1,
+                  "offset": 1483
+               },
+               "_source": "\\\\t",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 59,
+               "column": 2,
+               "offset": 1484
+            },
+            "_source": "let",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 59,
+                  "column": 5,
+                  "offset": 1487
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 59,
+               "column": 6,
+               "offset": 1488
+            },
+            "_source": "ma_array[l_ind].f2_smallint",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 59,
+                  "column": 33,
+                  "offset": 1515
+               },
+               "_source": "\\\\b\\\\b\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 59,
+               "column": 36,
+               "offset": 1518
+            },
+            "_source": "=",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 59,
+                  "column": 37,
+                  "offset": 1519
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 59,
+               "column": 38,
+               "offset": 1520
+            },
+            "_source": "18721",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 59,
+                  "column": 43,
+                  "offset": 1525
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 59,
+               "column": 44,
+               "offset": 1526
+            },
+            "_source": "+",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 59,
+                  "column": 45,
+                  "offset": 1527
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 59,
+               "column": 46,
+               "offset": 1528
+            },
+            "_source": "l_ind\\n",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 60,
+                  "column": 1,
+                  "offset": 1534
+               },
+               "_source": "\\\\t",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 60,
+               "column": 2,
+               "offset": 1535
+            },
+            "_source": "let",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 60,
+                  "column": 5,
+                  "offset": 1538
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 60,
+               "column": 6,
+               "offset": 1539
+            },
+            "_source": "ma_array[l_ind].f2_decimal",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 60,
+                  "column": 32,
+                  "offset": 1565
+               },
+               "_source": "\\\\b\\\\b\\\\b\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 60,
+               "column": 36,
+               "offset": 1569
+            },
+            "_source": "=",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 60,
+                  "column": 37,
+                  "offset": 1570
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 60,
+               "column": 38,
+               "offset": 1571
+            },
+            "_source": "-19838849.087712",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 60,
+                  "column": 54,
+                  "offset": 1587
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 60,
+               "column": 55,
+               "offset": 1588
+            },
+            "_source": "+",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 60,
+                  "column": 56,
+                  "offset": 1589
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 60,
+               "column": 57,
+               "offset": 1590
+            },
+            "_source": "l_ind\\n",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 61,
+                  "column": 1,
+                  "offset": 1596
+               },
+               "_source": "\\\\t",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 61,
+               "column": 2,
+               "offset": 1597
+            },
+            "_source": "let",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 61,
+                  "column": 5,
+                  "offset": 1600
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 61,
+               "column": 6,
+               "offset": 1601
+            },
+            "_source": "ma_array[l_ind].f2_decimal0",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 61,
+                  "column": 33,
+                  "offset": 1628
+               },
+               "_source": "\\\\b\\\\b\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 61,
+               "column": 36,
+               "offset": 1631
+            },
+            "_source": "=",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 61,
+                  "column": 37,
+                  "offset": 1632
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 61,
+               "column": 38,
+               "offset": 1633
+            },
+            "_source": "9389007739",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 61,
+                  "column": 48,
+                  "offset": 1643
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 61,
+               "column": 49,
+               "offset": 1644
+            },
+            "_source": "+",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 61,
+                  "column": 50,
+                  "offset": 1645
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 61,
+               "column": 51,
+               "offset": 1646
+            },
+            "_source": "l_ind\\n",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 62,
+                  "column": 1,
+                  "offset": 1652
+               },
+               "_source": "\\\\t",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 62,
+               "column": 2,
+               "offset": 1653
+            },
+            "_source": "let",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 62,
+                  "column": 5,
+                  "offset": 1656
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 62,
+               "column": 6,
+               "offset": 1657
+            },
+            "_source": "ma_array[l_ind].f2_char",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 62,
+                  "column": 29,
+                  "offset": 1680
+               },
+               "_source": "\\\\b\\\\b\\\\b\\\\b\\\\b\\\\b\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 62,
+               "column": 36,
+               "offset": 1687
+            },
+            "_source": "=",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 62,
+                  "column": 37,
+                  "offset": 1688
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 62,
+               "column": 38,
+               "offset": 1689
+            },
+            "_source": "\\"texto\\"||l_ind\\n",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 63,
+                  "column": 1,
+                  "offset": 1704
+               },
+               "_source": "\\\\t",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 63,
+               "column": 2,
+               "offset": 1705
+            },
+            "_source": "let",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 63,
+                  "column": 5,
+                  "offset": 1708
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 63,
+               "column": 6,
+               "offset": 1709
+            },
+            "_source": "ma_array[l_ind].f2_varchar",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 63,
+                  "column": 32,
+                  "offset": 1735
+               },
+               "_source": "\\\\b\\\\b\\\\b\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 63,
+               "column": 36,
+               "offset": 1739
+            },
+            "_source": "=",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 63,
+                  "column": 37,
+                  "offset": 1740
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 63,
+               "column": 38,
+               "offset": 1741
+            },
+            "_source": "\\"textovarchar",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 63,
+                  "column": 51,
+                  "offset": 1754
+               },
+               "_source": "\\\\b\\\\b\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 63,
+               "column": 54,
+               "offset": 1757
+            },
+            "_source": "\\"||l_ind\\n",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 64,
+                  "column": 1,
+                  "offset": 1766
+               },
+               "_source": "\\\\t",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 64,
+               "column": 2,
+               "offset": 1767
+            },
+            "_source": "let",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 64,
+                  "column": 5,
+                  "offset": 1770
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 64,
+               "column": 6,
+               "offset": 1771
+            },
+            "_source": "ma_array[l_ind].f2_date",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 64,
+                  "column": 29,
+                  "offset": 1794
+               },
+               "_source": "\\\\b\\\\b\\\\b\\\\b\\\\b\\\\b\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 64,
+               "column": 36,
+               "offset": 1801
+            },
+            "_source": "=",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 64,
+                  "column": 37,
+                  "offset": 1802
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 64,
+               "column": 38,
+               "offset": 1803
+            },
+            "_source": "today",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 64,
+                  "column": 43,
+                  "offset": 1808
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 64,
+               "column": 44,
+               "offset": 1809
+            },
+            "_source": "+",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 64,
+                  "column": 45,
+                  "offset": 1810
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 64,
+               "column": 46,
+               "offset": 1811
+            },
+            "_source": "3",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 64,
+                  "column": 47,
+                  "offset": 1812
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 64,
+               "column": 48,
+               "offset": 1813
+            },
+            "_source": "units",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 64,
+                  "column": 53,
+                  "offset": 1818
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 64,
+               "column": 54,
+               "offset": 1819
+            },
+            "_source": "day\\n",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 65,
+                  "column": 1,
+                  "offset": 1823
+               },
+               "_source": "\\\\t",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 65,
+               "column": 2,
+               "offset": 1824
+            },
+            "_source": "let",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 65,
+                  "column": 5,
+                  "offset": 1827
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 65,
+               "column": 6,
+               "offset": 1828
+            },
+            "_source": "ma_array[l_ind].f2_dttime_y2s",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 65,
+                  "column": 35,
+                  "offset": 1857
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 65,
+               "column": 36,
+               "offset": 1858
+            },
+            "_source": "=",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 65,
+                  "column": 37,
+                  "offset": 1859
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 65,
+               "column": 38,
+               "offset": 1860
+            },
+            "_source": "current",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 65,
+                  "column": 45,
+                  "offset": 1867
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 65,
+               "column": 46,
+               "offset": 1868
+            },
+            "_source": "+",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 65,
+                  "column": 47,
+                  "offset": 1869
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 65,
+               "column": 48,
+               "offset": 1870
+            },
+            "_source": "l_ind",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 65,
+                  "column": 53,
+                  "offset": 1875
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 65,
+               "column": 54,
+               "offset": 1876
+            },
+            "_source": "units",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 65,
+                  "column": 59,
+                  "offset": 1881
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 65,
+               "column": 60,
+               "offset": 1882
+            },
+            "_source": "day\\n",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 66,
+                  "column": 1,
+                  "offset": 1886
+               },
+               "_source": "\\\\t",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 66,
+               "column": 2,
+               "offset": 1887
+            },
+            "_source": "let",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 66,
+                  "column": 5,
+                  "offset": 1890
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 66,
+               "column": 6,
+               "offset": 1891
+            },
+            "_source": "ma_array[l_ind].f2_dttime_y2m",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 66,
+                  "column": 35,
+                  "offset": 1920
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 66,
+               "column": 36,
+               "offset": 1921
+            },
+            "_source": "=",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 66,
+                  "column": 37,
+                  "offset": 1922
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 66,
+               "column": 38,
+               "offset": 1923
+            },
+            "_source": "current",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 66,
+                  "column": 45,
+                  "offset": 1930
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 66,
+               "column": 46,
+               "offset": 1931
+            },
+            "_source": "+",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 66,
+                  "column": 47,
+                  "offset": 1932
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 66,
+               "column": 48,
+               "offset": 1933
+            },
+            "_source": "l_ind",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 66,
+                  "column": 53,
+                  "offset": 1938
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 66,
+               "column": 54,
+               "offset": 1939
+            },
+            "_source": "+",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 66,
+                  "column": 55,
+                  "offset": 1940
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 66,
+               "column": 56,
+               "offset": 1941
+            },
+            "_source": "1",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 66,
+                  "column": 57,
+                  "offset": 1942
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 66,
+               "column": 58,
+               "offset": 1943
+            },
+            "_source": "units",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 66,
+                  "column": 63,
+                  "offset": 1948
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 66,
+               "column": 64,
+               "offset": 1949
+            },
+            "_source": "day\\n",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 67,
+                  "column": 1,
+                  "offset": 1953
+               },
+               "_source": "\\\\t",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 67,
+               "column": 2,
+               "offset": 1954
+            },
+            "_source": "let",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 67,
+                  "column": 5,
+                  "offset": 1957
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 67,
+               "column": 6,
+               "offset": 1958
+            },
+            "_source": "ma_array[l_ind].f2_dttime_y2f",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 67,
+                  "column": 35,
+                  "offset": 1987
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 67,
+               "column": 36,
+               "offset": 1988
+            },
+            "_source": "=",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 67,
+                  "column": 37,
+                  "offset": 1989
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 67,
+               "column": 38,
+               "offset": 1990
+            },
+            "_source": "current",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 67,
+                  "column": 45,
+                  "offset": 1997
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 67,
+               "column": 46,
+               "offset": 1998
+            },
+            "_source": "+",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 67,
+                  "column": 47,
+                  "offset": 1999
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 67,
+               "column": 48,
+               "offset": 2000
+            },
+            "_source": "l_ind",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 67,
+                  "column": 53,
+                  "offset": 2005
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 67,
+               "column": 54,
+               "offset": 2006
+            },
+            "_source": "+",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 67,
+                  "column": 55,
+                  "offset": 2007
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 67,
+               "column": 56,
+               "offset": 2008
+            },
+            "_source": "2",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 67,
+                  "column": 57,
+                  "offset": 2009
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 67,
+               "column": 58,
+               "offset": 2010
+            },
+            "_source": "units",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 67,
+                  "column": 63,
+                  "offset": 2015
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 67,
+               "column": 64,
+               "offset": 2016
+            },
+            "_source": "day\\n",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 68,
+                  "column": 1,
+                  "offset": 2020
+               },
+               "_source": "\\\\t",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 68,
+               "column": 2,
+               "offset": 2021
+            },
+            "_source": "let",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 68,
+                  "column": 5,
+                  "offset": 2024
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 68,
+               "column": 6,
+               "offset": 2025
+            },
+            "_source": "ma_array[l_ind].f2_scroll",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 68,
+                  "column": 31,
+                  "offset": 2050
+               },
+               "_source": "\\\\b\\\\b\\\\b\\\\b\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 68,
+               "column": 36,
+               "offset": 2055
+            },
+            "_source": "=",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 68,
+                  "column": 37,
+                  "offset": 2056
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 68,
+               "column": 38,
+               "offset": 2057
+            },
+            "_source": "\\"texto",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 68,
+                  "column": 44,
+                  "offset": 2063
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 68,
+               "column": 45,
+               "offset": 2064
+            },
+            "_source": "scroll",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 68,
+                  "column": 51,
+                  "offset": 2070
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 68,
+               "column": 52,
+               "offset": 2071
+            },
+            "_source": "texto",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 68,
+                  "column": 57,
+                  "offset": 2076
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 68,
+               "column": 58,
+               "offset": 2077
+            },
+            "_source": "scroll",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 68,
+                  "column": 64,
+                  "offset": 2083
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 68,
+               "column": 65,
+               "offset": 2084
+            },
+            "_source": "texto",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 68,
+                  "column": 70,
+                  "offset": 2089
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 68,
+               "column": 71,
+               "offset": 2090
+            },
+            "_source": "scroll",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 68,
+                  "column": 77,
+                  "offset": 2096
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 68,
+               "column": 78,
+               "offset": 2097
+            },
+            "_source": "\\"\\nend",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 69,
+                  "column": 4,
+                  "offset": 2102
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 69,
+               "column": 5,
+               "offset": 2103
+            },
+            "_source": "for\\nend",
+            "_children": []
+         },
+         [
+            {
+               "_type": "whiteSpace",
+               "_location": {
+                  "line": 70,
+                  "column": 4,
+                  "offset": 2110
+               },
+               "_source": "\\\\b",
+               "_children": []
+            }
+         ],
+         {
+            "_type": "notSpecified",
+            "_location": {
+               "line": 70,
+               "column": 5,
+               "offset": 2111
+            },
+            "_source": "main\\n\\n",
+            "_children": []
+         }
+      ]
+   ]
+}
 `;

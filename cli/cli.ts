@@ -33,16 +33,17 @@ let runAction: () => void;
 appCommand
   .arguments("<command> [options]")
   .usage("<command> [options]")
-  .passCommandToAction(false)
   .allowUnknownOption(true);
 
 const formatCommand: AppCommand = appCommand.command("format"); // , { isDefault: true });
 formatCommand
   .allowUnknownOption(true)
   .arguments("[filePattern...]")
-  .description("Formata arquivos fontes 4GL", {
-    filePattern: "padrão de seleção de arquivo (padrão: [*.4GL, *.PER])",
+  .description("formata arquivos fontes TOTVS", {
+    filePattern: "padrão de seleção de arquivo (padrão: [*.4GL, *.PER, *.PR?, *.APH, " +
+      "*.PPX, *.PPP, *.TLPP, *.CH])"
   })
+  //.action((name, options, command) => {
   .action((filePattern: string[], recursive: boolean) => {
     runAction = () => {
       let files: string[] = [];
@@ -53,7 +54,6 @@ formatCommand
 
       logger.verbose("running FORMAT");
       logger.verbose("filePattern", filePattern);
-
 
       filePattern.forEach((pattern: string) => {
         const auxFiles: string[] = glob.sync(pattern);
@@ -79,12 +79,12 @@ formatCommand
         cliProgress.Presets.shades_classic
       );
 
-      bar.start(files.length, 0, { file: ""});
+      bar.start(files.length, 0, { file: "" });
 
       const options: any = formatCommand.opts();
       files.forEach((value: string) => {
         bar.increment();
-        bar.update({ file: value.length>30?"..."+value.substr(-25):value});
+        bar.update({ file: value.length > 30 ? "..." + value.substr(-25) : value });
         const content: string = fs.readFileSync(value).toString();
         const result: string = format4GL("4GL", content, options);
       });
@@ -123,7 +123,7 @@ function format4GL(
     result = content.substring(options.rangeStart, options.rangeEnd);
     options = {
       ...options,
-      parser: "4gl-token",
+      parser: "4gl",
       requirePragma: false,
       insertPragma: false,
       rangeEnd: options.rangeEnd + 1,
@@ -132,7 +132,7 @@ function format4GL(
     result = content;
     options = {
       ...options,
-      parser: "4gl-token",
+      parser: "4gl",
     };
   }
 

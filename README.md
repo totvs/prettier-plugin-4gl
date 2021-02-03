@@ -73,7 +73,7 @@ Nesse modo informe as opções usando o nome longo da opção sem o `--` e as le
     "keywordsCase": "upper",
     "stringStyle": "ignore",
     "formatNumber": false,
-    "operatorSpacing": true
+    "operatorSpacing": false
   }
   ...
 ```
@@ -98,10 +98,14 @@ Nesse modo informe as opções usando o nome longo da opção sem o `--`.
   }
   //Range source
   let result: any = prettier.format(content, {
-    parser: "4gl-token",
+    parser: "4gl",
     ...options,
   });
 ```
+
+### Linha de comando
+
+Set-ExecutionPolicy Unrestricted Process
 
 ## Mantenedor
 
