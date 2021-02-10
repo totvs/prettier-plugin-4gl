@@ -2,7 +2,8 @@
 //const { printDocToDebug } = require("prettier").doc.debug;
 
 import { util } from "prettier";
-import { ASTNode } from "tds-parsers/typings/ast_node";
+import { ASTNode, EASTType } from "tds-parsers";
+import AST = require("tds-parsers/lib/ast_node");
 
 const {
   concat,
@@ -16,32 +17,38 @@ const {
   indent,
   dedent,
   trim,
+  markAsRoot
 } = require("prettier").doc.builders;
 
 const { stripTrailingHardline, removeLines } = require("prettier").doc.utils;
 
 function buildProgram(path, print, options) {
-  const node: ASTNode =  path.getValue();
+  const node: AST.ASTNode = path.getValue();
 
   return concat(path.map(print, 'children'));
 }
 
 function buildBlock(path, print, options) {
-  //const node: ASTNode =  path.getValue();
-  const begin = path.call(print, "beginBlock");
-  const body = concat(path.map(print, "bodyBlock"));
-  const end = path.call(print, "endBlock");
+  const begin = path.call(print, "children_0");
+  const body = path.call(print, "children_1");
+  const end = path.call(print, "children_2");
 
-  return concat([begin, line, indent(body), line, end, line]);
+  return concat([indent(begin), body, dedent(end)]);
+}
+
+function buildArgumentList(path, print, options) {
+  const open = path.call(print, "children");
+
+  return concat(open);
 }
 
 function buildKeyword(path, print, options) {
-  const node: ASTNode =  path.getValue();
+  const node: AST.ASTNode = path.getValue();
   let value = node.source;
 
-  if (options.keywordsCase === "upper") {
+  if (options["4glKeywordsCase"] === "upper") {
     value = value.toUpperCase();
-  } else if (options.keywordsCase === "lower") {
+  } else if (options["4glkeywordsCase"] === "lower") {
     value = value.toLowerCase();
   }
 
@@ -49,7 +56,11 @@ function buildKeyword(path, print, options) {
 }
 
 function buildWhiteSpace(path, print, options) {
-  const node: ASTNode =  path.getValue();
+  if ((lastNode.type == EASTType.newLine)) {
+    return "";
+  }
+
+  const node: AST.ASTNode = path.getValue();
   let value = node.source;
 
   if (options.useTabs) {
@@ -61,47 +72,128 @@ function buildWhiteSpace(path, print, options) {
   return value;
 }
 
+function buildEndLine(path, print, options) {
+
+  return concat(path.map(print, "source"));
+}
+
 function buildNewLine(path, print, options) {
-  const node: ASTNode =  path.getValue();
-  let value = node.source;
+  // const node: AST.ASTNode = path.getValue();
+  // let value = node.source;
+  if (lastNode.type == EASTType.newLine) {
+    if (options["4glMaxEmptyLines"] != 0) {
+      emptyLinesCount++;
+      if (emptyLinesCount < options["4glMaxEmptyLines"]) {
+        return line;
+      } else {
+        return "";
+      }
+    }
+  }
+  emptyLinesCount=0;
 
   return line;
 }
 
 function buildIdentifier(path, print, options) {
-  const node: ASTNode =  path.getValue();
+  const node: AST.ASTNode = path.getValue();
   let value = node.source;
 
   return value;
 }
 
 function buildOperator(path, print, options) {
-  const node: ASTNode =  path.getValue();
+  const node: AST.ASTNode = path.getValue();
   const value = node.source;
   let result = value;
-  
-  if (options.operatorSpacing == node.get("spacing")) {
-    result = (node.get("spacing").match(/before|both/) ? " ":"") 
-      + result
-      + (node.get("spacing").match(/after|both/) ? " ":"")
+
+  return result;
+}
+
+function buildOperatorBraces(path, print, options) {
+  const node: AST.ASTNode = path.getValue();
+  const value = node.source;
+  let result = value;
+
+  if (options["4glBraces"]) {
+    result = (result === "{") ? "{ " : " }";
   }
 
   return result;
 }
 
+function buildOperatorBracket(path, print, options) {
+  const node: AST.ASTNode = path.getValue();
+  const value = node.source;
+  let result = value;
 
+  if (options["4glBracket"]) {
+    result = (result === "[") ? "[ " : " ]";
+  }
 
+  return result;
+}
 
+function buildOperatorMath(path, print, options) {
+  const node: AST.ASTNode = path.getValue();
+  const value = node.source;
+  let result = value;
 
+  if (options["4glMathOperators"]) {
+    result = " " + result + " ";
+  }
+
+  return result;
+}
+
+function buildOperatorParenthesis(path, print, options) {
+  const node: AST.ASTNode = path.getValue();
+  const value = node.source;
+  let result = value;
+
+  if (options["4glParenthesis"]) {
+    result = (result === "(") ? "( " : " )";
+  }
+
+  return result;
+}
+
+function buildBlockComment(path, print, options) {
+  const node: AST.ASTNode = path.getValue();
+  const value = node.source;
+  let result = value;
+
+  return value;
+}
+
+function buildComment(path, print, options) {
+  const node: AST.ASTNode = path.getValue();
+  const value = node.source;
+  let result = value;
+
+  return value;
+}
+
+function buildOperatorSeparator(path, print, options) {
+  const node: AST.ASTNode = path.getValue();
+  const value = node.source;
+  let result = value;
+
+  if (options["4glSeparator"]) {
+    result += " )";
+  }
+
+  return result;
+}
 
 function buildString(path, print, options) {
-  const node: ASTNode =  path.getValue();
+  const node: AST.ASTNode = path.getValue();
   const value = node.source;
   let result = undefined;
 
-  if (options.stringOption === "ignore") {
+  if (options["4glStringStyle"] === "ignore") {
     result = value.toString();
-  } else if (options.stringOption === "single-quotes") {
+  } else if (options["4glStringStyle"] === "single-quotes") {
     result = util.makeString(value.substring(1, value.length - 1), "'", true);
   } else {
     //double-quotes
@@ -111,21 +203,12 @@ function buildString(path, print, options) {
   return result;
 }
 
-
-function buildOpenOperator(path, print, options) {
-  return buildOperator(path, print, options);
-}
-
-function buildCloseOperator(path, print, options) {
-  return buildOperator(path, print, options);
-}
-
 function buildNumber(path, print, options) {
-  const node: ASTNode =  path.getValue();
+  const node: AST.ASTNode = path.getValue();
   const value: Number = Number.parseFloat(node.source);
   let result = undefined;
 
-  if (options.formatNumber) {
+  if (options["4glFormatNumber"]) {
     result = value.toLocaleString("en");
   } else {
     result = value.toLocaleString();
@@ -135,41 +218,38 @@ function buildNumber(path, print, options) {
 }
 
 let _builderMap;
+let emptyLinesCount = 0;
+let lastNode: ASTNode;
 
 function builderMap(_options) {
   const options = _options;
-  const map: {} = {};
-  const options4GLDef: {} = require("./config").options;
+  const defaultOptions: {} = require("./config").get4GLDefaultOptions();
 
-  Object.keys(options4GLDef).forEach((key) => {
+  Object.keys(defaultOptions).forEach((key) => {
     if (options[key] == undefined) {
-      options[key] = options4GLDef[key];
+      options[key] = defaultOptions[key];
     }
   });
 
-  map["program"] = (path, print) => buildProgram(path, print, options);
-  map["block"] = (path, print) => buildBlock(path, print, options);
-  map["keyword"] = (path, print) => buildKeyword(path, print, options);
-  map["whiteSpace"] = (path, print) => buildWhiteSpace(path, print, options);
-  map["newLine"] = (path, print) => buildNewLine(path, print, options);
-  map["identifier"] = (path, print) => buildIdentifier(path, print, options);
-  map["operator"] = (path, print) => buildOperator(path, print, options);
-  map["comment"] = (path, print) => concat(path.map(print, "source"));
-  map["string"] = (path, print) => buildString(path, print, options);
-  map["number"] = (path, print) => buildNumber(path, print, options);
-  
-  // map.bracket = (path, print) => buildBracket(path, print, options);
-  // map.command = (path, print) => buildCommand(path, print, options);
-  // map.double_operator = (path, print) => buildOperator(path, print, options);
-  // map.function = (path, print) => buildFunction(path, print, options);
-  // map.globals = (path, print) => concat(path.map(print, "value"));
-  // map.list = (path, print) => join(", ", path.map(print, "value"));
-  // map.main = (path, print) => buildFunction(path, print, options);
-  // map.open_operator = (path, print) => buildOperator(path, print, options);
-  // map.operator = (path, print) => buildOperator(path, print, options);
-  // map.variable = (path, print) => path.call(print, "value");
-  // map.constant = (path, print) => path.map(print, "value");
-  // map.expression = (path, print) => path.map(print, "value");
+  const map: {} = {};
+  map[AST.EASTType.program] = (path, print) => buildProgram(path, print, options);
+  map[AST.EASTType.block] = (path, print) => buildBlock(path, print, options);
+  map[AST.EASTType.argumentList] = (path, print) => buildArgumentList(path, print, options);
+  map[AST.EASTType.keyword] = (path, print) => buildKeyword(path, print, options);
+  map[AST.EASTType.whiteSpace] = (path, print) => buildWhiteSpace(path, print, options);
+  map[AST.EASTType.endLine] = (path, print) => buildEndLine(path, print, options);
+  map[AST.EASTType.newLine] = (path, print) => buildNewLine(path, print, options);
+  map[AST.EASTType.identifier] = (path, print) => buildIdentifier(path, print, options);
+  map[AST.EASTType.operator] = (path, print) => buildOperator(path, print, options);
+  map[AST.EASTType.operatorBraces] = (path, print) => buildOperatorBraces(path, print, options);
+  map[AST.EASTType.operatorBracket] = (path, print) => buildOperatorBracket(path, print, options);
+  map[AST.EASTType.operatorMath] = (path, print) => buildOperatorMath(path, print, options);
+  map[AST.EASTType.operatorParenthesis] = (path, print) => buildOperatorParenthesis(path, print, options);
+  map[AST.EASTType.operatorSeparator] = (path, print) => buildOperatorSeparator(path, print, options);
+  map[AST.EASTType.comment] = (path, print) => buildComment(path, print, options);
+  map[AST.EASTType.blockComment] = (path, print) => buildBlockComment(path, print, options);
+  map[AST.EASTType.string] = (path, print) => buildString(path, print, options);
+  map[AST.EASTType.number] = (path, print) => buildNumber(path, print, options);
 
   return map;
 }
@@ -181,14 +261,19 @@ function resetFunctionMap() {
 export function printElement(path, options, print) {
   if (!_builderMap) {
     _builderMap = builderMap(options);
+    lastNode = path.getValue();
   }
 
-  const node: ASTNode =  path.getValue();
+  const node: AST.ASTNode = path.getValue();
   const builder = _builderMap[node.type];
   let result: any = undefined;
 
   if (builder) {
     result = builder(path, print, options);
+  }
+
+  if (node.type != EASTType.whiteSpace) {
+    lastNode = node;
   }
 
   return result;

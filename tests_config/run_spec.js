@@ -56,7 +56,7 @@ function run_spec(dirname, options) {
 global.run_spec = run_spec;
 
 function processTest(mergedOptions, filename, input) {
-  if (path.dirname(mergedOptions.filepath).endsWith("range")) {
+  if (path.dirname(mergedOptions.filepath).endsWith("xrange")) {
     //Range format not support: apparent prettier restriction
     describe("Uso de RANGE", () => {
       test(filename, () => {

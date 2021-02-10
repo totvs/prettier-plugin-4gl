@@ -1,4 +1,4 @@
-const CATEGORY_4GL: string = "$GL";
+const CATEGORY_4GL: string = "4GL";
 const SINCE: string = "0.0.0";
 
 export const options: {} = {
@@ -6,7 +6,11 @@ export const options: {} = {
     since: SINCE,
     category: CATEGORY_4GL,
     type: "choice",
-    choices: [{ value: "upper" }, { value: "lower" }, { value: "ignore" }],
+    choices: [
+      { value: "upper" }, 
+      { value: "lower" }, 
+      { value: "ignore" }
+    ],
     default: "upper",
     description: "Put keywords to upper or lowser case.",
   },
@@ -29,29 +33,82 @@ export const options: {} = {
     default: false,
     description: "Format number, e.g. 1234 is formatted to 1,234.",
   },
-  "4glOperatorSpacing": {
+  "4glBraces":
+  {
     since: SINCE,
     category: CATEGORY_4GL,
-    type: "choice",
-    choices: [
-      { value: "before" },
-      { value: "after" },
-      { value: "both" },
-    ],
-    default: "",
-    description: "Spacing in operators.",
+    type: "boolean",
+    default: false,
+    description: "Spacing in Braces operator."
+  },
+  "4glBracket":
+  {
+    since: SINCE,
+    category: CATEGORY_4GL,
+    type: "boolean",
+    default: false,
+    description: "Spacing in Bracket operator."
+  },
+  "4glParenthesis":
+  {
+    since: SINCE,
+    category: CATEGORY_4GL,
+    type: "boolean",
+    default: false,
+    description: "Spacing in Parenthesis operator."
+  },
+  "4glComma":
+  {
+    since: SINCE,
+    category: CATEGORY_4GL,
+    type: "boolean",
+    default: false,
+    description: "Spacing in Comma operator."
+  },
+  "4glMathOperators":
+  {
+    since: SINCE,
+    category: CATEGORY_4GL,
+    type: "boolean",
+    default: false,
+    description: "Spacing in Mathematical operators."
   },
   "4glAlignFields": {
     since: SINCE,
     category: CATEGORY_4GL,
-    type: "boolean",
-    default: true,
-    description: "Align field definition in DEFINE statment.",
+    type: "int",
+    default: 0,
+    description: "Align field name with padding spaces in DEFINE/RECORD statment.",
   },
-};
+  "4glAlignComment": {
+    since: SINCE,
+    category: CATEGORY_4GL,
+    type: "int",
+    default: 0,
+    description: "End of line comment alignment column. (0, off)",
+  },
+  "4glMaxEmptyLines": {
+    since: SINCE,
+    category: CATEGORY_4GL,
+    type: "int",
+    default: 0,
+    description: "Maximum blank lines in sequence (0, no limits).",
+  },};
 
 export const prettierOptions: any = {
-  //--no-bracket-spacing
-  //--write
-  //--check
-} 
+  printWidth: 80,
+  useTabs: false,
+  tabWidth: 2,
+  insertPragma: false,
+  requirePragma: false,
+}
+
+export function get4GLDefaultOptions() {
+  const defaultOptions: {} = {};
+
+  Object.keys(options).forEach((key) => {
+    defaultOptions[key] = options[key]["default"];
+  });
+
+  return defaultOptions;
+}

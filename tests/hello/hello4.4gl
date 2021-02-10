@@ -1,6 +1,7 @@
 
 # erro de não poder sobescrever
 main
+
 	define l_ind smallint
 	define ma_char array[5] of char(3)
 

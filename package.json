@@ -14,7 +14,6 @@
     "tds",
     "totvs",
     "prettier",
-    "plugin",
     "formatter"
   ],
   "repository": {
@@ -33,7 +32,8 @@
     "lib/",
     "typings/",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    ".prettierrc"
   ],
   "scripts": {
     "clean": "rimraf ./lib && rimraf ./typings",
@@ -43,31 +43,26 @@
     "---TEST---": "",
     "test": "jest",
     "test:snapshot": "npm run test -- --updateSnapshot",
-    "test:singlefile": "npm run test -- --updateSnapsh,ot --testNamePattern hello2.4gl",
+    "test:singlefile": "npm run test -- --testNamePattern hello2.4gl -u",
+    "test:folder": "--testPathPattern",
     "test:coverage": "npm run test -- --coverage",
     "test:onlyFailures": "npm run test --onlyFailures ",
     "pretest": "npm run build",
     "---RELEASE---": "",
     "release": "standard-version",
-    "tag": "git push --follow-tags",
-    "to_publish": "npm publish",
-    "prepack": "npm run build:cli && npm run build",
+    "to_publish": "git push --follow-tags origin develop && npm publish",
+    "prepack": "npm run build",
     "---MISC---": "",
     "contributors:check": "all-contributors check",
     "contributors:generate": "all-contributors generate",
     "link:tds-parsers": "npm link ../tds-parsers --force",
-    "prettier": "prettier --plugin=. --parser=4gl",
-    "prettier-dev": "npm run build && npm run prettier"
-  },
-  "peerDependencies": {
-    "prettier": "^2.0.0"
+    "link:pegjs-util": "npm link W:\\github\\pegjs-util --force",
+    "prettier": "prettier --plugin=. --config=. --loglevel=debug",
+    "prettier-dev": "npm run build --verbose && npm run prettier"
   },
   "dependencies": {
-    "cli-progress": "^3.8.2",
-    "commander": "^7.0.0",
     "prettier": "^2.2.1",
-    "progress": "^2.0.3",
-    "tds-parsers": "^0.0.10",
+    "tds-parsers": "^0.0.13",
     "typescript": "^4.1.3"
   },
   "devDependencies": {
