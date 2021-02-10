@@ -12,13 +12,7 @@ const languages = [
     name: "4GL",
     parsers: ["4gl"],
     vscodeLanguageIds: ["4gl"],
-  },
-  {
-    extensions: [".4gl"],
-    name: "AdvPL",
-    parsers: ["advpl"],
-    vscodeLanguageIds: ["advpl"],
-  },
+  }
 ];
 
 function locStart(ast) {
@@ -111,27 +105,14 @@ const parsers = {
     locStart: locStart,
     locEnd: locEnd,
     hasPragma: hasPragma
-  },
-  "advpl": {
-    parse: (text, api, options) => {
-      return parser(text, api, options);
-    },
-    astFormat: "advpl-token",
-    // locStart: locStart,
-    // locEnd: locEnd,
-    hasPragma: hasPragma,
-  },
+  }
 };
 
 const printers = {
   "4gl-token": {
     print: printToken,
     insertPragma: insertPragma,
-  },
-  "advpl-token": {
-    print: printToken,
-    insertPragma: insertPragma,
-  },
+  }
 };
 
 //necessário exportar dessa forma para ser reconhecido como adicional do Prettier.

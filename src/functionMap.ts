@@ -221,17 +221,9 @@ let _builderMap;
 let emptyLinesCount = 0;
 let lastNode: ASTNode;
 
-function builderMap(_options) {
-  const options = _options;
-  const defaultOptions: {} = require("./config").get4GLDefaultOptions();
-
-  Object.keys(defaultOptions).forEach((key) => {
-    if (options[key] == undefined) {
-      options[key] = defaultOptions[key];
-    }
-  });
-
+function builderMap(options) {
   const map: {} = {};
+  
   map[AST.EASTType.program] = (path, print) => buildProgram(path, print, options);
   map[AST.EASTType.block] = (path, print) => buildBlock(path, print, options);
   map[AST.EASTType.argumentList] = (path, print) => buildArgumentList(path, print, options);

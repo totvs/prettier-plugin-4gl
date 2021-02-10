@@ -83,9 +83,9 @@ export const options: {} = {
   "4glAlignComment": {
     since: SINCE,
     category: CATEGORY_4GL,
-    type: "int",
-    default: 0,
-    description: "End of line comment alignment column. (0, off)",
+    type: "boolean",
+    default: false,
+    description: "End of line comment alignment column.",
   },
   "4glMaxEmptyLines": {
     since: SINCE,
@@ -101,14 +101,4 @@ export const prettierOptions: any = {
   tabWidth: 2,
   insertPragma: false,
   requirePragma: false,
-}
-
-export function get4GLDefaultOptions() {
-  const defaultOptions: {} = {};
-
-  Object.keys(options).forEach((key) => {
-    defaultOptions[key] = options[key]["default"];
-  });
-
-  return defaultOptions;
 }

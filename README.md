@@ -46,28 +46,17 @@ Chaves específicas para formatação de fontes 4GL.
 
 | Chave                      | Uso                                                       |
 | -------------------------- | --------------------------------------------------------- |
-| --4gl-align-fields <int>   | Alinhar identificação de campos em comandos DEFINE/RECORD.|
-|                            | Padrão: 0 (desligado)                                     |
-| --4gl-align-comment <int>  | Coluna de alinhamento de comentário de fim de linha.      |
-|                            | Padrão: 0 (desligado)                                     |
-| --4gl-braces               | Espaçamento entre chaves.                                 |
-|                            | Padrão: false                                             |
-| --4gl-bracket              | Espaçamento entre colchetes.                              |
-|                            | Padrão: false                                             |   
-| --4gl-comma                | Espaçamento após virgulas de separção.                    |
-|                            | Padrão: false                                             |
-| --4gl-format-number        | Formata números, p.e. 1234 é formatado para 1,234.        |
-|                            | Padrão: false                                             |
-| --4gl-keywords-case        | Coloca palavras-chaves em maiúsculas ou minúsculas.       |
-|  <upper|lower|ignore>      | Padrão: upper.                                            |
-| --4gl-max-empty-line <int> | Máximo de linhas em branco na sequência.                  |
-|                            | Padrão: 0 (sem limite)                                    |
-| --4gl-math-operators       | Espaçamento em operadores matemáticos                     |
-|                            | Padrão: false                                             |
-| --4gl-parenthesis          | Espaçamento entre parentesis.                             |
-|                            | Padrão: false                                             |
-| --4gl-string-style         | Usar aspas simples ou duplas em strings.                  |
-| <double-quotes|single-quotes|ignore>| Padrão: ignore                                 |
+| --4gl-align-fields         | Alinhar identificação de campos em comandos DEFINE/RECORD. Padrão: false |
+| --4gl-align-comment <int>  | Coluna de alinhamento de comentário de fim de linha. Padrão: 0 (desligado) |
+| --4gl-braces               | Espaçamento entre chaves. Padrão: false |
+| --4gl-bracket              | Espaçamento entre colchetes. Padrão: false |   
+| --4gl-comma                | Espaçamento após virgulas de separção. Padrão: false |
+| --4gl-format-number        | Formata números, p.e. 1234 é formatado para 1,234. | Padrão: false |
+| --4gl-keywords-case  <upper|lower|ignore> | Coloca palavras-chaves em maiúsculas ou minúsculas.  Padrão: upper |
+| --4gl-max-empty-line <int> | Máximo de linhas em branco na sequência. Padrão: 0 (sem limite) |
+| --4gl-math-operators       | Espaçamento em operadores matemáticos. Padrão: false |
+| --4gl-parenthesis          | Espaçamento entre parenteses. Padrão: false |
+| --4gl-string-style <double-quotes|single-quotes|ignore> | Usar aspas simples ou duplas em strings. Padrão: ignore |
                            
 ### Uso em linha de comando
 
@@ -83,7 +72,7 @@ npm prettier --parser=4gl [options]
 
 Ver [Editor Integration](https://prettier.io/docs/en/editors.html).
 
-Nesse modo informe as opções usando o nome longo da opção sem o `--` e as letras precedidas por '-' em maiúsculas, na sessão `4gl.formatter` ou `advpl.formatter` no arquivo `settings.json`.
+Nesse modo informe as opções usando o nome longo da opção sem o `--` e as letras precedidas por '-' em maiúsculas, na sessão `4gl.formatter` no arquivo `settings.json`.
 
 ```JSON
 {
