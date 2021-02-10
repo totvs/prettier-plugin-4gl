@@ -54,7 +54,7 @@ export function printToken(path, options, print, args) {
 
   let result = printElement(path, options, print);
 
-  if (!result) {
+  if (result == undefined) {
     const node = path.getValue();
     result = JSON.stringify(node, undefined, 3);
   }

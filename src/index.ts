@@ -21,49 +21,49 @@ const languages = [
   },
 ];
 
-// function locStart(ast) {
-//   let offset = 0;
+function locStart(ast) {
+  let offset = 0;
 
-//   if (Array.isArray(ast)) {
-//     if (ast.length > 0) {
-//       for (let index = 0; index < ast.length; index++) {
-//         const element = ast[index];
-//         offset = locStart(element);
-//         if (offset !== 0) {
-//           break;
-//         }
-//       }
-//     }
-//   } else if (!ast.offset) {
-//     offset = locStart(ast.value);
-//   } else if (ast.kind) {
-//     offset = ast.offset.start;
-//   }
+  if (Array.isArray(ast)) {
+    if (ast.length > 0) {
+      for (let index = 0; index < ast.length; index++) {
+        const element = ast[index];
+        offset = locStart(element);
+        if (offset !== 0) {
+          break;
+        }
+      }
+    }
+  } else if (!ast.offset) {
+    offset = locStart(ast.value);
+  } else if (ast.kind) {
+    offset = ast.offset.start;
+  }
 
-//   return offset;
-// }
+  return offset;
+}
 
-// function locEnd(ast) {
-//   let offset = Infinity;
+function locEnd(ast) {
+  let offset = Infinity;
 
-//   if (Array.isArray(ast)) {
-//     if (ast.length > 0) {
-//       for (let index = 0; index < ast.length; index++) {
-//         const element = ast[index];
-//         offset = locEnd(element);
-//         if (offset !== 0) {
-//           break;
-//         }
-//       }
-//     }
-//   } else if (!ast.offset) {
-//     offset = locEnd(ast.value);
-//   } else if (ast.kind) {
-//     offset = ast.offset.end;
-//   }
+  if (Array.isArray(ast)) {
+    if (ast.length > 0) {
+      for (let index = 0; index < ast.length; index++) {
+        const element = ast[index];
+        offset = locEnd(element);
+        if (offset !== 0) {
+          break;
+        }
+      }
+    }
+  } else if (!ast.offset) {
+    offset = locEnd(ast.value);
+  } else if (ast.kind) {
+    offset = ast.offset.end;
+  }
 
-//   return offset;
-// }
+  return offset;
+}
 
 function hasPragma(text) {
   return text.startsWith(PRAGMA);
@@ -108,9 +108,9 @@ const parsers = {
       return parser(text, api, options);
     },
     astFormat: "4gl-token",
-    // locStart: locStart,
-    // locEnd: locEnd,
-    hasPragma: hasPragma,
+    locStart: locStart,
+    locEnd: locEnd,
+    hasPragma: hasPragma
   },
   "advpl": {
     parse: (text, api, options) => {
