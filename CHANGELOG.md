@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.9](https://github.com/totvs/prettier-plugin-4gl/compare/v0.0.8...v0.0.9) (2021-02-17)
+
+
+### Bug Fixes
+
+* ajustes de formatação ([a97f5eb](https://github.com/totvs/prettier-plugin-4gl/commit/a97f5eb1be4943268470b853fc9b78d87021f669))
+
 ### [0.0.8](https://github.com/totvs/prettier-plugin-4gl/compare/v0.0.7...v0.0.8) (2021-01-13)
 
 ### [0.0.7](https://github.com/totvs/prettier-plugin-4gl/compare/v0.0.6...v0.0.7) (2021-01-13)
