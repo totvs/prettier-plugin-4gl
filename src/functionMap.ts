@@ -24,22 +24,40 @@ const { stripTrailingHardline, removeLines } = require("prettier").doc.utils;
 
 function buildProgram(path, print, options) {
   const node: AST.ASTNode = path.getValue();
+  const children = path.map(print, 'children');
 
-  return concat(path.map(print, 'children'));
+  return concat(children);
 }
 
 function buildBlock(path, print, options) {
-  const begin = path.call(print, "children_0");
-  const body = path.call(print, "children_1");
-  const end = path.call(print, "children_2");
+  const node: AST.ASTNode = path.getValue();
+  const block = path.map(print, "block");
 
-  return concat([indent(begin), body, dedent(end)]);
+  return concat(block[0], block[1], block[2]);
+}
+
+function buildBeginBlock(path, print, options) {
+  const result = path.map(print, "children");
+
+  return concat(result);
+}
+
+function buildBodyBlock(path, print, options) {
+  const result = path.map(print, "children");
+
+  return concat(result);
+}
+
+function buildEndBlock(path, print, options) {
+  const result = path.map(print, "children");
+
+  return concat(result);
 }
 
 function buildArgumentList(path, print, options) {
-  const open = path.call(print, "children");
+  const open = path.map(print, "children");
 
-  return concat(open);
+  return open;
 }
 
 function buildKeyword(path, print, options) {
@@ -56,10 +74,6 @@ function buildKeyword(path, print, options) {
 }
 
 function buildWhiteSpace(path, print, options) {
-  if ((lastNode.type == EASTType.newLine)) {
-    return "";
-  }
-
   const node: AST.ASTNode = path.getValue();
   let value = node.source;
 
@@ -73,26 +87,24 @@ function buildWhiteSpace(path, print, options) {
 }
 
 function buildEndLine(path, print, options) {
+  const value = concat(path.map(print, "source"));
 
-  return concat(path.map(print, "source"));
+  return value;
 }
 
 function buildNewLine(path, print, options) {
-  // const node: AST.ASTNode = path.getValue();
-  // let value = node.source;
-  if (lastNode.type == EASTType.newLine) {
-    if (options["4glMaxEmptyLines"] != 0) {
-      emptyLinesCount++;
-      if (emptyLinesCount < options["4glMaxEmptyLines"]) {
-        return line;
-      } else {
-        return "";
-      }
-    }
-  }
-  emptyLinesCount=0;
+  const node: AST.ASTNode = path.getValue();
+  const value = node.source;
+  let result: any[] = value.split("\n");
+  result.fill(line);
 
-  return line;
+  if (options["advplMaxEmptyLines"] > 1) {
+    result = result.splice(options["advplMaxEmptyLines"]);
+  }
+  if (!result) {
+    console.log("")
+  }
+  return result;
 }
 
 function buildIdentifier(path, print, options) {
@@ -161,12 +173,19 @@ function buildOperatorParenthesis(path, print, options) {
 function buildBlockComment(path, print, options) {
   const node: AST.ASTNode = path.getValue();
   const value = node.source;
-  let result = value;
 
   return value;
 }
 
 function buildComment(path, print, options) {
+  const node: AST.ASTNode = path.getValue();
+  const value = node.source;
+  let result = value;
+
+  return value;
+}
+
+function buildSingleComment(path, print, options) {
   const node: AST.ASTNode = path.getValue();
   const value = node.source;
   let result = value;
@@ -180,7 +199,7 @@ function buildOperatorSeparator(path, print, options) {
   let result = value;
 
   if (options["4glSeparator"]) {
-    result += " )";
+    result += " ";
   }
 
   return result;
@@ -218,14 +237,15 @@ function buildNumber(path, print, options) {
 }
 
 let _builderMap;
-let emptyLinesCount = 0;
-let lastNode: ASTNode;
 
 function builderMap(options) {
   const map: {} = {};
-  
+
   map[AST.EASTType.program] = (path, print) => buildProgram(path, print, options);
   map[AST.EASTType.block] = (path, print) => buildBlock(path, print, options);
+  map[AST.EASTType.beginBlock] = (path, print) => buildBeginBlock(path, print, options);
+  map[AST.EASTType.bodyBlock] = (path, print) => buildBodyBlock(path, print, options);
+  map[AST.EASTType.endBlock] = (path, print) => buildEndBlock(path, print, options);
   map[AST.EASTType.argumentList] = (path, print) => buildArgumentList(path, print, options);
   map[AST.EASTType.keyword] = (path, print) => buildKeyword(path, print, options);
   map[AST.EASTType.whiteSpace] = (path, print) => buildWhiteSpace(path, print, options);
@@ -240,6 +260,7 @@ function builderMap(options) {
   map[AST.EASTType.operatorSeparator] = (path, print) => buildOperatorSeparator(path, print, options);
   map[AST.EASTType.comment] = (path, print) => buildComment(path, print, options);
   map[AST.EASTType.blockComment] = (path, print) => buildBlockComment(path, print, options);
+  map[AST.EASTType.singleComment] = (path, print) => buildSingleComment(path, print, options);
   map[AST.EASTType.string] = (path, print) => buildString(path, print, options);
   map[AST.EASTType.number] = (path, print) => buildNumber(path, print, options);
 
@@ -253,7 +274,6 @@ function resetFunctionMap() {
 export function printElement(path, options, print) {
   if (!_builderMap) {
     _builderMap = builderMap(options);
-    lastNode = path.getValue();
   }
 
   const node: AST.ASTNode = path.getValue();
@@ -262,10 +282,8 @@ export function printElement(path, options, print) {
 
   if (builder) {
     result = builder(path, print, options);
-  }
-
-  if (node.type != EASTType.whiteSpace) {
-    lastNode = node;
+  } else {
+    console.error("Invalid EASType: " + node.type);
   }
 
   return result;

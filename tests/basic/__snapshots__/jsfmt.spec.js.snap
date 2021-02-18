@@ -10,13 +10,6 @@ main
     
 end main
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-MAIN
-      LET x, y = arg_val
-LET x, y = arr_count
-LET x, y = arr_cur
-LET x, y = sqlca
-
-END MAIN
 
 `;
 
@@ -25,8 +18,6 @@ main
 
 end main
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-MAIN
-  END MAIN
 
 `;
 
@@ -41,12 +32,6 @@ main
 
 end main
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-GLOBALS "abc.txt"
-GLOBALS
-  DEFINE NOME CHAR(50) # abc
-END GLOBALS
-MAIN
-  END MAIN
 
 `;
 
@@ -69,19 +54,5 @@ function f1()
     
 end function
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-MAIN
-      LET x, y = ''
-LET x, y = 'ABC,DEF'
-LET x, y = '"'
-LET x, y = 'ABC\\'DEF'
-
-END MAIN
-FUNCTION f1
-      LET x, y = ""
-LET x, y = "ABC,DEF"
-LET x, y = "'"
-LET x, y = "ABC\\"DEF"
-
-END FUNCTION
 
 `;
