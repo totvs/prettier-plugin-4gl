@@ -9,7 +9,18 @@ main
     let x, y = sqlca
     
 end main
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+----------
+MAIN
+
+  LET x, y = arg_val
+      LET x, y = arr_count
+      LET x, y = arr_cur
+      LET x, y = sqlca
+
+
+END MAIN
+
+
 
 `;
 
@@ -17,21 +28,78 @@ exports[`Source empty_main.4gl 1`] = `
 main
 
 end main
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+----------
+MAIN
+
+
+END MAIN
+
+
 
 `;
 
 exports[`Source globals.4gl 1`] = `
 globals "abc.txt"
 
-globals
-DEFINE NOME CHAR(50) # abc
+  globals
+    DEFINE NOME CHAR(50) # abc
+      DEFINE NOME CHAR(50) # abc
+        DEFINE NOME CHAR(50) # abc
+
+    DEFINE NOME2 CHAR(50) # abc
 end globals
 
-main
 
+
+
+main
+call xxxxx()
+
+
+
+call xxxxx()
+
+
+
+call xxxxx()
+
+
+
+call xxxxx()
 end main
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+----------
+GLOBALS "abc.txt"
+
+GLOBALS
+  DEFINE NOME CHAR(50) # abc
+  DEFINE NOME CHAR(50) # abc
+  DEFINE NOME CHAR(50) # abc
+
+  DEFINE NOME2 CHAR(50) # abc
+
+END GLOBALS
+
+
+
+
+MAIN
+  CALL xxxxx()
+
+
+
+  CALL xxxxx()
+
+
+
+  CALL xxxxx()
+
+
+
+  CALL xxxxx()
+
+END MAIN
+
+
 
 `;
 
@@ -53,6 +121,27 @@ function f1()
     let x, y = "ABC\\"DEF"
     
 end function
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+----------
+MAIN
+
+  LET x, y = ''
+      LET x, y = 'ABC,DEF'
+      LET x, y = '"'
+      LET x, y = 'ABC\\'DEF'
+
+
+END MAIN
+
+FUNCTION f1()
+
+  LET x, y = ""
+      LET x, y = "ABC,DEF"
+      LET x, y = "'"
+      LET x, y = "ABC\\"DEF"
+
+
+END FUNCTION
+
+
 
 `;

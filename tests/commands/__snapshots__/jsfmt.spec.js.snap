@@ -39,7 +39,51 @@ function f3()
 
 end function
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+----------
+MAIN
+
+  CALL fgl_winmessage()
+
+    CALL fgl_winmessage("p1")
+
+
+
+
+    CALL fgl_winmessage("p1","p2", "p3")
+    CALL fgl_winmessage(1,2,    3)
+
+
+END MAIN
+
+FUNCTION f1()
+
+  CALL fgl_winmessage() returning var1
+
+    CALL fgl_winmessage() returning var1 , var2
+
+  CALL fgl_winmessage() returning var1,var2,var3
+
+
+END FUNCTION
+
+FUNCTION f2()
+
+  CALL fgl_winmessage() returning var1[ind1]
+
+
+END FUNCTION
+
+FUNCTION f3()
+
+  CALL fgl_winmessage() returning rec1.var1
+
+    CALL fgl_winmessage() returning rec1.*
+
+
+END FUNCTION
+
+
+
 
 `;
 
@@ -91,7 +135,61 @@ function f3()
   end record  
 end function
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+----------
+MAIN
+  DEFINE var1 BIGINT
+  	DEFINE var1 byte
+  	DEFINE var1 CHAR(100)
+  	DEFINE var1 character
+  	DEFINE var1 DATE
+  	DEFINE var1 datetime  DAY TO DAY
+  	DEFINE var1 DEC
+  	DEFINE var1 decimal(10,2)
+  	DEFINE var1 decimal(10)
+  	DEFINE var1 DOUBLE PRECISION
+  	DEFINE var1 DYNAMIC ARRAY
+  	DEFINE var1 FLOAT
+  	DEFINE var1 int
+  	DEFINE var1 integer
+  	DEFINE var1 MONEY
+  	DEFINE var1 NCHAR(100)
+  	DEFINE var1 NUMERIC
+  	DEFINE var1 NVARCHAR(100)
+
+END MAIN
+
+
+FUNCTION f2()
+  DEFINE rec1 RECORD
+        var1 BIGINT
+
+  END RECORD
+
+END FUNCTION
+
+FUNCTION f3()
+  DEFINE rec2 RECORD var1 CHAR(100),
+        var1 character,
+        var1 DATE,
+        var1 datetime  DAY TO DAY,
+        var1 DEC,
+        var1 decimal(10,2),
+        var1 decimal(10),
+        var1 DOUBLE PRECISION,
+        var1 FLOAT,
+        var1 int,
+        var1 integer,
+        var1 MONEY,
+        var1 NCHAR(100),
+        var1 NUMERIC,
+        var1 NVARCHAR(100)
+
+  END RECORD
+
+END FUNCTION
+
+
+
 
 `;
 
@@ -103,7 +201,18 @@ end globals
 main 
 	--define var1 record like tab1.*
 end main
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+----------
+GLOBALS
+  DEFINE MOD CHAR(10)
+
+END GLOBALS
+
+MAIN
+  --define var1 record like tab1.*
+
+END MAIN
+
+
 
 `;
 
@@ -111,7 +220,13 @@ exports[`Source define2.4gl 1`] = `
 main 
 	--DEFINE VAR1 record LIKE TAB1.*
 end main
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+----------
+MAIN
+  --DEFINE VAR1 record LIKE TAB1.*
+
+END MAIN
+
+
 
 `;
 
@@ -131,7 +246,28 @@ end function
 function f2(p1, p2)
    
 end function
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+----------
+MAIN
+
+
+END MAIN
+
+FUNCTION f0()
+
+
+END FUNCTION
+
+FUNCTION f1(p1)
+
+
+END FUNCTION
+
+FUNCTION f2(p1, p2)
+
+
+END FUNCTION
+
+
 
 `;
 
@@ -143,6 +279,17 @@ main
 
 end main
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+----------
+MAIN
+
+  IF a=b THEN
+
+  END IF
+
+
+END MAIN
+
+
+
 
 `;

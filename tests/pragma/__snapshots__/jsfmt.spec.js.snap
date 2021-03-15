@@ -5,8 +5,13 @@ main
   display "hello "
 end main
 ----------
+MAIN
+  DISPLAY "hello "
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+END MAIN
+
+
+
 `;
 
 exports[`Source pragma.4gl 1`] = `
@@ -15,6 +20,12 @@ main
   display "hello "
 end main
 ----------
+--@format
+MAIN
+  DISPLAY "hello "
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+END MAIN
+
+
+
 `;

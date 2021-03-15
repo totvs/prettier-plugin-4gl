@@ -1,21 +1,22 @@
-import { options } from "./config";
-import { printToken } from "./printers";
-import { parser as tds_parser } from "tds-parsers";
-import { IParserOptions } from "tds-parsers/typings/config";
-import { ASTNode } from "tds-parsers/typings/ast_node";
+import { options } from './config';
+import { printToken } from './printers';
+import { parser as tds_parser } from 'tds-parsers';
+import { IParserOptions } from 'tds-parsers/typings/config';
+import { ASTNode } from 'tds-parsers/typings/ast_node';
+import { AST } from 'prettier';
 
-const PRAGMA = "--@format";
+const PRAGMA = '--@format';
 
 const languages = [
   {
-    extensions: [".4gl", ".per"],
-    name: "4GL",
-    parsers: ["4gl"],
-    vscodeLanguageIds: ["4gl"],
-  }
+    extensions: ['.4gl', '.per'],
+    name: '4GL',
+    parsers: ['4gl'],
+    vscodeLanguageIds: ['4gl'],
+  },
 ];
 
-function locStart(ast) {
+function locStart(ast: any) {
   let offset = 0;
 
   if (Array.isArray(ast)) {
@@ -37,7 +38,7 @@ function locStart(ast) {
   return offset;
 }
 
-function locEnd(ast) {
+function locEnd(ast: any) {
   let offset = Infinity;
 
   if (Array.isArray(ast)) {
@@ -59,24 +60,28 @@ function locEnd(ast) {
   return offset;
 }
 
-function hasPragma(text) {
+function hasPragma(text: string) {
   return text.startsWith(PRAGMA);
 }
 
-function insertPragma(text) {
-  return PRAGMA + "\n" + text;
+function insertPragma(text: string) {
+  return PRAGMA + '\n' + text;
 }
 
-function parser(text: string, api, options: IParserOptions): ASTNode | undefined {
+function parser(
+  text: string,
+  api,
+  options: IParserOptions
+): ASTNode | undefined {
   try {
     const parserInfo: any = {
       debug: false,
       filepath: options.filepath,
       parser: options.parser,
-      fileext: options.fileext
+      fileext: options.fileext,
     };
 
-    const result: any = tds_parser(text + "\n", parserInfo); //EOL obrigatório na última linha
+    const result: any = tds_parser(text + '\n', parserInfo); //EOL obrigatório na última linha
     if (result.error) {
       throw result.error;
     }
@@ -97,27 +102,32 @@ function parser(text: string, api, options: IParserOptions): ASTNode | undefined
 }
 
 const parsers = {
-  "4gl": {
+  '4gl': {
     parse: (text, api, options) => {
       return parser(text, api, options);
     },
-    astFormat: "4gl-token",
+    astFormat: '4gl-token',
     locStart: locStart,
     locEnd: locEnd,
-    hasPragma: hasPragma
-  }
+    hasPragma: hasPragma,
+  },
 };
 
+function preprocess(ast: AST, options: object): AST {
+  return ast;
+}
+
 const printers = {
-  "4gl-token": {
+  '4gl-token': {
     print: printToken,
     insertPragma: insertPragma,
-  }
+    preprocess: preprocess,
+  },
 };
 
 //necessário exportar dessa forma para ser reconhecido como adicional do Prettier.
 module.exports = {
-  name: "prettier-plugin-4gl",
+  name: 'prettier-plugin-4gl',
   languages,
   parsers,
   printers,

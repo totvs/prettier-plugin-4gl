@@ -1,104 +1,97 @@
-const CATEGORY_4GL: string = "4GL";
-const SINCE: string = "0.0.0";
+const CATEGORY_4GL: string = '4GL';
+const SINCE: string = '0.0.0';
 
 export const options: {} = {
-  "4glKeywordsCase": {
+  '4glKeywordsCase': {
     since: SINCE,
     category: CATEGORY_4GL,
-    type: "choice",
+    type: 'choice',
+    choices: [{ value: 'upper' }, { value: 'lower' }, { value: 'ignore' }],
+    default: 'upper',
+    description: 'Put keywords to upper or lowser case.',
+  },
+  '4glStringStyle': {
+    since: SINCE,
+    category: CATEGORY_4GL,
+    type: 'choice',
     choices: [
-      { value: "upper" }, 
-      { value: "lower" }, 
-      { value: "ignore" }
+      { value: 'double-quotes' },
+      { value: 'single-quotes' },
+      { value: 'ignore' },
     ],
-    default: "upper",
-    description: "Put keywords to upper or lowser case.",
+    default: 'ignore',
+    description: 'Start/end strings with quotes.',
   },
-  "4glStringStyle": {
+  '4glFormatNumber': {
     since: SINCE,
     category: CATEGORY_4GL,
-    type: "choice",
-    choices: [
-      { value: "double-quotes" },
-      { value: "single-quotes" },
-      { value: "ignore" },
-    ],
-    default: "ignore",
-    description: "Start/end strings with quotes.",
-  },
-  "4glFormatNumber": {
-    since: SINCE,
-    category: CATEGORY_4GL,
-    type: "boolean",
+    type: 'boolean',
     default: false,
-    description: "Format number, e.g. 1234 is formatted to 1,234.",
+    description: 'Format number, e.g. 1234 is formatted to 1,234.',
   },
-  "4glBraces":
-  {
+  '4glBraces': {
     since: SINCE,
     category: CATEGORY_4GL,
-    type: "boolean",
+    type: 'boolean',
     default: false,
-    description: "Spacing in Braces operator."
+    description: 'Spacing in Braces operator.',
   },
-  "4glBracket":
-  {
+  '4glBracket': {
     since: SINCE,
     category: CATEGORY_4GL,
-    type: "boolean",
+    type: 'boolean',
     default: false,
-    description: "Spacing in Bracket operator."
+    description: 'Spacing in Bracket operator.',
   },
-  "4glParenthesis":
-  {
+  '4glParenthesis': {
     since: SINCE,
     category: CATEGORY_4GL,
-    type: "boolean",
+    type: 'boolean',
     default: false,
-    description: "Spacing in Parenthesis operator."
+    description: 'Spacing in Parenthesis operator.',
   },
-  "4glComma":
-  {
+  '4glComma': {
     since: SINCE,
     category: CATEGORY_4GL,
-    type: "boolean",
+    type: 'boolean',
     default: false,
-    description: "Spacing in Comma operator."
+    description: 'Spacing in Comma operator.',
   },
-  "4glMathOperators":
-  {
+  '4glMathOperators': {
     since: SINCE,
     category: CATEGORY_4GL,
-    type: "boolean",
+    type: 'boolean',
     default: false,
-    description: "Spacing in Mathematical operators."
+    description: 'Spacing in Mathematical operators.',
   },
-  "4glAlignFields": {
+  '4glAlignFields': {
     since: SINCE,
     category: CATEGORY_4GL,
-    type: "int",
+    type: 'int',
     default: 0,
-    description: "Align field name with padding spaces in DEFINE/RECORD statment.",
+    description:
+      'Align field name with padding spaces in DEFINE/RECORD statment.',
   },
-  "4glAlignComment": {
+  '4glAlignComment': {
     since: SINCE,
     category: CATEGORY_4GL,
-    type: "boolean",
+    type: 'boolean',
     default: false,
-    description: "End of line comment alignment column.",
+    description: 'End of line comment alignment column.',
   },
-  "4glMaxEmptyLines": {
+  '4glMaxEmptyLines': {
     since: SINCE,
     category: CATEGORY_4GL,
-    type: "int",
+    type: 'int',
     default: 0,
-    description: "Maximum blank lines in sequence (0, no limits).",
-  },};
+    description: 'Maximum blank lines in sequence (0, no limits).',
+  },
+};
 
 export const prettierOptions: any = {
   printWidth: 80,
   useTabs: false,
   tabWidth: 2,
-  insertPragma: false,
+  insertPragma: true,
   requirePragma: false,
-}
+};

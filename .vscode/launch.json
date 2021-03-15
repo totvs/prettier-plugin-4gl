@@ -41,7 +41,7 @@
         "${workspaceFolder}/node_modules/jest/bin/jest",
         "--runInBand",
         "-t",
-        "hello3.4gl"
+        "globals.4gl"
       ],
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",

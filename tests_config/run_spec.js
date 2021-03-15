@@ -106,10 +106,10 @@ function mergeDefaultOptions(parserConfig) {
   return Object.assign(
     {
       plugins: [path.dirname(__dirname)],
-      printWidth: 80,
+      //printWidth: 80,
       loglevel: "debug",
-      requirePragma: false,
-      insertPragma: false,
+      //requirePragma: false,
+      //insertPragma: false,
     },
     parserConfig
   );
