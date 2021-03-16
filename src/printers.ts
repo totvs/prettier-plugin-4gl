@@ -1,5 +1,5 @@
 import { util } from 'prettier';
-import AST = require('tds-parsers/lib/ast_node');
+import AST = require('@totvs/tds-parsers/lib/ast_node');
 
 const {
   concat,
