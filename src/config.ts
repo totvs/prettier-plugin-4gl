@@ -64,21 +64,21 @@ export const options: {} = {
     default: false,
     description: 'Spacing in Mathematical operators.',
   },
-  '4glAlignFields': {
-    since: SINCE,
-    category: CATEGORY_4GL,
-    type: 'int',
-    default: 0,
-    description:
-      'Align field name with padding spaces in DEFINE/RECORD statment.',
-  },
-  '4glAlignComment': {
-    since: SINCE,
-    category: CATEGORY_4GL,
-    type: 'boolean',
-    default: false,
-    description: 'End of line comment alignment column.',
-  },
+  // '4glAlignFields': {
+  //   since: SINCE,
+  //   category: CATEGORY_4GL,
+  //   type: 'int',
+  //   default: 0,
+  //   description:
+  //     'Align field name with padding spaces in DEFINE/RECORD statment.',
+  // },
+  // '4glAlignComment': {
+  //   since: SINCE,
+  //   category: CATEGORY_4GL,
+  //   type: 'boolean',
+  //   default: false,
+  //   description: 'End of line comment alignment column.',
+  // },
   '4glMaxEmptyLines': {
     since: SINCE,
     category: CATEGORY_4GL,

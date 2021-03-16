@@ -193,9 +193,6 @@ function buildKeyword(path, print, options) {
   } else if (options['4glkeywordsCase'] === 'lower') {
     value = value.toLowerCase();
   }
-  if (value == 'GLOBALS') {
-    console.log('');
-  }
 
   return value;
 }
@@ -214,9 +211,7 @@ function buildWhiteSpace(path, print, options) {
 }
 
 function buildEndLine(path, print, options) {
-  const value = path.map(print, 'source');
-
-  return concat(value);
+  return concat(path.map(print, 'source'));
 }
 
 function buildNewLine(path, print, options) {
@@ -317,7 +312,7 @@ function buildOperatorSeparator(path, print, options) {
   const value = node.source;
   let result = value;
 
-  if (options['4glSeparator']) {
+  if (options['4glComma']) {
     result += ' ';
   }
 
