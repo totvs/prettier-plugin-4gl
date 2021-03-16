@@ -1,20 +1,19 @@
 {
-  "name": "prettier-plugin-4gl",
+  "name": "@totvs/prettier-plugin-4gl",
   "displayName": "Prettier Plugin 4GL Formatter",
-  "description": "Extensão para o Prettier, para formatação de código 4GL.",
-  "version": "0.0.4",
+  "description": "Extensão Prettier para formatação de código 4GL.",
+  "version": "0.1.0",
   "publisher": "TOTVS",
   "author": {
     "name": "TOTVS",
     "email": "tecnologia@totvs.com.br"
   },
-  "license": "MIT",
+  "license": "Apache-2.0",
   "keywords": [
     "4gl",
     "tds",
     "totvs",
     "prettier",
-    "plugin",
     "formatter"
   ],
   "repository": {
@@ -30,52 +29,48 @@
   "main": "lib/index.js",
   "types": "typings/index.d.ts",
   "files": [
-    "bin/",
     "lib/",
     "typings/",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    ".prettierrc"
   ],
   "scripts": {
-    "clean": "rimraf ./lib",
+    "clean": "rimraf ./lib && rimraf ./typings",
     "build": "tsc -p ./src",
     "watch": "tsc -p ./src --watch",
     "prebuild": "npm run clean",
-    "---CLI---": "",
-    "clean:cli": "rimraf ./bin",
-    "build:cli": "tsc -p ./cli",
-    "prebuild:cli": "npm run clean:cli",
     "---TEST---": "",
     "test": "jest",
-    "test:snapshot": "npm run test -- --update-snapshot ",
+    "test:snapshot": "npm run test -- --updateSnapshot",
+    "test:singlefile": "npm run test -- --testNamePattern hello4.4gl",
+    "test:folder": "--testPathPattern",
     "test:coverage": "npm run test -- --coverage",
+    "test:onlyFailures": "npm run test --onlyFailures ",
     "pretest": "npm run build",
     "---RELEASE---": "",
     "release": "standard-version",
-    "tag": "git push --follow-tags",
-    "publish": "npm publish",
-    "pack": "npm pack",
-    "prepack": "npm run build:cli && npm run build",
+    "to_publish": "git push --follow-tags origin develop && npm publish --access public",
+    "prepack": "npm run build",
     "---MISC---": "",
     "contributors:check": "all-contributors check",
     "contributors:generate": "all-contributors generate",
-    "link:create": "npm link ../tds-parsers"
-  },
-  "peerDependencies": {
-    "prettier": "^2.0.0"
+    "link:tds-parsers": "npm link ../tds-parsers --force"
   },
   "dependencies": {
-    "tds-parsers": "^0.0.3",
-    "commander": "^6.1.0",
-    "prettier": "^2.1.1"
+    "prettier": "^2.2.1",
+    "tds-parsers": "^0.0.15",
+    "typescript": "^4.1.5"
   },
   "devDependencies": {
-    "@commitlint/cli": "^9.1.2",
-    "@commitlint/config-conventional": "^10.0.0",
-    "husky": "^4.2.5",
-    "jest": "^26.4.2",
-    "jest-watch-typeahead": "^0.6.0",
-    "standard-version": "^9.0.0"
+    "@commitlint/cli": "^11.0.0",
+    "@commitlint/config-conventional": "^11.0.0",
+    "@types/fs-extra": "^9.0.7",
+    "@types/glob": "^7.1.3",
+    "husky": "^5.0.9",
+    "jest": "^26.6.3",
+    "jest-watch-typeahead": "^0.6.1",
+    "standard-version": "^9.1.1"
   },
   "config": {
     "commitizen": {

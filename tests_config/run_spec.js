@@ -49,9 +49,6 @@ function run_spec(dirname, options) {
         processTest(mergedOptions, filename, input);
       });
 
-      describe("Token", () => {
-        processTest({ ...mergedOptions, parser: "4gl-token" }, filename, input);
-      });
     }
   });
 }
@@ -59,45 +56,20 @@ function run_spec(dirname, options) {
 global.run_spec = run_spec;
 
 function processTest(mergedOptions, filename, input) {
-  if (path.dirname(mergedOptions.filepath).endsWith("range")) {
-    //Range format not support: apparent prettier restriction
-    describe.skip("Uso de RANGE", () => {
-      test(filename, () => {
-        const output = prettyprint(input, { ...mergedOptions });
+  test(filename, () => {
+    const output = prettyprint(input, { ...mergedOptions });
 
-        expect(
-          raw(input + "~".repeat(mergedOptions.printWidth) + "\n" + output)
-        ).toMatchSnapshot();
-      });
-    });
-  } else if (path.dirname(mergedOptions.filepath).endsWith("pragma")) {
-    describe("Uso de PRAGMA", () => {
-      beforeEach(() => {
-        mergedOptions.requirePragma = true;
-        mergedOptions.insertPragma = true;
-      });
-      afterEach(() => {
-        mergedOptions.requirePragma = false;
-        mergedOptions.insertPragma = false;
-      });
-
-      test(filename, () => {
-        const output = prettyprint(input, { ...mergedOptions });
-
-        expect(
-          raw(input + "~".repeat(mergedOptions.printWidth) + "\n" + output)
-        ).toMatchSnapshot();
-      });
-    });
-  } else {
-    test(filename, () => {
-      const output = prettyprint(input, { ...mergedOptions });
-
-      expect(
-        raw(input + "~".repeat(mergedOptions.printWidth) + "\n" + output)
-      ).toMatchSnapshot();
-    });
-  }
+    expect(
+      raw(
+        input
+        + "-".repeat(10)
+        + "\n"
+        + output
+        + "\n"
+        + "~".repeat(mergedOptions.printWidth)
+      )
+    ).toMatchSnapshot();
+  });
 }
 
 function prettyprint(src, options) {
@@ -134,10 +106,10 @@ function mergeDefaultOptions(parserConfig) {
   return Object.assign(
     {
       plugins: [path.dirname(__dirname)],
-      printWidth: 80,
+      //printWidth: 80,
       loglevel: "debug",
-      requirePragma: false,
-      insertPragma: false,
+      //requirePragma: false,
+      //insertPragma: false,
     },
     parserConfig
   );

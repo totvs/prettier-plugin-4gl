@@ -8,6 +8,14 @@
 			"problemMatcher": [],
 			"label": "npm:build",
 			"detail": "tsc -p ."
+		},
+		{
+			"type": "npm",
+			"script": "build:cli",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "npm:build:cli",
+			"detail": "tsc -p ./cli"
 		}
 	]
 }

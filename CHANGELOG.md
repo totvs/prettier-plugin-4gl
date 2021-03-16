@@ -2,12 +2,40 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-### [0.0.4](https://github.com/totvs/prettier-plugin-4gl/compare/v0.0.3...v0.0.4) (2020-09-04)
+### [0.0.9](https://github.com/totvs/prettier-plugin-4gl/compare/v0.0.8...v0.0.9) (2021-02-17)
 
 
 ### Bug Fixes
 
-* eliminação da propriedade "bin" ([f388be9](https://github.com/totvs/prettier-plugin-4gl/commit/f388be968ff378d9a6cc9cfe6b469c8f653f7b3b))
+* ajustes de formatação ([a97f5eb](https://github.com/totvs/prettier-plugin-4gl/commit/a97f5eb1be4943268470b853fc9b78d87021f669))
+
+### [0.0.8](https://github.com/totvs/prettier-plugin-4gl/compare/v0.0.7...v0.0.8) (2021-01-13)
+
+### [0.0.7](https://github.com/totvs/prettier-plugin-4gl/compare/v0.0.6...v0.0.7) (2021-01-13)
+
+
+### Bug Fixes
+
+* correções no CLI ([e14342c](https://github.com/totvs/prettier-plugin-4gl/commit/e14342c0a136fc68c31289ae413e182f89ce0134))
+
+### [0.0.6](https://github.com/totvs/prettier-plugin-4gl/compare/v0.0.5...v0.0.6) (2021-01-07)
+
+
+### Bug Fixes
+
+* ajustes de configuração de pacote ([750301d](https://github.com/totvs/prettier-plugin-4gl/commit/750301d418eb023d981e3bd72915d761b87b6df2))
+
+### [0.0.5](https://github.com/totvs/prettier-plugin-4gl/compare/v0.0.3...v0.0.5) (2021-01-07)
+
+
+### Features
+
+* implementação da opção "alignFields" e correções na formatação ([6ae5f79](https://github.com/totvs/prettier-plugin-4gl/commit/6ae5f796ac2d0d33df2a485bc961b893c95491cd))
+
+
+### Bug Fixes
+
+* ajustes de formatação ([1895b87](https://github.com/totvs/prettier-plugin-4gl/commit/1895b87e649b7c82e730627942fe5fe3cf54bf8f))
 
 ### [0.0.3](https://github.com/totvs/prettier-plugin-4gl/compare/v0.0.2...v0.0.3) (2020-09-04)
 
