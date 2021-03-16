@@ -5,12 +5,8 @@ main
   display "hello "
 end main
 ----------
-MAIN
-  DISPLAY "hello "
-
-END MAIN
-
-
+  DISPLAY
+ 
 
 `;
 
@@ -21,11 +17,7 @@ main
 end main
 ----------
 --@format
-MAIN
-  DISPLAY "hello "
-
-END MAIN
-
-
+DISPLAY
+ 
 
 `;

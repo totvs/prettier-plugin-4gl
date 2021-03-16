@@ -35,14 +35,42 @@ exports[`Source comment.4gl 1`] = `
 --linha B2
 --linha B3
 
-{ bloco comentado de uma linha }
+{
+   "_type": "blockComment",
+   "_location": {
+      "start": {
+         "line": 13,
+         "column": 1,
+         "offset": 87
+      },
+      "end": {
+         "line": 13,
+         "column": 32,
+         "offset": 118
+      }
+   },
+   "_source": "{ bloco comentado de uma linha }",
+   "_children": [],
+   "_attributes": {}
+}
 
-{ 
-    bloco 
-    comentado 
-    de 
-    varias
-    linhas 
+{
+   "_type": "blockComment",
+   "_location": {
+      "start": {
+         "line": 15,
+         "column": 1,
+         "offset": 121
+      },
+      "end": {
+         "line": 15,
+         "column": 61,
+         "offset": 181
+      }
+   },
+   "_source": "{ \\n    bloco \\n    comentado \\n    de \\n    varias\\n    linhas \\n}",
+   "_children": [],
+   "_attributes": {}
 }
 
 

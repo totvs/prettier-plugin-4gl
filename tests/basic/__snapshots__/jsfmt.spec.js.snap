@@ -10,17 +10,8 @@ main
     
 end main
 ----------
-MAIN
-
-  LET x, y = arg_val
-      LET x, y = arr_count
-      LET x, y = arr_cur
-      LET x, y = sqlca
-
-
-END MAIN
-
-
+    LET
+ 
 
 `;
 
@@ -29,12 +20,8 @@ main
 
 end main
 ----------
+END
 MAIN
-
-
-END MAIN
-
-
 
 `;
 
@@ -70,36 +57,9 @@ end main
 ----------
 GLOBALS "abc.txt"
 
-GLOBALS
-  DEFINE NOME CHAR(50) # abc
-  DEFINE NOME CHAR(50) # abc
-  DEFINE NOME CHAR(50) # abc
-
-  DEFINE NOME2 CHAR(50) # abc
-
-END GLOBALS
-
-
-
-
-MAIN
-  CALL xxxxx()
-
-
-
-  CALL xxxxx()
-
-
-
-  CALL xxxxx()
-
-
-
-  CALL xxxxx()
-
-END MAIN
-
-
+DEFINE
+ CALL
+xxxxx
 
 `;
 
@@ -122,26 +82,8 @@ function f1()
     
 end function
 ----------
-MAIN
-
-  LET x, y = ''
-      LET x, y = 'ABC,DEF'
-      LET x, y = '"'
-      LET x, y = 'ABC\\'DEF'
-
-
-END MAIN
-
-FUNCTION f1()
-
-  LET x, y = ""
-      LET x, y = "ABC,DEF"
-      LET x, y = "'"
-      LET x, y = "ABC\\"DEF"
-
-
-END FUNCTION
-
-
+LET
+ LET
+ 
 
 `;
