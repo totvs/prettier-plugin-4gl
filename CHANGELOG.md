@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.1](https://github.com/totvs/prettier-plugin-4gl/compare/v0.0.9...v0.1.1) (2021-03-16)
+
+### [0.0.4](https://github.com/totvs/prettier-plugin-4gl/compare/v0.0.3...v0.0.4) (2020-09-04)
+
+
+### Bug Fixes
+
+* eliminação da propriedade "bin" ([f388be9](https://github.com/totvs/prettier-plugin-4gl/commit/f388be968ff378d9a6cc9cfe6b469c8f653f7b3b))
+
 ### [0.0.9](https://github.com/totvs/prettier-plugin-4gl/compare/v0.0.8...v0.0.9) (2021-02-17)
 
 
