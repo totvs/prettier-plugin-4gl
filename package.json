@@ -55,9 +55,7 @@
     "---MISC---": "",
     "contributors:check": "all-contributors check",
     "contributors:generate": "all-contributors generate",
-    "link:tds-parsers": "npm link ../tds-parsers --force",
-    "prettier": "prettier --plugin=. --config=. --loglevel=debug",
-    "prettier-dev": "npm run build --verbose && npm run prettier"
+    "link:tds-parsers": "npm link ../tds-parsers --force"
   },
   "dependencies": {
     "prettier": "^2.2.1",
