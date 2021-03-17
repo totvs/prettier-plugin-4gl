@@ -42,6 +42,7 @@ exports[`Source hello3.4gl 1`] = `
 
 exports[`Source hello4.4gl 1`] = `
 
+<<<<<<< HEAD
 # erro de não poder sobescrever
 main
 
@@ -118,4 +119,6 @@ end main
 DEFINE
  
 
+=======
+>>>>>>> develop
 `;

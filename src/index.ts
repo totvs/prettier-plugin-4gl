@@ -1,8 +1,8 @@
 import { options } from './config';
 import { printToken } from './printers';
-import { parser as tds_parser } from 'tds-parsers';
-import { IParserOptions } from 'tds-parsers/typings/config';
-import { ASTNode } from 'tds-parsers/typings/ast_node';
+import { parser as tds_parser } from '@totvs/tds-parsers';
+import { IParserOptions } from '@totvs/tds-parsers/typings/config';
+import { ASTNode } from '@totvs/tds-parsers/typings/ast_node';
 import { AST } from 'prettier';
 
 const PRAGMA = '--@format';
