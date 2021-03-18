@@ -4,8 +4,11 @@ exports[`Source hello1.4gl 1`] = `
 main 
 end main
 ----------
-END
 MAIN
+
+END MAIN
+
+
 
 `;
 
@@ -27,10 +30,26 @@ end main
 
  end function
 ----------
-CALL
-f1--# função 2
-DEFINE
- 
+MAIN
+  CALL f1()
+
+END MAIN
+
+
+
+--# função 2
+FUNCTION f1(a,    b,    c)
+
+  DEFINE nome CHAR(50) # abc
+  DEFINE big_field CHAR(1.234) # abc
+  PROMPT "digite seu nome : " for nome
+
+               CALL fgl_winmessage( "hello",nome, "info")
+
+
+END FUNCTION
+
+
 
 `;
 
@@ -42,7 +61,6 @@ exports[`Source hello3.4gl 1`] = `
 
 exports[`Source hello4.4gl 1`] = `
 
-<<<<<<< HEAD
 # erro de não poder sobescrever
 main
 
@@ -116,9 +134,80 @@ end main
 ----------
 
 # erro de não poder sobescrever
-DEFINE
- 
+MAIN
 
-=======
->>>>>>> develop
+  DEFINE l_ind smallint
+  	DEFINE ma_char ARRAY[5] OF CHAR(3)
+
+  	DEFINE ma_integer ARRAY [3] OF integer
+
+  	DEFINE ma_array ARRAY [3] OF RECORD
+    	f2_check      CHAR(1),
+    	f2_integer    integer,
+    	f2_smallint   smallint,
+    	f2_decimal    decimal(17,6),
+    	f2_decimal0   decimal(10,0),
+    	f2_char       CHAR(10),
+    	f2_date       DATE,
+    	f2_dttime_y2s datetime YEAR TO SECOND,
+    	f2_dttime_y2m datetime YEAR TO MONTH,
+    	f2_dttime_y2f datetime YEAR TO FRACTION(3),
+    	f2_scroll     CHAR(100),
+    	f2_varchar    VARCHAR(20)
+
+  END RECORD
+
+  initializema_arrayTO NULL
+  initialize ma_integer TO NULL
+
+
+  DISPLAY "hello world"
+
+  CALL arraydeleteitem(ma_array)
+  CALL arrayadditem(ma_array,3)
+
+  CALL arraydeleteitem(ma_integer)
+  CALL arrayadditem(ma_integer,3)
+
+  FOR l_ind = 1 TO 3
+    	LET ma_integer[l_ind] = NULL
+
+    	LET ma_array[l_ind].f2_check      = NULL
+    	LET ma_array[l_ind].f2_integer    = NULL
+    	LET ma_array[l_ind].f2_smallint   = NULL
+    	LET ma_array[l_ind].f2_decimal    = NULL
+    	LET ma_array[l_ind].f2_decimal0   = NULL
+    	LET ma_array[l_ind].f2_char       = " "
+    	LET ma_array[l_ind].f2_varchar    = " "
+    	LET ma_array[l_ind].f2_date       = today + l_ind UNITS DAY
+    	LET ma_array[l_ind].f2_dttime_y2s = NULL
+    	LET ma_array[l_ind].f2_dttime_y2m = NULL
+    	LET ma_array[l_ind].f2_dttime_y2f = NULL
+    	LET ma_array[l_ind].f2_scroll     = NULL
+
+
+  END FOR
+
+  FOR l_ind = 1 TO 3
+    	LET ma_integer[l_ind] = l_ind
+
+    	LET ma_array[l_ind].f2_check      = "s"
+    	LET ma_array[l_ind].f2_integer    = 339.782.827 + l_ind
+    	LET ma_array[l_ind].f2_smallint   = 18.721 + l_ind
+    	LET ma_array[l_ind].f2_decimal    = -19.838.849,088 + l_ind
+    	LET ma_array[l_ind].f2_decimal0   = 9.389.007.739 + l_ind
+    	LET ma_array[l_ind].f2_char       = "texto"||l_ind
+    	LET ma_array[l_ind].f2_varchar    = "textovarchar   "||l_ind
+    	LET ma_array[l_ind].f2_date       = today + 3 UNITS DAY
+    	LET ma_array[l_ind].f2_dttime_y2s = CURRENT + l_ind UNITS DAY
+    	LET ma_array[l_ind].f2_dttime_y2m = CURRENT + l_ind + 1 UNITS DAY
+    	LET ma_array[l_ind].f2_dttime_y2f = CURRENT + l_ind + 2 UNITS DAY
+    	LET ma_array[l_ind].f2_scroll     = "texto scroll texto scroll texto scroll "
+
+  END FOR
+
+END MAIN
+
+
+
 `;

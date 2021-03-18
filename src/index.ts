@@ -16,50 +16,6 @@ const languages = [
   },
 ];
 
-function locStart(ast: any) {
-  let offset = 0;
-
-  if (Array.isArray(ast)) {
-    if (ast.length > 0) {
-      for (let index = 0; index < ast.length; index++) {
-        const element = ast[index];
-        offset = locStart(element);
-        if (offset !== 0) {
-          break;
-        }
-      }
-    }
-  } else if (!ast.offset) {
-    offset = locStart(ast.value);
-  } else if (ast.kind) {
-    offset = ast.offset.start;
-  }
-
-  return offset;
-}
-
-function locEnd(ast: any) {
-  let offset = Infinity;
-
-  if (Array.isArray(ast)) {
-    if (ast.length > 0) {
-      for (let index = 0; index < ast.length; index++) {
-        const element = ast[index];
-        offset = locEnd(element);
-        if (offset !== 0) {
-          break;
-        }
-      }
-    }
-  } else if (!ast.offset) {
-    offset = locEnd(ast.value);
-  } else if (ast.kind) {
-    offset = ast.offset.end;
-  }
-
-  return offset;
-}
-
 function hasPragma(text: string) {
   return text.startsWith(PRAGMA);
 }
@@ -81,7 +37,7 @@ function parser(
       fileext: options.fileext,
     };
 
-    const result: any = tds_parser(text + '\n', parserInfo); //EOL obrigatório na última linha
+    const result: any = tds_parser(text, parserInfo);
     if (result.error) {
       throw result.error;
     }
@@ -107,9 +63,8 @@ const parsers = {
       return parser(text, api, options);
     },
     astFormat: '4gl-token',
-    locStart: locStart,
-    locEnd: locEnd,
     hasPragma: hasPragma,
+    insertPragma: insertPragma,
   },
 };
 

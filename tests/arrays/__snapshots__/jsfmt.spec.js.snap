@@ -12,8 +12,19 @@ function f1()
 
 end function
 ----------
-    DEFINE
- DEFINE
- 
+MAIN
+  DEFINE lista ARRAY [5] OF integer
+
+END MAIN
+
+
+FUNCTION f1()
+  DEFINE var1 ARRAY[1] OF integer
+  	DEFINE var1 ARRAY[1,2] OF CHAR(30)
+
+
+END FUNCTION
+
+
 
 `;

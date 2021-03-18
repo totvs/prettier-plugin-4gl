@@ -2,7 +2,7 @@
   "name": "@totvs/prettier-plugin-4gl",
   "displayName": "Prettier Plugin 4GL Formatter",
   "description": "Extensão Prettier para formatação de código 4GL.",
-  "version": "0.1.2",
+  "version": "0.1.1",
   "publisher": "TOTVS",
   "author": {
     "name": "TOTVS",
@@ -43,7 +43,7 @@
     "---TEST---": "",
     "test": "jest",
     "test:snapshot": "npm run test -- --updateSnapshot",
-    "test:singlefile": "npm run test -- --testNamePattern hello4.4gl",
+    "test:singlefile": "npm run test -- --testNamePattern break_lines.4gl",
     "test:folder": "--testPathPattern",
     "test:coverage": "npm run test -- --coverage",
     "test:onlyFailures": "npm run test --onlyFailures ",
@@ -55,11 +55,12 @@
     "---MISC---": "",
     "contributors:check": "all-contributors check",
     "contributors:generate": "all-contributors generate",
+    "---LINKS---": "",
     "link:tds-parsers": "npm link ../tds-parsers --force"
   },
   "dependencies": {
     "prettier": "^2.2.1",
-    "@totvs/tds-parsers": "^0.1.1",
+    "@totvs/tds-parsers": "^0.1.2",
     "typescript": "^4.1.5"
   },
   "devDependencies": {
