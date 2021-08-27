@@ -1,116 +1,243 @@
-"use strict";
+'use strict';
 
-const fs = require("fs");
-const path = require("path");
-const prettier = require("prettier");
+const fs = require('fs');
+const path = require('path');
+const raw = require('jest-snapshot-serializer-raw').wrap;
 
-const RANGE_START = "--range-start";
-const RANGE_END = "--range-end";
+//const { AST_COMPARE, TEST_CRLF } = process.env;
+const AST_COMPARE = true;
+const SHOW_CRLF = false;
+const CURSOR_PLACEHOLDER = '<|>';
+const RANGE_START_PLACEHOLDER = '<<<PRETTIER_RANGE_START>>>';
+const RANGE_END_PLACEHOLDER = '<<<PRETTIER_RANGE_END>>>';
 
-function run_spec(dirname, options) {
-  fs.readdirSync(dirname).forEach((filename) => {
-    const filepath = dirname + "/" + filename;
+const { prettier, plugin } = require('./get_engine');
+
+global.run_spec = (dirname, parsers, options) => {
+  options = Object.assign({}, options, {
+    plugins: [plugin, ...((options && options.plugins) || [])],
+  });
+
+  // istanbul ignore next
+  if (!parsers || !parsers.length) {
+    throw new Error(`No parsers were specified for ${dirname}`);
+  }
+
+  fs.readdirSync(dirname).forEach((basename) => {
+    const filename = path.join(dirname, basename);
+
     if (
-      path.extname(filename) !== ".snap" &&
-      fs.lstatSync(filepath).isFile() &&
-      filename[0] !== "." &&
-      !filename.endsWith(".log") &&
-      filename !== "jsfmt.spec.js"
+      path.extname(basename) === '.snap' ||
+      !fs.lstatSync(filename).isFile() ||
+      basename[0] === '.' ||
+      basename === 'jsfmt.spec.js'
     ) {
-      let rangeStart = 0;
-      let rangeEnd = Infinity;
-      let cursorOffset;
+      return;
+    }
 
-      const source = read(filepath)
-        .replace(/\r\n/g, "\n")
-        .replace("<<<PRETTIER_RANGE_START>>>", (match, offset) => {
-          rangeStart = offset;
-          return "";
-        })
-        .replace("<<<PRETTIER_RANGE_END>>>", (match, offset) => {
-          rangeEnd = offset;
-          return "";
-        });
+    let rangeStart;
+    let rangeEnd;
+    let cursorOffset;
 
-      const input = source.replace("<|>", (match, offset) => {
-        cursorOffset = offset;
+    const text = fs.readFileSync(filename, 'utf8');
 
-        return "";
+    const source = text
+      .replace(RANGE_START_PLACEHOLDER, (match, offset) => {
+        rangeStart = offset;
+        return '';
+      })
+      .replace(RANGE_END_PLACEHOLDER, (match, offset) => {
+        rangeEnd = offset;
+        return '';
       });
 
-      const mergedOptions = Object.assign(mergeDefaultOptions(options || {}), {
-        filepath,
-        rangeStart,
-        rangeEnd,
-        cursorOffset,
-      });
+    const input = source.replace(CURSOR_PLACEHOLDER, (match, offset) => {
+      cursorOffset = offset;
+      return '';
+    });
 
-      describe("Source", () => {
-        processTest(mergedOptions, filename, input);
-      });
+    const baseOptions = Object.assign({ printWidth: 80 }, options, {
+      rangeStart,
+      rangeEnd,
+      cursorOffset,
+      endOfLine: 'auto',
+    });
+    const mainOptions = Object.assign({}, baseOptions, {
+      parser: parsers[0],
+    });
 
+    const hasEndOfLine = 'endOfLine' in mainOptions;
+
+    const output = format(input, filename, mainOptions);
+    const visualizedOutput = visualizeEndOfLine(output);
+
+    // eslint-disable-next-line jest/valid-title
+    test(basename, () => {
+      expect(visualizedOutput).toEqual(
+        visualizeEndOfLine(consistentEndOfLine(output))
+      );
+      expect(
+        raw(
+          createSnapshot(
+            hasEndOfLine
+              ? visualizeEndOfLine(
+                  text
+                    .replace(RANGE_START_PLACEHOLDER, '')
+                    .replace(RANGE_END_PLACEHOLDER, '')
+                )
+              : source,
+            hasEndOfLine ? visualizedOutput : output,
+            Object.assign({}, baseOptions, { parsers })
+          )
+        )
+      ).toMatchSnapshot();
+    });
+
+    for (const parser of parsers.slice(1)) {
+      const verifyOptions = Object.assign({}, baseOptions, { parser });
+      test(`${basename} - ${parser}-verify`, () => {
+        const verifyOutput = format(input, filename, verifyOptions);
+        expect(visualizedOutput).toEqual(visualizeEndOfLine(verifyOutput));
+      });
+    }
+
+    if (AST_COMPARE && parsers[0]) {
+      test(`${filename} parse`, () => {
+        const parseOptions = Object.assign({}, mainOptions);
+        delete parseOptions.cursorOffset;
+
+        expect(() => {
+          parse(output.replace(CURSOR_PLACEHOLDER, ''), parseOptions, filename);
+        }).not.toThrow();
+      });
     }
   });
+};
+
+function parse(source, options, filename) {
+  const ast = prettier.__debug.parse(
+    source,
+    Object.assign({ filepath: filename }, options),
+    /* massage */ true
+  ).ast;
+
+  return cleanNodes(ast);
 }
 
-global.run_spec = run_spec;
+function cleanNodes(ast) {
+  if (Array.isArray(ast)) {
+    const result = [];
 
-function processTest(mergedOptions, filename, input) {
-  test(filename, () => {
-    const output = prettyprint(input, { ...mergedOptions });
+    ast.forEach((element) => {
+      result.push(cleanNodes(element));
+    });
 
-    expect(
-      raw(
-        input
-        + "-".repeat(10)
-        + "\n"
-        + output
-        + "\n"
-        + "~".repeat(mergedOptions.printWidth)
-      )
-    ).toMatchSnapshot();
+    return result;
+  }
+
+  delete ast._location;
+  delete ast._source;
+  delete ast._attributes;
+
+  ast._children = cleanNodes(ast._children);
+
+  return ast;
+}
+
+function format(source, filename, options) {
+  const result = prettier.formatWithCursor(
+    source,
+    Object.assign({ filepath: filename }, options)
+  );
+
+  return options.cursorOffset >= 0
+    ? result.formatted.slice(0, result.cursorOffset) +
+        CURSOR_PLACEHOLDER +
+        result.formatted.slice(result.cursorOffset)
+    : result.formatted;
+}
+
+function consistentEndOfLine(text) {
+  let firstEndOfLine;
+  return text.replace(/\r\n?|\n/g, (endOfLine) => {
+    if (!firstEndOfLine) {
+      firstEndOfLine = endOfLine;
+    }
+    return firstEndOfLine;
   });
 }
 
-function prettyprint(src, options) {
-  let result = prettier.format(src, options);
+function visualizeEndOfLine(text) {
+  return !SHOW_CRLF
+    ? text
+    : text.replace(/\r\n?|\n/g, (endOfLine) => {
+        switch (endOfLine) {
+          case '\n':
+            return '<LF>\n';
+          case '\r\n':
+            return '<CRLF>\n';
+          case '\r':
+            return '<CR>\n';
+          case '\t':
+            return '<TAB>';
+          default:
+            throw new Error(
+              `Unexpected end of line ${JSON.stringify(endOfLine)}`
+            );
+        }
+      });
+}
 
-  if (options.cursorOffset >= 0) {
-    result = result.formatted || result;
-    result =
-      result.slice(0, result.cursorOffset) +
-      "<|>" +
-      result.slice(result.cursorOffset);
+function createSnapshot(input, output, options) {
+  const separatorWidth = 80;
+
+  return []
+    .concat(
+      '\n',
+      printSeparator(separatorWidth, 'options'),
+      printOptions(
+        omit(
+          options,
+          (k) => k === 'rangeStart' || k === 'rangeEnd' || k === 'cursorOffset'
+        )
+      ),
+      printSeparator(separatorWidth, 'input'),
+      input,
+      printSeparator(separatorWidth, 'output'),
+      output,
+      printSeparator(separatorWidth)
+    )
+    .join('\n');
+}
+
+function printSeparator(width, description) {
+  description = description || '';
+  const leftLength = Math.floor((width - description.length) / 2);
+  const rightLength = width - leftLength - description.length;
+  return '='.repeat(leftLength) + description + '='.repeat(rightLength);
+}
+
+function printOptions(options) {
+  const keys = Object.keys(options).sort();
+  return keys.map((key) => `${key}: ${stringify(options[key])}`).join('\n');
+  function stringify(value) {
+    return value === Infinity
+      ? 'Infinity'
+      : Array.isArray(value)
+      ? `[${value.map((v) => JSON.stringify(v)).join(', ')}]`
+      : JSON.stringify(value);
   }
-
-  return result.formatted || result;
 }
 
-function read(filename) {
-  return fs.readFileSync(filename, "utf8");
-}
-
-/**
- * Wraps a string in a marker object that is used by `./raw-serializer.js` to
- * directly print that string in a snapshot without escaping all double quotes.
- * Backticks will still be escaped.
- */
-function raw(string) {
-  if (typeof string !== "string") {
-    throw new Error("Raw snapshots have to be strings.");
-  }
-  return { [Symbol.for("raw")]: string };
-}
-
-function mergeDefaultOptions(parserConfig) {
-  return Object.assign(
-    {
-      plugins: [path.dirname(__dirname)],
-      //printWidth: 80,
-      loglevel: "debug",
-      //requirePragma: false,
-      //insertPragma: false,
-    },
-    parserConfig
-  );
+function omit(obj, fn) {
+  return Object.keys(obj).reduce((reduced, key) => {
+    if (key === 'plugins') {
+      return reduced;
+    }
+    const value = obj[key];
+    if (!fn(key, value)) {
+      reduced[key] = value;
+    }
+    return reduced;
+  }, {});
 }

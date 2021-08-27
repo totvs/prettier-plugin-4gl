@@ -1,8 +1,8 @@
+import { EASTType, ASTNode } from '@totvs/tds-parsers';
 import { util } from 'prettier';
-import AST = require('@totvs/tds-parsers/lib/ast_node');
+import prettier = require('prettier');
 
 const {
-  concat,
   join,
   line,
   ifBreak,
@@ -12,22 +12,23 @@ const {
   fill,
   indent,
   dedent,
-  trim,
   markAsRoot,
+  dedentToRoot,
   addAlignmentToDoc,
-} = require('prettier').doc.builders;
+} = prettier.doc.builders;
 
-const { stripTrailingHardline, removeLines } = require('prettier').doc.utils;
+const { stripTrailingHardline, removeLines } = prettier.doc.utils;
 
-export function printJSON(path, options, print, args) {
+let preserverEndLine = false;
+let nextStatementHardLine = true;
+
+export function printJSON(path: any, options: any, print: any, args: any) {
   const node = path.getValue();
 
   return JSON.stringify(node, undefined, 2);
 }
 
-let ignoreWS: boolean = false;
-
-export function printToken(path, options, print, args) {
+export function printToken(path: any, options: any, print: any, args: any) {
   const node = path.getValue();
 
   if (!node) {
@@ -39,112 +40,174 @@ export function printToken(path, options, print, args) {
   }
 
   if (Array.isArray(node)) {
-    return treatMap(path.map(print));
+    return path.map(print);
   }
 
   let result: any = undefined;
 
   switch (node.type) {
-    case AST.EASTType.program:
-    case AST.EASTType.beginBlock:
-    case AST.EASTType.endBlock:
-      result = treatMap(path.map(print, 'children'));
+    case EASTType.token:
+      result = path.map(print, 'children');
       break;
 
-    case AST.EASTType.bodyBlock:
-      result = treatMap(path.map(print, 'children'));
+    case EASTType.statement:
+      result = buildStatement(path, print, options);
       break;
 
-    case AST.EASTType.block:
-      const aux: any = treatMap(path.map(print, 'children'));
-      result = concat([
-        indent(concat([aux.parts[0], aux.parts[1]])),
-        line,
-        aux.parts[2],
-      ]);
-      break;
-
-    case AST.EASTType.argumentList:
-      result = buildArgumentList(path, print, options);
-      break;
-
-    case AST.EASTType.keyword:
-      ignoreWS = false;
+    case EASTType.keyword:
       result = buildKeyword(path, print, options);
       break;
 
-    case AST.EASTType.whiteSpace:
-      if (!ignoreWS) {
-        result = buildWhiteSpace(path, print, options);
-      } else {
-        result = '';
-      }
-      break;
-
-    case AST.EASTType.endLine:
-      ignoreWS = true;
-      result = buildEndLine(path, print, options);
-      break;
-
-    case AST.EASTType.newLine:
-      result = buildNewLine(path, print, options);
-      break;
-
-    case AST.EASTType.identifier:
-      result = buildIdentifier(path, print, options);
-      break;
-
-    case AST.EASTType.operator:
-      result = buildOperator(path, print, options);
-      break;
-
-    case AST.EASTType.operatorBraces:
-      result = buildOperatorBraces(path, print, options);
-      break;
-
-    case AST.EASTType.operatorBracket:
-      result = buildOperatorBracket(path, print, options);
-      break;
-
-    case AST.EASTType.operatorMath:
-      result = buildOperatorMath(path, print, options);
-      break;
-
-    case AST.EASTType.operatorParenthesis:
-      result = buildOperatorParenthesis(path, print, options);
-      break;
-
-    case AST.EASTType.operatorSeparator:
-      result = buildOperatorSeparator(path, print, options);
-      break;
-
-    case AST.EASTType.comment:
-      result = path.getValue().source;
-      ignoreWS = ignoreWS || result.endsWith('\n');
-      if (result.endsWith('\n')) {
-        result = result.substring(0, result.length - 1);
-        result = concat([result, hardline]);
-      }
-      break;
-
-    case AST.EASTType.blockComment:
-      result = buildBlockComment(path, print, options);
-      ignoreWS = ignoreWS || result.endsWith('\n');
-      if (result.endsWith('\n')) {
-        result = result.substring(0, result.length - 1);
-        result = concat([result, hardline]);
-      }
-      break;
-
-    case AST.EASTType.singleComment:
-      result = buildSingleComment(path, print, options);
-      break;
-
-    case AST.EASTType.string:
+    case EASTType.string:
       result = buildString(path, print, options);
       break;
 
-    case AST.EASTType.number:
+    case EASTType.number:
+      result = buildNumber(path, print, options);
+      break;
+
+    default:
+      const node = path.getValue();
+      result = node.source ? node.source : node;
+      break;
+  }
+
+  if (result === undefined) {
+    const node = path.getValue();
+    result = JSON.stringify(node, undefined, 3);
+  }
+
+  return result;
+}
+
+export function printProgram(path: any, options: any, print: any, args: any) {
+  const node = path.getValue();
+
+  if (!node) {
+    return '';
+  }
+
+  if (typeof node === 'string') {
+    return node;
+  }
+
+  if (Array.isArray(node)) {
+    return path.map(print);
+  }
+
+  let result: any = undefined;
+
+  switch (node.type) {
+    case EASTType.token:
+      result = path.map(print, 'children');
+      break;
+
+    case EASTType.program:
+      result = path.map(print, 'children');
+      break;
+
+    case EASTType.block:
+      result = path.map(print, 'children');
+      if (node.getAttribute('recordBlock')) {
+        const elements: prettier.Doc[] = result[1][0].map((element: any) => [
+          group(element),
+          line,
+        ]);
+
+        result = [result[0], indent([hardline, elements]), hardline, result[2]];
+      } else {
+        result = [result[0], indent([line, result[1]]), result[2]];
+      }
+      break;
+    case EASTType.beginBlock:
+      result = path.map(print, 'children');
+      break;
+    case EASTType.bodyBlock:
+      result = path.map(print, 'children');
+      break;
+    case EASTType.endBlock:
+      result = path.map(print, 'children');
+      break;
+
+    case EASTType.argumentList:
+      result = buildArgumentList(path, print, options);
+      break;
+
+    case EASTType.statement:
+      result = buildStatement(path, print, options);
+      break;
+
+    case EASTType.keyword:
+      result = buildKeyword(path, print, options);
+      break;
+
+    case EASTType.whiteSpace:
+      result = buildWhiteSpace(path, print, options);
+      break;
+
+    case EASTType.endLine:
+      if (!preserverEndLine) {
+        result = buildEndLine(path, print, options);
+      } else {
+        result = [hardline];
+        preserverEndLine = false;
+      }
+      break;
+
+    case EASTType.newLine:
+      if (!preserverEndLine) {
+        result = buildNewLine(path, print, options);
+      } else {
+        result = [hardline];
+        preserverEndLine = false;
+      }
+      break;
+
+    case EASTType.identifier:
+      result = buildIdentifier(path, print, options);
+      break;
+
+    case EASTType.operator:
+      result = buildOperator(path, print, options);
+      break;
+
+    case EASTType.operatorBraces:
+      result = buildOperatorBraces(path, print, options);
+      break;
+
+    case EASTType.operatorBracket:
+      result = buildOperatorBracket(path, print, options);
+      break;
+
+    case EASTType.operatorMath:
+      result = buildOperatorMath(path, print, options);
+      break;
+
+    case EASTType.operatorParenthesis:
+      result = buildOperatorParenthesis(path, print, options);
+      break;
+
+    case EASTType.operatorSeparator:
+      result = buildOperatorSeparator(path, print, options);
+      break;
+
+    case EASTType.comment:
+      result = buildComment(path, print, options);
+      break;
+
+    case EASTType.blockComment:
+      result = buildBlockComment(path, print, options);
+      break;
+
+    case EASTType.singleComment:
+      result = buildSingleComment(path, print, options);
+      break;
+
+    case EASTType.string:
+      result = buildString(path, print, options);
+      break;
+
+    case EASTType.number:
       result = buildNumber(path, print, options);
       break;
 
@@ -162,30 +225,13 @@ export function printToken(path, options, print, args) {
   return result;
 }
 
-function treatMap(resultMap: any): any {
-  let result: any = undefined;
-
-  if (Array.isArray(resultMap)) {
-    if (resultMap.length == 0) {
-      result = '';
-    } else if (resultMap.length == 1) {
-      result = resultMap[0];
-    } else {
-      result = concat(resultMap);
-    }
-  }
-
-  return result;
-}
-
-function buildArgumentList(path, print, options) {
+function buildArgumentList(path: any, print: any, options: any) {
   const open = path.map(print, 'children');
 
-  return concat(open);
+  return open;
 }
 
-function buildKeyword(path, print, options) {
-  const node: AST.ASTNode = path.getValue();
+function keyword(node: ASTNode, options: any) {
   let value = node.source;
 
   if (options['4glKeywordsCase'] === 'upper') {
@@ -197,8 +243,28 @@ function buildKeyword(path, print, options) {
   return value;
 }
 
-function buildWhiteSpace(path, print, options) {
-  const node: AST.ASTNode = path.getValue();
+function buildStatement(path: any, print: any, options: any) {
+  const node: ASTNode = path.getValue();
+  const value = [nextStatementHardLine ? hardline : '', keyword(node, options)];
+
+  if (value[1].toString().toUpperCase() === 'END') {
+    nextStatementHardLine = false;
+  } else {
+    nextStatementHardLine = true;
+  }
+
+  return value;
+}
+
+function buildKeyword(path: any, print: any, options: any) {
+  const node: ASTNode = path.getValue();
+  const value = keyword(node, options);
+
+  return value;
+}
+
+function buildWhiteSpace(path: any, print: any, options: any) {
+  const node: ASTNode = path.getValue();
   let value = node.source;
 
   if (options.useTabs) {
@@ -210,42 +276,33 @@ function buildWhiteSpace(path, print, options) {
   return value;
 }
 
-function buildEndLine(path, print, options) {
-  return concat(path.map(print, 'source'));
+function buildEndLine(path: any, print: any, options: any) {
+  return path.map(print, 'source');
 }
 
-function buildNewLine(path, print, options) {
-  const node: AST.ASTNode = path.getValue();
-  const value = node.source;
-  const max =
-    options['4glMaxEmptyLines'] != 0 ? options['4glMaxEmptyLines'] + 1 : -1;
-  const result: any[] = value
-    .split('\n')
-    .fill(hardline, 0, max)
-    .filter((element: any) => {
-      return typeof element === 'object';
-    });
+function buildNewLine(path: any, print: any, options: any) {
+  //const node: ASTNode = path.getValue();
 
-  return treatMap(result);
+  return '';
 }
 
-function buildIdentifier(path, print, options) {
-  const node: AST.ASTNode = path.getValue();
+function buildIdentifier(path: any, print: any, options: any) {
+  const node: ASTNode = path.getValue();
   let value = node.source;
 
   return value;
 }
 
-function buildOperator(path, print, options) {
-  const node: AST.ASTNode = path.getValue();
+function buildOperator(path: any, print: any, options: any) {
+  const node: ASTNode = path.getValue();
   const value = node.source;
   let result = value;
 
   return result;
 }
 
-function buildOperatorBraces(path, print, options) {
-  const node: AST.ASTNode = path.getValue();
+function buildOperatorBraces(path: any, print: any, options: any) {
+  const node: ASTNode = path.getValue();
   const value = node.source;
   let result = value;
 
@@ -256,8 +313,8 @@ function buildOperatorBraces(path, print, options) {
   return result;
 }
 
-function buildOperatorBracket(path, print, options) {
-  const node: AST.ASTNode = path.getValue();
+function buildOperatorBracket(path: any, print: any, options: any) {
+  const node: ASTNode = path.getValue();
   const value = node.source;
   let result = value;
 
@@ -268,8 +325,8 @@ function buildOperatorBracket(path, print, options) {
   return result;
 }
 
-function buildOperatorMath(path, print, options) {
-  const node: AST.ASTNode = path.getValue();
+function buildOperatorMath(path: any, print: any, options: any) {
+  const node: ASTNode = path.getValue();
   const value = node.source;
   let result = value;
 
@@ -280,8 +337,8 @@ function buildOperatorMath(path, print, options) {
   return result;
 }
 
-function buildOperatorParenthesis(path, print, options) {
-  const node: AST.ASTNode = path.getValue();
+function buildOperatorParenthesis(path: any, print: any, options: any) {
+  const node: ASTNode = path.getValue();
   const value = node.source;
   let result = value;
 
@@ -292,23 +349,36 @@ function buildOperatorParenthesis(path, print, options) {
   return result;
 }
 
-function buildBlockComment(path, print, options) {
-  const node: AST.ASTNode = path.getValue();
+function buildBlockComment(path: any, print: any, options: any) {
+  const node: ASTNode = path.getValue();
   const value = node.source;
+  preserverEndLine = true;
 
   return value;
 }
 
-function buildSingleComment(path, print, options) {
-  const node: AST.ASTNode = path.getValue();
+function buildSingleComment(path: any, print: any, options: any) {
+  const node: ASTNode = path.getValue();
   const value = node.source;
-  let result = value;
+
+  preserverEndLine = true;
 
   return value;
 }
 
-function buildOperatorSeparator(path, print, options) {
-  const node: AST.ASTNode = path.getValue();
+function buildComment(path: any, print: any, options: any) {
+  const node: ASTNode = path.getValue();
+  let value = node.source;
+
+  if (value.endsWith('\n')) {
+    value = value.substring(0, value.indexOf('\n') + 1); //pode ser uma sequencia, p.e. #(comment)\n\n\n
+  }
+
+  return value;
+}
+
+function buildOperatorSeparator(path: any, print: any, options: any) {
+  const node: ASTNode = path.getValue();
   const value = node.source;
   let result = value;
 
@@ -319,8 +389,8 @@ function buildOperatorSeparator(path, print, options) {
   return result;
 }
 
-function buildString(path, print, options) {
-  const node: AST.ASTNode = path.getValue();
+function buildString(path: any, print: any, options: any) {
+  const node: ASTNode = path.getValue();
   const value = node.source;
   let result = undefined;
 
@@ -336,15 +406,15 @@ function buildString(path, print, options) {
   return result;
 }
 
-function buildNumber(path, print, options) {
-  const node: AST.ASTNode = path.getValue();
+function buildNumber(path: any, print: any, options: any) {
+  const node: ASTNode = path.getValue();
   const value: Number = Number.parseFloat(node.source);
   let result = undefined;
 
   if (options['4glFormatNumber']) {
     result = value.toLocaleString('en');
   } else {
-    result = value.toLocaleString();
+    result = Number(value).toString();
   }
 
   return result;

@@ -1,9 +1,8 @@
-import { options } from './config';
-import { printToken } from './printers';
-import { parser as tds_parser } from '@totvs/tds-parsers';
 import { IParserOptions } from '@totvs/tds-parsers/typings/config';
-import { ASTNode } from '@totvs/tds-parsers/typings/ast_node';
-import { AST } from 'prettier';
+import { options } from './config';
+import { printProgram, printToken } from './printers';
+
+const tds_parser = require('@totvs/tds-parsers').tds_parser;
 
 const PRAGMA = '--@format';
 
@@ -11,8 +10,14 @@ const languages = [
   {
     extensions: ['.4gl', '.per'],
     name: '4GL',
-    parsers: ['4gl'],
+    parsers: ['4gl', '4gl-token'],
     vscodeLanguageIds: ['4gl'],
+  },
+  {
+    extensions: ['.prw'],
+    name: 'Adv/PL',
+    parsers: ['advpl', 'advpl-token'],
+    vscodeLanguageIds: ['advpl'],
   },
 ];
 
@@ -68,29 +73,27 @@ function insertPragma(text: string) {
   return PRAGMA + '\n' + text;
 }
 
-function parser(
-  text: string,
-  api,
-  options: IParserOptions
-): ASTNode | undefined {
+function prettierParser(text: string, api: any, options: IParserOptions): any {
   try {
     const parserInfo: any = {
+      ...options,
       debug: false,
-      filepath: options.filepath,
-      parser: options.parser,
-      fileext: options.fileext,
     };
 
-    const result: any = tds_parser(text + '\n', parserInfo); //EOL obrigatório na última linha
+    text += text.endsWith('\n') ? '' : '\n';
+
+    const result: any = tds_parser(text, parserInfo); //EOL obrigatório na última linha
     if (result.error) {
       throw result.error;
     }
 
     return result.ast;
   } catch (error) {
-    if (error.location) {
+    if (error.line) {
       console.error(
-        `Sintax error: [${error.location.start.line}:${error.location.start.column}] ${error.message}`
+        `Sintax error: [${error.line}:${error.column}] ${error.message}\n${
+          text.split('\n')[error.line - 1]
+        }\n${'-'.repeat(error.column - 1)}^`
       );
     } else {
       console.error(error);
@@ -103,25 +106,36 @@ function parser(
 
 const parsers = {
   '4gl': {
-    parse: (text, api, options) => {
-      return parser(text, api, options);
+    parse: (text: string, api: any, options: IParserOptions) => {
+      return prettierParser(text, api, {
+        ...options,
+        parserProcess: 'program',
+      });
     },
-    astFormat: '4gl-token',
+    astFormat: 'program',
+    locStart: locStart,
+    locEnd: locEnd,
+    hasPragma: hasPragma,
+  },
+  '4gl-token': {
+    parse: (text: string, api: any, options: IParserOptions) => {
+      return prettierParser(text, api, { ...options, parserProcess: 'token' });
+    },
+    astFormat: 'token',
     locStart: locStart,
     locEnd: locEnd,
     hasPragma: hasPragma,
   },
 };
 
-function preprocess(ast: AST, options: object): AST {
-  return ast;
-}
-
 const printers = {
-  '4gl-token': {
+  program: {
+    print: printProgram,
+    insertPragma: insertPragma,
+  },
+  token: {
     print: printToken,
     insertPragma: insertPragma,
-    preprocess: preprocess,
   },
 };
 

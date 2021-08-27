@@ -2,10 +2,10 @@
   "name": "@totvs/prettier-plugin-4gl",
   "displayName": "Prettier Plugin 4GL Formatter",
   "description": "Extensão Prettier para formatação de código 4GL.",
-  "version": "0.1.0",
-  "publisher": "TOTVS",
+  "version": "0.1.4",
+  "publisher": "TOTVS S.A",
   "author": {
-    "name": "TOTVS",
+    "name": "TOTVS S.A",
     "email": "tecnologia@totvs.com.br"
   },
   "license": "Apache-2.0",
@@ -32,45 +32,43 @@
     "lib/",
     "typings/",
     "README.md",
-    "LICENSE",
-    ".prettierrc"
+    "LICENSE"
   ],
   "scripts": {
     "clean": "rimraf ./lib && rimraf ./typings",
-    "build": "tsc -p ./src",
+    "build": "tsc --version && tsc -p ./src",
     "watch": "tsc -p ./src --watch",
     "prebuild": "npm run clean",
     "---TEST---": "",
-    "test": "jest",
+    "test": "jest ",
     "test:snapshot": "npm run test -- --updateSnapshot",
     "test:singlefile": "npm run test -- --testNamePattern hello4.4gl",
-    "test:folder": "--testPathPattern",
+    "test:folder": "npm run test -- --testPathPattern blocks",
     "test:coverage": "npm run test -- --coverage",
     "test:onlyFailures": "npm run test --onlyFailures ",
     "pretest": "npm run build",
     "---RELEASE---": "",
-    "release": "standard-version",
+    "release": "npx standard-version",
     "to_publish": "git push --follow-tags origin develop && npm publish --access public",
     "prepack": "npm run build",
     "---MISC---": "",
-    "contributors:check": "all-contributors check",
-    "contributors:generate": "all-contributors generate",
-    "link:tds-parsers": "npm link ../tds-parsers --force"
+    "lint": "eslint ./src/**",
+    "contributors:check": "npx all-contributors check",
+    "contributors:generate": "npx all-contributors generate",
+    "link:tds-parsers": "npm link ../tds-parsers"
   },
   "dependencies": {
-    "prettier": "^2.2.1",
-    "@totvs/tds-parsers": "^0.1.1",
-    "typescript": "^4.1.5"
+    "@totvs/tds-parsers": "^0.1.6",
+    "prettier": "^2.3.2",
+    "typescript": "^4.3.5"
   },
   "devDependencies": {
-    "@commitlint/cli": "^12.0.0",
-    "@commitlint/config-conventional": "^12.0.0",
-    "@types/fs-extra": "^9.0.7",
-    "@types/glob": "^7.1.3",
-    "husky": "^5.0.9",
-    "jest": "^26.6.3",
-    "jest-watch-typeahead": "^0.6.1",
-    "standard-version": "^9.1.1"
+    "@commitlint/cli": "^13.1.0",
+    "@commitlint/config-conventional": "^13.1.0",
+    "husky": "^7.0.1",
+    "jest": "^27.0.6",
+    "jest-snapshot-serializer-raw": "^1.2.0",
+    "jest-watch-typeahead": "^0.6.4"
   },
   "config": {
     "commitizen": {

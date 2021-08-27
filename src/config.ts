@@ -79,13 +79,6 @@ export const options: {} = {
   //   default: false,
   //   description: 'End of line comment alignment column.',
   // },
-  '4glMaxEmptyLines': {
-    since: SINCE,
-    category: CATEGORY_4GL,
-    type: 'int',
-    default: 0,
-    description: 'Maximum blank lines in sequence (0, no limits).',
-  },
 };
 
 export const prettierOptions: any = {
